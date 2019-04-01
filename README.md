@@ -1,0 +1,1 @@
+# Kros.AspNetCore.BestPractices
