@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28721.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{15B43234-BFBA-41E1-A8C9-206689B00097}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8CB018F4-EB2D-409A-8C2C-A1520690E766}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{DF9CF3D3-3396-46E5-9C3C-624ACD743852}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Users.Api", "src\Services\Kros.Users.Api\Kros.Users.Api.csproj", "{58BDA07C-ED87-4D2B-BD70-04D8D31E4135}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.ToDos.Api", "src\Services\Kros.ToDos.Api\Kros.ToDos.Api.csproj", "{ACB95283-B069-4977-8603-3E603D600511}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Statistics.Api", "src\Services\Kros.Statistics.Api\Kros.Statistics.Api.csproj", "{8A585086-3616-4358-80E9-DEB4816EE5CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "src\ApiGateway\ApiGateway.csproj", "{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58BDA07C-ED87-4D2B-BD70-04D8D31E4135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58BDA07C-ED87-4D2B-BD70-04D8D31E4135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58BDA07C-ED87-4D2B-BD70-04D8D31E4135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58BDA07C-ED87-4D2B-BD70-04D8D31E4135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACB95283-B069-4977-8603-3E603D600511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACB95283-B069-4977-8603-3E603D600511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACB95283-B069-4977-8603-3E603D600511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACB95283-B069-4977-8603-3E603D600511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A585086-3616-4358-80E9-DEB4816EE5CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A585086-3616-4358-80E9-DEB4816EE5CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A585086-3616-4358-80E9-DEB4816EE5CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A585086-3616-4358-80E9-DEB4816EE5CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8CB018F4-EB2D-409A-8C2C-A1520690E766} = {15B43234-BFBA-41E1-A8C9-206689B00097}
+		{DF9CF3D3-3396-46E5-9C3C-624ACD743852} = {15B43234-BFBA-41E1-A8C9-206689B00097}
+		{58BDA07C-ED87-4D2B-BD70-04D8D31E4135} = {8CB018F4-EB2D-409A-8C2C-A1520690E766}
+		{ACB95283-B069-4977-8603-3E603D600511} = {8CB018F4-EB2D-409A-8C2C-A1520690E766}
+		{8A585086-3616-4358-80E9-DEB4816EE5CA} = {8CB018F4-EB2D-409A-8C2C-A1520690E766}
+		{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB} = {DF9CF3D3-3396-46E5-9C3C-624ACD743852}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A422DEAD-1297-4F92-934F-6EC9BB5C7953}
+	EndGlobalSection
+EndGlobal
