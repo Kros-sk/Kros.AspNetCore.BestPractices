@@ -1,0 +1,10 @@
+﻿SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER TABLE [dbo].[ToDos]
+ADD [UserId] [int] NOT NULL;
+
+CREATE INDEX [IX_ToDos_UserId] ON [dbo].[ToDos] ([UserId]);
