@@ -11,7 +11,9 @@ namespace Kros.ToDos.Api.Application.Queries
     /// <summary>
     /// Query handler for ToDo queries.
     /// </summary>
-    public class GetToDosQueryHandler : IRequestHandler<GetAllToDoHeadersQuery, IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>>
+    public class GetToDosQueryHandler
+        : IRequestHandler<GetAllToDoHeadersQuery, IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>>,
+        IRequestHandler<GetToDoQuery, GetToDoQuery.ToDo>
     {
         private readonly IDatabase _database;
 
@@ -25,6 +27,11 @@ namespace Kros.ToDos.Api.Application.Queries
             GetAllToDoHeadersQuery request,
             CancellationToken cancellationToken)
             => Task.FromResult(
-                _database.Query<GetAllToDoHeadersQuery.ToDoHeader>().Where(t => t.UserId == request.UserId).AsEnumerable());
+                _database.Query<GetAllToDoHeadersQuery.ToDoHeader>().Where($"UserId = {request.UserId}").AsEnumerable());
+
+        /// <inheritdoc />
+        public Task<GetToDoQuery.ToDo> Handle(GetToDoQuery request, CancellationToken cancellationToken)
+            => Task.FromResult(
+                _database.Query<GetToDoQuery.ToDo>().First(t => t.Id == request.ToDoId));
     }
 }

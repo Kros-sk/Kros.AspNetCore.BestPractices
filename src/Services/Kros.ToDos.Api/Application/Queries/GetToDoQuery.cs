@@ -1,22 +1,30 @@
 ﻿using Kros.KORM.Metadata.Attribute;
 using MediatR;
+using System;
 using System.Collections.Generic;
 
 namespace Kros.ToDos.Api.Application.Queries
 {
     /// <summary>
-    /// Get all todo headers.
+    /// Get ToDo by Id.
     /// </summary>
-    public class GetAllToDoHeadersQuery : IRequest<IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>>
+    public class GetToDoQuery : IRequest<GetToDoQuery.ToDo>
     {
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="userId">User id.</param>
-        public GetAllToDoHeadersQuery(int userId)
+        /// <param name="todoId">ToDo id.</param>
+        public GetToDoQuery(int todoId, int userId)
         {
+            ToDoId = todoId;
             UserId = userId;
         }
+
+        /// <summary>
+        /// ToDo id.
+        /// </summary>
+        public int ToDoId { get; set; }
 
         /// <summary>
         /// User Id.
@@ -27,7 +35,7 @@ namespace Kros.ToDos.Api.Application.Queries
         /// ToDo Header
         /// </summary>
         [Alias("ToDos")]
-        public class ToDoHeader
+        public class ToDo
         {
             /// <summary>
             /// ToDo Id.
@@ -38,6 +46,21 @@ namespace Kros.ToDos.Api.Application.Queries
             /// ToDo Name.
             /// </summary>
             public string Name { get; set; }
+
+            /// <summary>
+            /// Description.
+            /// </summary>
+            public string Description { get; set; }
+
+            /// <summary>
+            /// Created.
+            /// </summary>
+            public DateTime Created { get; set; }
+
+            /// <summary>
+            /// User Id.
+            /// </summary>
+            public int UserId { get; set; }
         }
     }
 }
