@@ -1,14 +1,14 @@
 ﻿using Kros.KORM.Metadata.Attribute;
+using Kros.ToDos.Api.Application.Queries.PipeLines;
 using MediatR;
 using System;
-using System.Collections.Generic;
 
 namespace Kros.ToDos.Api.Application.Queries
 {
     /// <summary>
     /// Get ToDo by Id.
     /// </summary>
-    public class GetToDoQuery : IRequest<GetToDoQuery.ToDo>
+    public class GetToDoQuery : IRequest<GetToDoQuery.ToDo>, IUserResourceQuery
     {
         /// <summary>
         /// Ctor.
@@ -35,7 +35,7 @@ namespace Kros.ToDos.Api.Application.Queries
         /// ToDo Header
         /// </summary>
         [Alias("ToDos")]
-        public class ToDo
+        public class ToDo : IUserResourceQueryResult
         {
             /// <summary>
             /// ToDo Id.

@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Kros.ToDos.Api.Application.Queries.PipeLines;
+using Kros.ToDos.Api.Application.Queries;
+using Kros.AspNetCore.Middlewares;
 
 namespace Kros.ToDos.Api
 {
@@ -38,6 +41,9 @@ namespace Kros.ToDos.Api
                 .Migrate();
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            //services.AddTransient(typeof(IPipelineBehavior<IUserResourceQuery, IUserResourceQueryResult>), typeof(ValidateUserPermissionPipelineBehavior<IUserResourceQuery, IUserResourceQueryResult>));
+            services.AddTransient(typeof(IPipelineBehavior<GetToDoQuery, GetToDoQuery.ToDo>),
+                typeof(ValidateUserPermissionPipelineBehavior<GetToDoQuery, GetToDoQuery.ToDo>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +60,7 @@ namespace Kros.ToDos.Api
                 app.UseHttpsRedirection();
             }
 
+            app.UseErrorHandling();
             app.UseKormMigrations();
             app.UseMvc();
         }
