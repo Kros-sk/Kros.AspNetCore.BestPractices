@@ -14,11 +14,13 @@ namespace Kros.MediatR.Extensions
     {
         /// <summary>
         /// Scan for MediatR pipeline behaviors 
-        /// when request implement <typeparamref name="TRequest"/> and response implement <typeparamref name="TResponse"/>.
+        /// which request implement <typeparamref name="TRequest"/> and response implement <typeparamref name="TResponse"/>.
         /// </summary>
         /// <typeparam name="TRequest">Request type.</typeparam>
         /// <typeparam name="TResponse">Response type.</typeparam>
         /// <param name="services">Service container.</param>
+        /// <exception cref="InvalidOperationException">When number of implementation 
+        /// <typeparamref name="TRequest"/> and <typeparamref name="TResponse"/> are different.</exception>
         public static IServiceCollection AddPipelineBehaviorsForRequest<TRequest, TResponse>(this IServiceCollection services)
         {
             var requestType = typeof(TRequest);

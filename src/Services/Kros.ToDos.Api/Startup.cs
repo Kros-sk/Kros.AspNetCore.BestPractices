@@ -7,11 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Kros.ToDos.Api.Application.Queries.PipeLines;
-using Kros.ToDos.Api.Application.Queries;
 using Kros.AspNetCore.Middlewares;
-using System.Linq;
-using System.Collections.Generic;
-using System;
 using Kros.MediatR.Extensions;
 
 namespace Kros.ToDos.Api
