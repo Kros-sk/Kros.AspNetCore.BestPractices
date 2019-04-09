@@ -9,6 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Kros.ToDos.Api.Application.Queries.PipeLines;
 using Kros.ToDos.Api.Application.Queries;
 using Kros.AspNetCore.Middlewares;
+using System.Linq;
+using System.Collections.Generic;
+using System;
+using Kros.MediatR.Extensions;
 
 namespace Kros.ToDos.Api
 {
@@ -41,9 +45,7 @@ namespace Kros.ToDos.Api
                 .Migrate();
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            //services.AddTransient(typeof(IPipelineBehavior<IUserResourceQuery, IUserResourceQueryResult>), typeof(ValidateUserPermissionPipelineBehavior<IUserResourceQuery, IUserResourceQueryResult>));
-            services.AddTransient(typeof(IPipelineBehavior<GetToDoQuery, GetToDoQuery.ToDo>),
-                typeof(ValidateUserPermissionPipelineBehavior<GetToDoQuery, GetToDoQuery.ToDo>));
+            services.AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

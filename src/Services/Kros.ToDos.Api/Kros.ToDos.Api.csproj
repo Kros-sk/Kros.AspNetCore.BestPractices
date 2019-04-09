@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Kros.AspNetCore\Kros.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\Lib\Kros.MediatR.Extensions\Kros.MediatR.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

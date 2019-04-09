@@ -3,6 +3,7 @@ using Kros.AspNetCore.Extensions;
 using Kros.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,14 +16,16 @@ namespace Kros.AspNetCore.Middlewares
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ErrorHandlingMiddleware> _logger;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="next">Delegate for next middleware.</param>
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
         {
             _next = Check.NotNull(next, nameof(next));
+            _logger = Check.NotNull(logger, nameof(logger));
         }
 
         /// <summary>
@@ -37,7 +40,7 @@ namespace Kros.AspNetCore.Middlewares
             }
             catch (ResourceIsForbiddenException ex)
             {
-                await SetResponseFromException(context, ex, HttpStatusCode.Forbidden);
+                SetResponseType(context, ex, HttpStatusCode.Forbidden);
             }            
             //catch (NotFoundException ex)
             //{
@@ -45,7 +48,7 @@ namespace Kros.AspNetCore.Middlewares
             //}
             catch (TimeoutException ex)
             {
-                await SetResponseFromException(context, ex, HttpStatusCode.RequestTimeout);
+                SetResponseType(context, ex, HttpStatusCode.RequestTimeout);
             }
             catch (Exception)
             {
@@ -53,12 +56,12 @@ namespace Kros.AspNetCore.Middlewares
             }
         }
 
-        private static async Task SetResponseFromException(HttpContext context, Exception ex, HttpStatusCode statusCode)
+        private void SetResponseType(HttpContext context, Exception ex, HttpStatusCode statusCode)
         {
             context.Response.ClearExceptCorsHeaders();
             context.Response.StatusCode = (int)statusCode;
 
-            await context.Response.WriteAsync(ex.Message);
+            _logger.LogError(ex, ex.Message);
         }
     }
 
@@ -72,8 +75,6 @@ namespace Kros.AspNetCore.Middlewares
         /// </summary>
         /// <param name="app">Application builder.</param>
         public static void UseErrorHandling(this IApplicationBuilder app)
-        {
-            app.UseMiddleware<ErrorHandlingMiddleware>();
-        }
+            => app.UseMiddleware<ErrorHandlingMiddleware>();
     }
 }
