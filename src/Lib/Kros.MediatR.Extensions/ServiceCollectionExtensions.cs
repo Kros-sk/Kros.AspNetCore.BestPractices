@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Kros.MediatR.PostProcessor;
+using MediatR;
+using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -66,5 +68,12 @@ namespace Kros.MediatR.Extensions
 
             return (requests, responses);
         }
+
+        /// <summary>
+        /// Add <see cref="NullCheckPostProcessor{TRequest, TResponse}"/> for MediatR.
+        /// </summary>
+        /// <param name="services">Service container.</param>
+        public static IServiceCollection AddMediatRNullCheckPostProcessor(this IServiceCollection services)
+            => services.AddTransient(typeof(IRequestPostProcessor<,>), typeof(NullCheckPostProcessor<,>));
     }
 }

@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Kros.ToDos.Api.Application.Queries.PipeLines;
 using Kros.AspNetCore.Middlewares;
 using Kros.MediatR.Extensions;
+using MediatR.Pipeline;
+using System.Threading.Tasks;
 
 namespace Kros.ToDos.Api
 {
@@ -42,6 +44,7 @@ namespace Kros.ToDos.Api
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>();
+            services.AddMediatRNullCheckPostProcessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

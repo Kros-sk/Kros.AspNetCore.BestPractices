@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using System;
+using MediatR.Pipeline;
+using Kros.MediatR.PostProcessor;
 
 namespace Kros.MediatR.Extensions.Tests
 {
@@ -16,9 +18,9 @@ namespace Kros.MediatR.Extensions.Tests
 
         public interface IFooResponse { }
 
-        public class FooRequest: IRequest<FooRequest.FooResponse>, IFooRequest
+        public class FooRequest : IRequest<FooRequest.FooResponse>, IFooRequest
         {
-            public class FooResponse: IFooResponse
+            public class FooResponse : IFooResponse
             {
             }
         }
@@ -32,7 +34,7 @@ namespace Kros.MediatR.Extensions.Tests
                 CancellationToken cancellationToken,
                 RequestHandlerDelegate<TResponse> next)
             {
-                var result = await next();               
+                var result = await next();
                 return result;
             }
         }
@@ -96,16 +98,29 @@ namespace Kros.MediatR.Extensions.Tests
 
         #endregion
 
+        public IServiceCollection Services { get; } = new ServiceCollection();
+
+        private ServiceProvider _provider;
+
+        public ServiceProvider Provider
+        {
+            get
+            {
+                if (_provider == null)
+                {
+                    _provider = Services.BuildServiceProvider();
+                }
+
+                return _provider;
+            }
+        }
+
         [Fact]
         public void RegisterPipelineBehaviorsForRequestType()
         {
-            var services = new ServiceCollection();
+            Services.AddPipelineBehaviorsForRequest<IFooRequest, IFooResponse>();
 
-            services.AddPipelineBehaviorsForRequest<IFooRequest, IFooResponse>();
-
-            var provider = services.BuildServiceProvider();
-
-            var behavior = provider.GetRequiredService<IPipelineBehavior<FooRequest, FooRequest.FooResponse>>();
+            var behavior = Provider.GetRequiredService<IPipelineBehavior<FooRequest, FooRequest.FooResponse>>();
 
             behavior.Should().BeAssignableTo<FooPipelineBehavior<FooRequest, FooRequest.FooResponse>>();
         }
@@ -113,27 +128,32 @@ namespace Kros.MediatR.Extensions.Tests
         [Fact]
         public void RegisterPipelineBehaviorsForRequestTypeWhenMoreRequestsImplementInterface()
         {
-            var services = new ServiceCollection();
+            Services.AddPipelineBehaviorsForRequest<IBarRequest, IBarResponse>();
 
-            services.AddPipelineBehaviorsForRequest<IBarRequest, IBarResponse>();
-
-            var provider = services.BuildServiceProvider();
-
-            var behavior = provider.GetRequiredService<IPipelineBehavior<BarRequest, BarRequest.BarResponse>>();
+            var behavior = Provider.GetRequiredService<IPipelineBehavior<BarRequest, BarRequest.BarResponse>>();
             behavior.Should().BeAssignableTo<BarPipelineBehavior<BarRequest, BarRequest.BarResponse>>();
 
-            var behaviorBar1 = provider.GetRequiredService<IPipelineBehavior<Bar1Request, Bar1Request.BarResponse>>();
+            var behaviorBar1 = Provider.GetRequiredService<IPipelineBehavior<Bar1Request, Bar1Request.BarResponse>>();
             behaviorBar1.Should().BeAssignableTo<BarPipelineBehavior<Bar1Request, Bar1Request.BarResponse>>();
         }
 
         [Fact]
         public void ThrowExceptionWhenNumberOfImplementationsAreDifferent()
         {
-            var services = new ServiceCollection();
-
-            Action action = () =>  services.AddPipelineBehaviorsForRequest<ITestRequest, ITestResponse>();
+            Action action = () => Services.AddPipelineBehaviorsForRequest<ITestRequest, ITestResponse>();
 
             action.Should().Throw<InvalidOperationException>();
         }
+
+        [Fact]
+        public void RegisterNullCheckPostProcess()
+        {
+            Services.AddMediatRNullCheckPostProcessor();
+
+            var behavior = Provider.GetRequiredService<IRequestPostProcessor<BarRequest, BarRequest.BarResponse>>();
+
+            behavior.Should().BeAssignableTo<NullCheckPostProcessor<BarRequest, BarRequest.BarResponse>>();
+        }
+
     }
 }

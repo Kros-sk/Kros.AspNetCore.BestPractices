@@ -42,10 +42,10 @@ namespace Kros.AspNetCore.Middlewares
             {
                 SetResponseType(context, ex, HttpStatusCode.Forbidden);
             }            
-            //catch (NotFoundException ex)
-            //{
-            //    await SetResponseFromException(context, ex, HttpStatusCode.NotFound);
-            //}
+            catch (NotFoundException ex)
+            {
+                SetResponseType(context, ex, HttpStatusCode.NotFound);
+            }
             catch (TimeoutException ex)
             {
                 SetResponseType(context, ex, HttpStatusCode.RequestTimeout);

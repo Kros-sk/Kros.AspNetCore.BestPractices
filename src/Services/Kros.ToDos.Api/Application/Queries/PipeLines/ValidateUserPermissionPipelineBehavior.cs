@@ -24,7 +24,7 @@ namespace Kros.ToDos.Api.Application.Queries.PipeLines
         {
             var result = await next();
 
-            if (result.UserId != request.UserId)
+            if (result != null && result.UserId != request.UserId)
             {
                 throw new ResourceIsForbiddenException (String.Format(Properties.Resources.ForbiddenMessage,
                     request.UserId, typeof(TResponse), result.UserId));
