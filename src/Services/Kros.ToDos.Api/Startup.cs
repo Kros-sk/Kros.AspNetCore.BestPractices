@@ -11,6 +11,9 @@ using Kros.AspNetCore.Middlewares;
 using Kros.MediatR.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
+using System;
+using FluentValidation.AspNetCore;
+using Kros.ToDos.Api.Application.Commands;
 
 namespace Kros.ToDos.Api
 {
@@ -44,10 +47,16 @@ namespace Kros.ToDos.Api
         /// Configure IoC container.
         /// </summary>
         /// <param name="services">Service.</param>
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(o =>
+                {
+                    o.RegisterValidatorsFromAssemblyContaining<CreateToDoCommandValidator>();
+                    o.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                });
+
             services.AddKorm(Configuration)
                 .InitDatabaseForIdGenerator()
                 .AddKormMigrations(Configuration, o =>
@@ -64,12 +73,26 @@ namespace Kros.ToDos.Api
             {
                 c.SwaggerDoc("v1", new Info { Title = "ToDo API", Version = "v1" });
                 var filePath = Path.Combine(System.AppContext.BaseDirectory, "Kros.ToDos.Api.xml");
+                c.CustomSchemaIds(schemaIdStrategy);
 
                 if (File.Exists(filePath))
                 {
                     c.IncludeXmlComments(filePath);
                 }
             });
+
+        }
+
+        private static string schemaIdStrategy(Type currentClass)
+        {
+            string returnedValue = currentClass.Name;
+            if (returnedValue.StartsWith("Create") && returnedValue.EndsWith("Command"))
+                returnedValue = returnedValue
+                    .Replace("Create", string.Empty)
+                    .Replace("Command", string.Empty)
+                    + "Model";
+
+            return returnedValue;
         }
 
         /// <summary>
