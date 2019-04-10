@@ -17,6 +17,10 @@ namespace Kros.ToDos.Api.Application.Queries
     {
         private readonly IDatabase _database;
 
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="database">Database.</param>
         public GetToDosQueryHandler(IDatabase database)
         {
             _database = Check.NotNull(database, nameof(database));

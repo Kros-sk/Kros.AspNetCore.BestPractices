@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Kros.ToDos.Api.Controllers
 {
+    /// <summary>
+    /// ToDos controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ToDosController : ControllerBase
@@ -35,8 +38,11 @@ namespace Kros.ToDos.Api.Controllers
         /// </summary>
         /// <response code="200">Ok.</response>
         /// <response code="403">Forbidden when user don't have permission for ToDo with <paramref name="id"/>.</response>
+        /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(200, Type = typeof(GetToDoQuery.ToDo))]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(404)]
         public async Task<GetToDoQuery.ToDo> Get(int id)
             => await _mediator.Send(new GetToDoQuery(id, 1));
     }

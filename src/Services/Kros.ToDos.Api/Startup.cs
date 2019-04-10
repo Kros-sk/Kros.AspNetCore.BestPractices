@@ -9,13 +9,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Kros.ToDos.Api.Application.Queries.PipeLines;
 using Kros.AspNetCore.Middlewares;
 using Kros.MediatR.Extensions;
-using MediatR.Pipeline;
-using System.Threading.Tasks;
+using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace Kros.ToDos.Api
 {
+    /// <summary>
+    /// Startup.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="env">Environment.</param>
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -28,8 +35,15 @@ namespace Kros.ToDos.Api
             Configuration = builder.Build();
         }
 
+        /// <summary>
+        /// Configuration.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Configure IoC container.
+        /// </summary>
+        /// <param name="services">Service.</param>
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -45,9 +59,24 @@ namespace Kros.ToDos.Api
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>();
             services.AddMediatRNullCheckPostProcessor();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "ToDo API", Version = "v1" });
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "Kros.ToDos.Api.xml");
+
+                if (File.Exists(filePath))
+                {
+                    c.IncludeXmlComments(filePath);
+                }
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// configure web api pipeline.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        /// <param name="env">Environment</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -64,6 +93,12 @@ namespace Kros.ToDos.Api
             app.UseErrorHandling();
             app.UseKormMigrations();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDos API V1");
+            });
         }
     }
 }
