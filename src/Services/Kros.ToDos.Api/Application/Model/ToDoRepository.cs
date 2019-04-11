@@ -1,5 +1,6 @@
 ﻿using Kros.KORM;
 using Kros.Utils;
+using System;
 using System.Threading.Tasks;
 
 namespace Kros.ToDos.Api.Application.Model
@@ -25,7 +26,7 @@ namespace Kros.ToDos.Api.Application.Model
         {
             var todos = _database.Query<ToDo>().AsDbSet();
 
-            toDo.Created = DateTimeProvider.Now;
+            toDo.Created = DateTimeOffset.Now;
             todos.Add(toDo);
 
             await todos.CommitChangesAsync();

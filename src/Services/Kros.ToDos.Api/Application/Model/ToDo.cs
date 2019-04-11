@@ -34,6 +34,6 @@ namespace Kros.ToDos.Api.Application.Model
         /// <summary>
         /// Created?
         /// </summary>
-        public DateTime Created { get; set; }
+        public DateTimeOffset Created { get; set; }
     }
 }

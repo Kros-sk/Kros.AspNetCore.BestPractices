@@ -12,6 +12,7 @@
   <ItemGroup>
     <None Remove="Infrastructure\SqlScripts\20190401001_AddToDosTable.sql" />
     <None Remove="Infrastructure\SqlScripts\20190403001_AddUserIdColumn.sql" />
+    <None Remove="Infrastructure\SqlScripts\20190411001_ChangeDateTimeToDateTimeOffset.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +20,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Infrastructure\SqlScripts\20190403001_AddUserIdColumn.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Infrastructure\SqlScripts\20190411001_ChangeDateTimeToDateTimeOffset.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Infrastructure\SqlScripts\20190403002_InserDummyToDos.sql">
