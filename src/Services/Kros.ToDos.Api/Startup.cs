@@ -68,6 +68,10 @@ namespace Kros.ToDos.Api
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>();
             services.AddMediatRNullCheckPostProcessor();
+            services.Scan(scan =>
+                scan.FromCallingAssembly()
+                .AddClasses()
+                .AsMatchingInterface());
 
             services.AddSwaggerGen(c =>
             {
