@@ -36,7 +36,12 @@ namespace Kros.ToDos.Api.Application.Commands.PipeLines
         {
             var toDo = _database.Query<ToDo>().FirstOrDefault(t => t.Id == request.Id);
 
-            if (toDo != null && toDo.UserId != request.UserId)
+            if (toDo == null)
+            {
+                throw new NotFoundException();
+            }
+
+            if (toDo.UserId != request.UserId)
             {
                 throw new ResourceIsForbiddenException(String.Format(Properties.Resources.ForbiddenMessage,
                     request.UserId, typeof(ToDo), request.Id));
