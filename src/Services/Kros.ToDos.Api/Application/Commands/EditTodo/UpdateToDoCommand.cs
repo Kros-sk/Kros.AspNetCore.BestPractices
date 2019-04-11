@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Kros.ToDos.Api.Application.Commands.PipeLines;
+using MediatR;
 using Newtonsoft.Json;
 
 namespace Kros.ToDos.Api.Application.Commands
@@ -6,7 +7,7 @@ namespace Kros.ToDos.Api.Application.Commands
     /// <summary>
     /// Update ToDo command.
     /// </summary>
-    public class UpdateToDoCommand : IRequest
+    public class UpdateToDoCommand : IRequest, IUserResourceCommand
     {
         /// <summary>
         /// Id.

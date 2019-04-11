@@ -13,7 +13,7 @@ namespace Kros.ToDos.Api.Application.Queries.PipeLines
     /// <typeparam name="TResponse">Type of response.</typeparam>
     public class ValidateUserPermissionPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IUserResourceQuery
-        where TResponse: IUserResourceQueryResult
+        where TResponse : IUserResourceQueryResult
     {
 
         /// <inheritdoc />
@@ -26,7 +26,7 @@ namespace Kros.ToDos.Api.Application.Queries.PipeLines
 
             if (result != null && result.UserId != request.UserId)
             {
-                throw new ResourceIsForbiddenException (String.Format(Properties.Resources.ForbiddenMessage,
+                throw new ResourceIsForbiddenException(String.Format(Properties.Resources.ForbiddenMessage,
                     request.UserId, typeof(TResponse), result.UserId));
             }
 

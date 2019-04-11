@@ -35,8 +35,8 @@ namespace Kros.MediatR.Extensions
 
             var pipelineBehaviours = Assembly.GetAssembly(requestType).GetTypes()
                 .Where(t
-                => t.GetInterface(pipeLineType.Name) != null
-                && t.GetGenericArguments()[0].GetInterface(requestType.Name) != null);
+                    => t.GetInterface(pipeLineType.Name) != null
+                    && t.GetGenericArguments()[0].GetInterface(requestType.Name) != null);
 
             foreach (var behavior in pipelineBehaviours)
             {
@@ -49,14 +49,41 @@ namespace Kros.MediatR.Extensions
             return services;
         }
 
-        private static (IList<Type>, IList<Type>) GetTypes(Type requestType, Type responseType)
+        /// <summary>
+        /// Scan for MediatR pipeline behaviors 
+        /// which request implement <typeparamref name="TRequest"/>.
+        /// </summary>
+        /// <typeparam name="TRequest">Request type.</typeparam>
+        /// <param name="services">Service container.</param>
+        /// <exception cref="InvalidOperationException">When number of implementation 
+        /// <typeparamref name="TRequest"/> and <typeparamref name="TResponse"/> are different.</exception>
+        public static IServiceCollection AddPipelineBehaviorsForRequest<TRequest>(this IServiceCollection services)
         {
-            IList<Type> GetTypes(Type type)
-                => Assembly.GetAssembly(requestType)
-                .GetTypes()
-                .Where(t => !t.IsInterface && !t.IsAbstract & type.IsAssignableFrom(t))
-                .ToList();
+            var requestType = typeof(TRequest);
+            var pipeLineType = typeof(IPipelineBehavior<,>);
+            var requests = GetTypes(requestType);
+            var unitType = typeof(Unit);
 
+            var pipelineBehaviours = Assembly.GetAssembly(requestType).GetTypes()
+                .Where(t
+                    => t.GetInterface(pipeLineType.Name) != null
+                    && t.GetGenericArguments()[0].GetInterface(requestType.Name) != null);
+
+            foreach (var behavior in pipelineBehaviours)
+            {
+                for (int i = 0; i < requests.Count; i++)
+                {
+                    services.AddTransient(
+                        pipeLineType.MakeGenericType(requests[i], unitType), 
+                        behavior.MakeGenericType(requests[i]));
+                }
+            }
+
+            return services;
+        }
+
+        private static (IList<Type>, IList<Type>) GetTypes(Type requestType, Type responseType)
+        {           
             var requests = GetTypes(requestType);
             var responses = GetTypes(responseType);
 
@@ -68,6 +95,12 @@ namespace Kros.MediatR.Extensions
 
             return (requests, responses);
         }
+
+        private static IList<Type> GetTypes(Type type)
+            => Assembly.GetAssembly(type)
+            .GetTypes()
+            .Where(t => !t.IsInterface && !t.IsAbstract & type.IsAssignableFrom(t))
+            .ToList();
 
         /// <summary>
         /// Add <see cref="NullCheckPostProcessor{TRequest, TResponse}"/> for MediatR.

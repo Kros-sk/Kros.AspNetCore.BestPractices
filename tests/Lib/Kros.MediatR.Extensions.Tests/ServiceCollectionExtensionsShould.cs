@@ -96,6 +96,25 @@ namespace Kros.MediatR.Extensions.Tests
             }
         }
 
+        public interface ICommandRequest { }
+
+        public class TestCommand : IRequest, ICommandRequest
+        {
+        }
+
+        public class CommandPipelineBehavior<TRequest> : IPipelineBehavior<TRequest, Unit>
+            where TRequest : ICommandRequest
+        {
+            public async Task<Unit> Handle(
+                TRequest request,
+                CancellationToken cancellationToken,
+                RequestHandlerDelegate<Unit> next)
+            {
+                var result = await next();
+                return result;
+            }
+        }
+
         #endregion
 
         public IServiceCollection Services { get; } = new ServiceCollection();
@@ -155,5 +174,13 @@ namespace Kros.MediatR.Extensions.Tests
             behavior.Should().BeAssignableTo<NullCheckPostProcessor<BarRequest, BarRequest.BarResponse>>();
         }
 
+        [Fact]
+        public void RegisterBehaviorsPipelineForCommand()
+        {
+            Services.AddPipelineBehaviorsForRequest<ICommandRequest>();
+
+            var behavior = Provider.GetRequiredService<IPipelineBehavior<TestCommand, Unit>>();
+            behavior.Should().BeAssignableTo<CommandPipelineBehavior<TestCommand>>();            
+        }
     }
 }

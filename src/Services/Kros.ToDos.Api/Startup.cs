@@ -14,6 +14,7 @@ using System.IO;
 using System;
 using FluentValidation.AspNetCore;
 using Kros.ToDos.Api.Application.Commands;
+using Kros.ToDos.Api.Application.Commands.PipeLines;
 
 namespace Kros.ToDos.Api
 {
@@ -67,6 +68,8 @@ namespace Kros.ToDos.Api
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>();
+            services.AddPipelineBehaviorsForRequest<IUserResourceCommand>();
+
             services.AddMediatRNullCheckPostProcessor();
             services.Scan(scan =>
                 scan.FromCallingAssembly()
@@ -76,8 +79,7 @@ namespace Kros.ToDos.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "ToDo API", Version = "v1" });
-                var filePath = Path.Combine(System.AppContext.BaseDirectory, "Kros.ToDos.Api.xml");
-                c.CustomSchemaIds(schemaIdStrategy);
+                var filePath = Path.Combine(AppContext.BaseDirectory, "Kros.ToDos.Api.xml");
 
                 if (File.Exists(filePath))
                 {
@@ -85,18 +87,6 @@ namespace Kros.ToDos.Api
                 }
             });
 
-        }
-
-        private static string schemaIdStrategy(Type currentClass)
-        {
-            string returnedValue = currentClass.Name;
-            if (returnedValue.StartsWith("Create") && returnedValue.EndsWith("Command"))
-                returnedValue = returnedValue
-                    .Replace("Create", string.Empty)
-                    .Replace("Command", string.Empty)
-                    + "Model";
-
-            return returnedValue;
         }
 
         /// <summary>
