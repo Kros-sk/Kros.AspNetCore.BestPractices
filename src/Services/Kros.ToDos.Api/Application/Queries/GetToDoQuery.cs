@@ -55,7 +55,12 @@ namespace Kros.ToDos.Api.Application.Queries
             /// <summary>
             /// Created.
             /// </summary>
-            public DateTime Created { get; set; }
+            public DateTimeOffset Created { get; set; }
+
+            /// <summary>
+            /// Date time of last change.
+            /// </summary>
+            public DateTimeOffset LastChange { get; set; }
 
             /// <summary>
             /// User Id.

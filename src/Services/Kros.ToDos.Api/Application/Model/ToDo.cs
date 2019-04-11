@@ -32,8 +32,13 @@ namespace Kros.ToDos.Api.Application.Model
         public int UserId { get; set; }
 
         /// <summary>
-        /// Created?
+        /// Created.
         /// </summary>
         public DateTimeOffset Created { get; set; }
+
+        /// <summary>
+        /// Date time of last change.
+        /// </summary>
+        public DateTimeOffset LastChange { get; set; }
     }
 }

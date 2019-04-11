@@ -1,0 +1,14 @@
+﻿SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER TABLE [dbo].[ToDos]
+ADD [LastChange] [DATETIMEOFFSET];
+
+GO
+
+UPDATE [ToDos] SET [LastChange] = [Created]
+
+GO

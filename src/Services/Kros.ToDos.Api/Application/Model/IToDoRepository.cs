@@ -12,5 +12,11 @@ namespace Kros.ToDos.Api.Application.Model
         /// </summary>
         /// <param name="toDo">Creating todo.</param>
         Task CreateToDoAsync(ToDo toDo);
+
+        /// <summary>
+        /// Update todo in repository.
+        /// </summary>
+        /// <param name="toDo">Updating todo.</param>
+        Task UpdateToDoAsync(ToDo toDo);
     }
 }

@@ -45,11 +45,28 @@ namespace Kros.ToDos.Api.Controllers
         /// </returns>
         [HttpPost]
         [ProducesResponseType(201)]
-        public async Task<ActionResult> CreateToDo([FromBody] CreateToDoCommand command)
+        public async Task<ActionResult> CreateToDo(CreateToDoCommand command)
         {
             command.UserId = 1;
 
             return await this.SendCreateCommand(command, nameof(GetToDo));
+        }
+
+        /// <summary>
+        /// Update ToDo.
+        /// </summary>
+        /// <param name="command">Data for creating todo.</param>
+        /// <param name="id">ToDo id.</param>
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult> UpdateToDo(int id, UpdateToDoCommand command)
+        {
+            command.UserId = 1;
+            command.Id = id;
+
+            await this.SendRequest(command);
+
+            return Ok();
         }
     }
 }
