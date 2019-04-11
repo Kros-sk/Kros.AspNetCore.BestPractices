@@ -12,8 +12,8 @@ namespace Kros.ToDos.Api.Application.Commands
         /// </summary>
         public CreateToDoCommandValidator()
         {
-            RuleFor(x => x.Description).MaximumLength(255).NotEmpty();
-            RuleFor(x => x.Name).MaximumLength(50).NotEmpty();
+            RuleFor(x => x.Description).DescriptionValidation();
+            RuleFor(x => x.Name).NameValidation();
         }
     }
 }
