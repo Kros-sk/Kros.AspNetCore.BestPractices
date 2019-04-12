@@ -54,7 +54,7 @@ namespace Kros.ToDos.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(o =>
                 {
-                    o.RegisterValidatorsFromAssemblyContaining<CreateToDoCommandValidator>();
+                    o.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
                     o.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                 });
 
