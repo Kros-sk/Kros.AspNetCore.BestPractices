@@ -48,6 +48,15 @@ namespace Kros.ToDos.Api.Application.Model
             await todos.CommitChangesAsync();
         }
 
+        /// <inheritdoc />
+        public async Task DeleteToDoAsync(int id)
+        {
+            var todos = _database.Query<ToDo>().AsDbSet();
+            todos.Delete(new ToDo() { Id = id});
+
+            await todos.CommitChangesAsync();
+        }
+
         //Dočasne pokia KORM nevie injektovať Created a LastChange
         private static Lazy<string[]> _editColumns
             = new Lazy<string[]>(()

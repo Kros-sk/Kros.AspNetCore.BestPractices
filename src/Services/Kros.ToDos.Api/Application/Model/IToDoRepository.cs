@@ -18,5 +18,11 @@ namespace Kros.ToDos.Api.Application.Model
         /// </summary>
         /// <param name="toDo">Updating todo.</param>
         Task UpdateToDoAsync(ToDo toDo);
+
+        /// <summary>
+        /// Delete ToDo  by <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">ToDo id.</param>
+        Task DeleteToDoAsync(int id);
     }
 }

@@ -68,5 +68,18 @@ namespace Kros.ToDos.Api.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Delete ToDo.
+        /// </summary>
+        /// <param name="id">ToDo id.</param>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult> DeleteToDo(int id)
+        {
+            await this.SendRequest(new DeleteToDoCommand(id, 1));
+
+            return Ok();
+        }
     }
 }
