@@ -8,7 +8,6 @@ namespace Kros.AspNetCore.Tests.Extensions
 {
     public class ServiceCollectionExtensionsShould
     {
-
         #region Test class
 
         class TestOptions
