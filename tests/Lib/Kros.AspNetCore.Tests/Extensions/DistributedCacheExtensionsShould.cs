@@ -114,7 +114,7 @@ namespace Kros.AspNetCore.Tests.Extensions
             public Task SetAsync(string key,
                 byte[] value,
                 DistributedCacheEntryOptions options,
-                CancellationToken token = default)
+                CancellationToken token = default(CancellationToken))
             {
                 Set(key, value, options);
 
