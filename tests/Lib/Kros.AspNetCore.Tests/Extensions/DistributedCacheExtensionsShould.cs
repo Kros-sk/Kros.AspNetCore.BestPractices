@@ -58,6 +58,26 @@ namespace Kros.AspNetCore.Tests.Extensions
             @string.Should().BeNull();
         }
 
+        [Fact]
+        public async Task GetAndSetIfDoNotExistInCache()
+        {
+            IDistributedCache cache = new MemoryDistributedCache();
+            DistributedCacheEntryOptions options = new DistributedCacheEntryOptions();
+            var callCount = 0;
+            Func<Foo> func = () =>
+            {
+                callCount++;
+                return new Foo() { Value = 2 };
+            };
+
+            var foo = await cache.GetAndSetAsync<Foo>("foo", func, options);
+            foo.Value.Should().Be(2);
+
+            var foo2 = await cache.GetAndSetAsync<Foo>("foo", func, options);
+            foo2.Should().BeEquivalentTo(foo);
+            callCount.Should().Be(1);
+        }
+
         internal class MemoryDistributedCache : IDistributedCache
         {
             private Dictionary<string, byte[]> _cache = new Dictionary<string, byte[]>();
