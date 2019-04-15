@@ -13,8 +13,9 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 using System;
 using FluentValidation.AspNetCore;
-using Kros.ToDos.Api.Application.Commands;
 using Kros.ToDos.Api.Application.Commands.PipeLines;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Kros.ToDos.Api
 {
@@ -37,12 +38,18 @@ namespace Kros.ToDos.Api
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
+            Environment = env;
         }
 
         /// <summary>
         /// Configuration.
         /// </summary>
         public IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Environment.
+        /// </summary>
+        public IHostingEnvironment Environment { get; }
 
         /// <summary>
         /// Configure IoC container.
@@ -54,7 +61,7 @@ namespace Kros.ToDos.Api
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(o =>
                 {
-                    o.RegisterValidatorsFromAssemblyContaining<CreateToDoCommandValidator>();
+                    o.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
                     o.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                 });
 
@@ -87,6 +94,20 @@ namespace Kros.ToDos.Api
                 }
             });
 
+            services.ConfigureOptions<DistributedCacheEntryOptions>(Configuration);
+            if (Environment.IsDevelopment())
+            {
+                services.AddDistributedMemoryCache();
+            }
+            else
+            {
+                var redisOptions = Configuration.Get<RedisCacheOptions>();
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = redisOptions.Configuration;
+                    options.InstanceName = redisOptions.InstanceName;
+                });
+            }
         }
 
         /// <summary>
