@@ -19,11 +19,12 @@ namespace Microsoft.Extensions.Caching.Distributed
         /// <param name="value">The data to store in the cache.</param>
         /// <param name="options">The cache options for the entry.</param>
         /// <param name="token">Optional. A System.Threading.CancellationToken to cancel the operation.</param>
-        public async static Task SetAsync<T>(this IDistributedCache distributedCache,
+        public async static Task SetAsync<T>(
+            this IDistributedCache distributedCache,
             string key,
             T value,
             DistributedCacheEntryOptions options,
-            CancellationToken token = default)
+            CancellationToken token = default(CancellationToken))
            => await distributedCache.SetStringAsync(key, JsonConvert.SerializeObject(value), options, token);
 
         /// <summary>
@@ -37,11 +38,11 @@ namespace Microsoft.Extensions.Caching.Distributed
         public async static Task<T> GetAsync<T>(
             this IDistributedCache distributedCache,
             string key,
-            CancellationToken token = default)
+            CancellationToken token = default(CancellationToken))
         {
             var result = await distributedCache.GetStringAsync(key, token);
 
-            return String.IsNullOrWhiteSpace(result) ? default : JsonConvert.DeserializeObject<T>(result);
+            return String.IsNullOrWhiteSpace(result) ? default(T) : JsonConvert.DeserializeObject<T>(result);
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace Microsoft.Extensions.Caching.Distributed
             string key,
             Func<T> valueFactory,
             DistributedCacheEntryOptions options,
-            CancellationToken token = default)
+            CancellationToken token = default(CancellationToken))
         {
             var result = await distributedCache.GetAsync<T>(key, token);
 
