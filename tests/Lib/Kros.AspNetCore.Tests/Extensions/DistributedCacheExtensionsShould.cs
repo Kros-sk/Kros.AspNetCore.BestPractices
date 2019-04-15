@@ -85,7 +85,7 @@ namespace Kros.AspNetCore.Tests.Extensions
             public byte[] Get(string key)
                 => _cache.TryGetValue(key, out var value) ? value : null;
 
-            public Task<byte[]> GetAsync(string key, CancellationToken token = default)
+            public Task<byte[]> GetAsync(string key, CancellationToken token = default(CancellationToken))
                 => Task.FromResult(Get(key));
 
             public void Refresh(string key)
@@ -93,7 +93,7 @@ namespace Kros.AspNetCore.Tests.Extensions
                 throw new NotImplementedException();
             }
 
-            public Task RefreshAsync(string key, CancellationToken token = default)
+            public Task RefreshAsync(string key, CancellationToken token = default(CancellationToken))
             {
                 throw new NotImplementedException();
             }
@@ -103,7 +103,7 @@ namespace Kros.AspNetCore.Tests.Extensions
                 throw new NotImplementedException();
             }
 
-            public Task RemoveAsync(string key, CancellationToken token = default)
+            public Task RemoveAsync(string key, CancellationToken token = default(CancellationToken))
             {
                 throw new NotImplementedException();
             }
