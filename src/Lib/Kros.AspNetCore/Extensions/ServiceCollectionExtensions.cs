@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Kros.AspNetCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -18,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection ConfigureOptions<TOptions>(
             this IServiceCollection services,
             IConfiguration configuration) where TOptions : class
-            => ConfigureOptions<TOptions>(services, configuration, GetSectionName<TOptions>());
+            => ConfigureOptions<TOptions>(services, configuration, Helpers.GetSectionName<TOptions>());
 
         /// <summary>
         /// Configure options of type <typeparamref name="TOptions"/> and binds it to section <paramref name="sectionName"/>
@@ -33,19 +34,6 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services,
             IConfiguration configuration,
             string sectionName) where TOptions : class
-            => services.Configure<TOptions>(options => configuration.GetSection(sectionName).Bind(options));
-
-        private static string GetSectionName<TOptions>() where TOptions : class
-        {
-            const string uselessSuffix = "Options";
-            var sectionName = typeof(TOptions).Name;
-
-            if (sectionName.EndsWith(uselessSuffix))
-            {
-                return sectionName.Substring(0, sectionName.Length - uselessSuffix.Length);
-            }
-
-            return sectionName;
-        }
+            => services.Configure<TOptions>(options => configuration.GetSection(sectionName).Bind(options));       
     }
 }

@@ -58,10 +58,10 @@ namespace Kros.AspNetCore.Middlewares
 
         private void SetResponseType(HttpContext context, Exception ex, HttpStatusCode statusCode)
         {
+            _logger.LogError(ex, ex.Message);
+
             context.Response.ClearExceptCorsHeaders();
             context.Response.StatusCode = (int)statusCode;
-
-            _logger.LogError(ex, ex.Message);
         }
     }
 
