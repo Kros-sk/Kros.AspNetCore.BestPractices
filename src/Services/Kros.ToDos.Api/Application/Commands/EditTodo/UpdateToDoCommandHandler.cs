@@ -1,4 +1,5 @@
 ﻿using Kros.ToDos.Api.Application.Model;
+using Kros.ToDos.Api.Application.Notifications;
 using Kros.Utils;
 using Mapster;
 using MediatR;
@@ -13,14 +14,17 @@ namespace Kros.ToDos.Api.Application.Commands
     public class UpdateToDoCommandHandler: IRequestHandler<UpdateToDoCommand>
     {
         private readonly IToDoRepository _repository;
+        private readonly IMediator _mediator;
 
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="repository">ToDo repository.</param>
-        public UpdateToDoCommandHandler(IToDoRepository repository)
+        /// <param name="mediator">Mediator for publishing events.</param>
+        public UpdateToDoCommandHandler(IToDoRepository repository, IMediator mediator)
         {
             _repository = Check.NotNull(repository, nameof(repository));
+            _mediator = Check.NotNull(mediator, nameof(mediator));
         }
 
         /// <inheritdoc />
@@ -28,6 +32,7 @@ namespace Kros.ToDos.Api.Application.Commands
         {
             var toDo = request.Adapt<ToDo>();
             await _repository.UpdateToDoAsync(toDo);
+            await _mediator.Publish(new ToDoUpdated(toDo.Id, request.UserId));
 
             return Unit.Value;
         }

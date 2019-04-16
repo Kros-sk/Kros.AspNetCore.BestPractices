@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
 using Microsoft.Extensions.Options;
+using Kros.ToDos.Api.Application.Notifications;
 
 namespace Kros.ToDos.Api.Application.Queries
 {
@@ -16,7 +17,8 @@ namespace Kros.ToDos.Api.Application.Queries
     /// </summary>
     public class GetToDosQueryHandler
         : IRequestHandler<GetAllToDoHeadersQuery, IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>>,
-        IRequestHandler<GetToDoQuery, GetToDoQuery.ToDo>
+        IRequestHandler<GetToDoQuery, GetToDoQuery.ToDo>,
+        INotificationHandler<ToDoUpdated>
     {
         private readonly IDatabase _database;
         private readonly IDistributedCache _cache;
@@ -53,6 +55,15 @@ namespace Kros.ToDos.Api.Application.Queries
                 GetKey<GetToDoQuery.ToDo>(request.ToDoId),
                 () => _database.Query<GetToDoQuery.ToDo>().First(t => t.Id == request.ToDoId),
                 _options.Value);
+
+        /// <inheritdoc />
+        public Task Handle(ToDoUpdated notification, CancellationToken cancellationToken)
+        {
+            _cache.RemoveAsync(GetKey<GetAllToDoHeadersQuery.ToDoHeader>(notification.UserId));
+            _cache.RemoveAsync(GetKey<GetToDoQuery.ToDo>(notification.Id));
+
+            return Task.CompletedTask;
+        }
 
         private string GetKey<T>(int id)
             => $"{typeof(T).Name}:{id}";
