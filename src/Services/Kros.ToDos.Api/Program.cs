@@ -23,6 +23,7 @@ namespace Kros.ToDos.Api
         /// <param name="args">Arguments.</param>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
                 .UseStartup<Startup>();
     }
 }
