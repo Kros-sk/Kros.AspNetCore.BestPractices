@@ -1,4 +1,5 @@
 ﻿using Kros.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -34,6 +35,20 @@ namespace Microsoft.Extensions.DependencyInjection
             this IServiceCollection services,
             IConfiguration configuration,
             string sectionName) where TOptions : class
-            => services.Configure<TOptions>(options => configuration.GetSection(sectionName).Bind(options));       
+            => services.Configure<TOptions>(options => configuration.GetSection(sectionName).Bind(options));
+
+        /// <summary>
+        /// Adds web api dependencies.
+        /// </summary>
+        /// <param name="services">IoC container.</param>
+        public static IMvcCoreBuilder AddWebApi(this IServiceCollection services)
+        {
+            var builder = services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            return builder.AddFormatterMappings()
+                .AddJsonFormatters()
+                .AddCors()
+                .AddApiExplorer();
+        }
     }
 }
