@@ -14,8 +14,8 @@ using System.IO;
 using System;
 using FluentValidation.AspNetCore;
 using Kros.ToDos.Api.Application.Commands.PipeLines;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Caching.Distributed;
+using Kros.ToDos.Api.Infrastructure;
 
 namespace Kros.ToDos.Api
 {
@@ -95,18 +95,18 @@ namespace Kros.ToDos.Api
             });
 
             services.ConfigureOptions<DistributedCacheEntryOptions>(Configuration);
-            if (Environment.IsDevelopment())
+            var redisOptions = Configuration.GetOptions<RedisCacheOptions>();
+            if (redisOptions.UseRedis)
             {
-                services.AddDistributedMemoryCache();
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = redisOptions.ConnectionString;
+                    options.InstanceName = redisOptions.InstanceName;
+                });
             }
             else
             {
-                var redisOptions = Configuration.Get<RedisCacheOptions>();
-                services.AddStackExchangeRedisCache(options =>
-                {
-                    options.Configuration = redisOptions.Configuration;
-                    options.InstanceName = redisOptions.InstanceName;
-                });
+                services.AddDistributedMemoryCache();
             }
         }
 
