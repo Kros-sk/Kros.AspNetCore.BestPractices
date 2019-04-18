@@ -1,20 +1,9 @@
-﻿using System.Reflection;
-using Kros.KORM.Extensions.Asp;
-using MediatR;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Kros.ToDos.Api.Application.Queries.PipeLines;
 using Kros.AspNetCore.Middlewares;
-using Kros.MediatR.Extensions;
-using Swashbuckle.AspNetCore.Swagger;
-using System.IO;
-using System;
 using FluentValidation.AspNetCore;
-using Kros.ToDos.Api.Application.Commands.PipeLines;
-using Microsoft.Extensions.Caching.Distributed;
-using Kros.ToDos.Api.Infrastructure;
 
 namespace Kros.ToDos.Api
 {
@@ -69,6 +58,14 @@ namespace Kros.ToDos.Api
 
             services.AddSwagger();
             services.AddDistributedCache(Configuration);
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
         }
 
         /// <summary>
@@ -89,6 +86,7 @@ namespace Kros.ToDos.Api
                 app.UseHttpsRedirection();
             }
 
+            app.UseCors("AllowAllOrigins");
             app.UseErrorHandling();
             app.UseKormMigrations();
             app.UseMvc();
