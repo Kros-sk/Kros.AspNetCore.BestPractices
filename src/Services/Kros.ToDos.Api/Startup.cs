@@ -3,7 +3,6 @@ using Kros.KORM.Extensions.Asp;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Kros.ToDos.Api.Application.Queries.PipeLines;
@@ -58,55 +57,18 @@ namespace Kros.ToDos.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddWebApi()
-                .AddFluentValidation(o =>
-                {
-                    o.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-                    o.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                });
+                .AddFluentValidation();
 
-            services.AddKorm(Configuration)
-                .InitDatabaseForIdGenerator()
-                .AddKormMigrations(Configuration, o =>
-                {
-                    o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.ToDos.Api.Infrastructure.SqlScripts");
-                })
-                .Migrate();
+            services.AddKormDatabase(Configuration);
+            services.AddMediatRDependencies();
 
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>();
-            services.AddPipelineBehaviorsForRequest<IUserResourceCommand>();
-
-            services.AddMediatRNullCheckPostProcessor();
             services.Scan(scan =>
                 scan.FromCallingAssembly()
                 .AddClasses()
                 .AsMatchingInterface());
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "ToDo API", Version = "v1" });
-                var filePath = Path.Combine(AppContext.BaseDirectory, "Kros.ToDos.Api.xml");
-
-                if (File.Exists(filePath))
-                {
-                    c.IncludeXmlComments(filePath);
-                }
-            });
-
-            services.ConfigureOptions<DistributedCacheEntryOptions>(Configuration);
-            var redisOptions = Configuration.GetOptions<RedisCacheOptions>();
-            if (redisOptions.UseRedis)
-            {
-                services.AddStackExchangeRedisCache(options =>
-                {
-                    options.Configuration = redisOptions.ConnectionString;
-                    options.InstanceName = redisOptions.InstanceName;
-                });
-            }
-            else
-            {
-                services.AddDistributedMemoryCache();
-            }
+            services.AddSwagger();
+            services.AddDistributedCache(Configuration);
         }
 
         /// <summary>

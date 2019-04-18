@@ -13,8 +13,12 @@ namespace Microsoft.Extensions.Configuration
         /// <typeparam name="TOptions">Options type.</typeparam>
         /// <param name="configuration">Configuration.</param>
         /// <returns>Options.</returns>
-        public static TOptions GetOptions<TOptions>(
-            this IConfiguration configuration) where TOptions : class
-            => configuration.GetSection(Helpers.GetSectionName<TOptions>()).Get<TOptions>();
+        public static T GetSection<T>(
+            this IConfiguration configuration) where T : class
+            => configuration.GetSection(Helpers.GetSectionName<T>()).Get<T>();
+
+        public static T GetSection<T>(
+            this IConfiguration configuration, string sectioName) where T : class
+            => configuration.GetSection(Helpers.GetSectionName<T>()).Get<T>();
     }
 }
