@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.Configuration
         /// <summary>
         /// Get options from configuration.
         /// </summary>
-        /// <typeparam name="TOptions">Options type.</typeparam>
+        /// <typeparam name="T">Options type.</typeparam>
         /// <param name="configuration">Configuration.</param>
         /// <returns>Options.</returns>
         public static T GetSection<T>(
