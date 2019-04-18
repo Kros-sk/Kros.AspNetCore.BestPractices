@@ -69,6 +69,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     c.IncludeXmlComments(filePath);
                 }
+                c.AddFluentValidationRules();
             });
 
         /// <summary>
