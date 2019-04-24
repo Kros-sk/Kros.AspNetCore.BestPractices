@@ -89,5 +89,26 @@ namespace Kros.ToDos.Api.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Change todo is done state.
+        /// </summary>
+        /// <param name="id">ToDo id.</param>
+        /// <param name="command">New IsDone state.</param>
+        /// <response code="403">Forbidden when user don't have permission for ToDo with <paramref name="id"/>.</response>
+        /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
+        [HttpPut("changeIsDoneState/{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult> ChangeIsDoneState(int id, ChangeIsDoneStateCommand command)
+        {
+            command.UserId = 1;
+            command.Id = id;
+
+            await this.SendRequest(command);
+
+            return Ok();
+        }
     }
 }

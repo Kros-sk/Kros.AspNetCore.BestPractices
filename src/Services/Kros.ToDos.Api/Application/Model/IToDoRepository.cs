@@ -20,9 +20,16 @@ namespace Kros.ToDos.Api.Application.Model
         Task UpdateToDoAsync(ToDo toDo);
 
         /// <summary>
-        /// Delete ToDo  by <paramref name="id"/>.
+        /// Delete ToDo by <paramref name="id"/>.
         /// </summary>
         /// <param name="id">ToDo id.</param>
         Task DeleteToDoAsync(int id);
+
+        /// <summary>
+        /// Change is done state to <paramref name="isDone"/>.
+        /// </summary>
+        /// <param name="id">ToDo id.</param>
+        /// <param name="isDone">New is done state.</param>
+        Task ChangeIsDoneState(int id, bool isDone);
     }
 }

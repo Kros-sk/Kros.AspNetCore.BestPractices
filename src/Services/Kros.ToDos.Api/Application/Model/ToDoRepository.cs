@@ -1,4 +1,5 @@
 ﻿using Kros.KORM;
+using Kros.KORM.Metadata.Attribute;
 using Kros.Utils;
 using System;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace Kros.ToDos.Api.Application.Model
 
             toDo.Created = DateTimeOffset.Now;
             toDo.LastChange = DateTimeOffset.Now;
+            toDo.IsDone = false;
+
             todos.Add(toDo);
 
             await todos.CommitChangesAsync();
@@ -57,6 +60,15 @@ namespace Kros.ToDos.Api.Application.Model
             await todos.CommitChangesAsync();
         }
 
+        /// <inheritdoc />
+        public async Task ChangeIsDoneState(int id, bool isDone)
+        {
+            var todos = _database.Query<ToDoIsDoneEdit>().AsDbSet();
+            todos.Edit(new ToDoIsDoneEdit() { Id = id, IsDone = isDone });
+
+            await todos.CommitChangesAsync();
+        }
+
         //Dočasne pokia KORM nevie injektovať Created a LastChange
         private static Lazy<string[]> _editColumns
             = new Lazy<string[]>(()
@@ -64,5 +76,15 @@ namespace Kros.ToDos.Api.Application.Model
                 .Where(p=> p.Name != nameof(ToDo.Created))
                 .Select(p=> p.Name)
                 .ToArray());
+
+
+        [Alias("ToDos")]
+        private class ToDoIsDoneEdit
+        {
+            [Key]
+            public int Id { get; set; }
+
+            public bool IsDone { get; set; }
+        }
     }
 }

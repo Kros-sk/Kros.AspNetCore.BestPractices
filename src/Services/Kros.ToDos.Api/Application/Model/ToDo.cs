@@ -40,5 +40,10 @@ namespace Kros.ToDos.Api.Application.Model
         /// Date time of last change.
         /// </summary>
         public DateTimeOffset LastChange { get; set; }
+
+        /// <summary>
+        /// Is todo marked as done?
+        /// </summary>
+        public bool IsDone { get; set; }
     }
 }
