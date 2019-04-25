@@ -1,20 +1,9 @@
-﻿using System.Reflection;
-using Kros.KORM.Extensions.Asp;
-using MediatR;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Kros.ToDos.Api.Application.Queries.PipeLines;
 using Kros.AspNetCore.Middlewares;
-using Kros.MediatR.Extensions;
-using Swashbuckle.AspNetCore.Swagger;
-using System.IO;
-using System;
 using FluentValidation.AspNetCore;
-using Kros.ToDos.Api.Application.Commands;
-using Kros.ToDos.Api.Application.Commands.PipeLines;
 
 namespace Kros.ToDos.Api
 {
@@ -37,6 +26,7 @@ namespace Kros.ToDos.Api
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
+            Environment = env;
         }
 
         /// <summary>
@@ -45,48 +35,37 @@ namespace Kros.ToDos.Api
         public IConfiguration Configuration { get; }
 
         /// <summary>
+        /// Environment.
+        /// </summary>
+        public IHostingEnvironment Environment { get; }
+
+        /// <summary>
         /// Configure IoC container.
         /// </summary>
         /// <param name="services">Service.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(o =>
-                {
-                    o.RegisterValidatorsFromAssemblyContaining<CreateToDoCommandValidator>();
-                    o.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                });
+            services.AddWebApi()
+                .AddFluentValidation();
 
-            services.AddKorm(Configuration)
-                .InitDatabaseForIdGenerator()
-                .AddKormMigrations(Configuration, o =>
-                {
-                    o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.ToDos.Api.Infrastructure.SqlScripts");
-                })
-                .Migrate();
+            services.AddKormDatabase(Configuration);
+            services.AddMediatRDependencies();
 
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>();
-            services.AddPipelineBehaviorsForRequest<IUserResourceCommand>();
-
-            services.AddMediatRNullCheckPostProcessor();
             services.Scan(scan =>
                 scan.FromCallingAssembly()
                 .AddClasses()
                 .AsMatchingInterface());
 
-            services.AddSwaggerGen(c =>
+            services.AddSwagger();
+            services.AddDistributedCache(Configuration);
+            services.AddCors(options =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "ToDo API", Version = "v1" });
-                var filePath = Path.Combine(AppContext.BaseDirectory, "Kros.ToDos.Api.xml");
-
-                if (File.Exists(filePath))
-                {
-                    c.IncludeXmlComments(filePath);
-                }
+                options.AddPolicy("AllowAllOrigins",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
             });
-
         }
 
         /// <summary>
@@ -107,6 +86,7 @@ namespace Kros.ToDos.Api
                 app.UseHttpsRedirection();
             }
 
+            app.UseCors("AllowAllOrigins");
             app.UseErrorHandling();
             app.UseKormMigrations();
             app.UseMvc();

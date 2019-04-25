@@ -57,14 +57,35 @@ namespace Kros.ToDos.Api.Controllers
         /// </summary>
         /// <param name="command">Data for creating todo.</param>
         /// <param name="id">ToDo id.</param>
+        /// <response code="403">Forbidden when user don't have permission for ToDo with <paramref name="id"/>.</response>
+        /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
         [HttpPut("{id}")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> UpdateToDo(int id, UpdateToDoCommand command)
         {
             command.UserId = 1;
             command.Id = id;
 
             await this.SendRequest(command);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Delete ToDo.
+        /// </summary>
+        /// <param name="id">ToDo id.</param>
+        /// <response code="403">Forbidden when user don't have permission for ToDo with <paramref name="id"/>.</response>
+        /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult> DeleteToDo(int id)
+        {
+            await this.SendRequest(new DeleteToDoCommand(id, 1));
 
             return Ok();
         }

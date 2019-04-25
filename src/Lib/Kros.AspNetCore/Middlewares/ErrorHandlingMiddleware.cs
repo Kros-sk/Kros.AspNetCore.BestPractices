@@ -22,6 +22,7 @@ namespace Kros.AspNetCore.Middlewares
         /// Constructor.
         /// </summary>
         /// <param name="next">Delegate for next middleware.</param>
+        /// <param name="logger">Logger.</param>
         public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
         {
             _next = Check.NotNull(next, nameof(next));
@@ -58,10 +59,10 @@ namespace Kros.AspNetCore.Middlewares
 
         private void SetResponseType(HttpContext context, Exception ex, HttpStatusCode statusCode)
         {
+            _logger.LogError(ex, ex.Message);
+
             context.Response.ClearExceptCorsHeaders();
             context.Response.StatusCode = (int)statusCode;
-
-            _logger.LogError(ex, ex.Message);
         }
     }
 

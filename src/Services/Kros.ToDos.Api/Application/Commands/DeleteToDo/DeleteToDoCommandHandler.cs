@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace Kros.ToDos.Api.Application.Commands
 {
     /// <summary>
-    /// Update ToDo Command Handler.
+    /// Create ToDo Command Handler.
     /// </summary>
-    public class UpdateToDoCommandHandler: IRequestHandler<UpdateToDoCommand>
+    public class DeleteToDoCommandHandler: IRequestHandler<DeleteToDoCommand, Unit>
     {
         private readonly IToDoRepository _repository;
         private readonly IMediator _mediator;
@@ -21,18 +21,17 @@ namespace Kros.ToDos.Api.Application.Commands
         /// </summary>
         /// <param name="repository">ToDo repository.</param>
         /// <param name="mediator">Mediator for publishing events.</param>
-        public UpdateToDoCommandHandler(IToDoRepository repository, IMediator mediator)
+        public DeleteToDoCommandHandler(IToDoRepository repository, IMediator mediator)
         {
             _repository = Check.NotNull(repository, nameof(repository));
             _mediator = Check.NotNull(mediator, nameof(mediator));
         }
 
         /// <inheritdoc />
-        public async Task<Unit> Handle(UpdateToDoCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteToDoCommand request, CancellationToken cancellationToken)
         {
-            var toDo = request.Adapt<ToDo>();
-            await _repository.UpdateToDoAsync(toDo);
-            await _mediator.Publish(new ToDoUpdated(toDo.Id, request.UserId));
+            await _repository.DeleteToDoAsync(request.Id);
+            await _mediator.Publish(new ToDoUpdated(request.Id, request.UserId));
 
             return Unit.Value;
         }
