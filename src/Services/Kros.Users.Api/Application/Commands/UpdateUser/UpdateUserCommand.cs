@@ -1,18 +1,17 @@
-﻿using Kros.KORM.Metadata;
-using Kros.KORM.Metadata.Attribute;
+﻿using MediatR;
+using Newtonsoft.Json;
 
-namespace Kros.Users.Api.Application.Model
+namespace Kros.Users.Api.Application.Commands.UpdateUser
 {
     /// <summary>
-    /// User model.
+    /// Update user command.
     /// </summary>
-    [Alias("Users")]
-    public class User
+    public class UpdateUserCommand : IRequest
     {
         /// <summary>
-        /// Id.
+        /// User id.
         /// </summary>
-        [Key(autoIncrementMethodType: AutoIncrementMethodType.Custom)]
+        [JsonIgnore]
         public int Id { get; set; }
 
         /// <summary>

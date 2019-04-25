@@ -21,30 +21,45 @@ namespace Kros.Users.Api.Middlewares
     /// </summary>
     public class UserProfileMiddleware
     {
+        private const string AccessTokenHttpHeaderKey = "access_token";
+        private const string IdentityServerUserInfoEndpoint = "connect/userinfo";
+
         private readonly RequestDelegate _next;
         private readonly IdentityServerOptions _identityServerOptions;
         private readonly IMemoryCache _cache;
+        private IHttpClientFactory _httpClientFactory;
+        private IMediator _mediator;
 
         /// <summary>
-        /// Constructor.
+        /// Ctor.
         /// </summary>
-        /// <param name="next">The next.</param>
+        /// <param name="next">Next middleware.</param>
+        /// <param name="cache">Cache service.</param>
+        /// <param name="identityServerOptions">Identity Server options.</param>
         public UserProfileMiddleware(
             RequestDelegate next, 
-            IOptions<IdentityServerOptions> identityServerOptions,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            IOptions<IdentityServerOptions> identityServerOptions)
         {
             _next = Check.NotNull(next, nameof(next));
+            _cache = Check.NotNull(cache, nameof(cache));
             _identityServerOptions = identityServerOptions.Value;
-            _cache = cache;
         }
 
         /// <summary>
         /// HttpContext pipeline processing.
         /// </summary>
         /// <param name="httpContext">Http context.</param>
-        public async Task Invoke(HttpContext httpContext)
+        /// <param name="mediator">Mediator service.</param>
+        /// <param name="httpClientFactory">Http client factory.</param>
+        public async Task Invoke(
+            HttpContext httpContext,
+            IMediator mediator,
+            IHttpClientFactory httpClientFactory)
         {
+            _mediator = mediator;
+            _httpClientFactory = httpClientFactory;
+
             var userClaims = await GetUserProfileClaimsAsync(httpContext);
             await AddUserProfileClaimsToCurrentIdentityAsync(userClaims, httpContext);
 
@@ -60,15 +75,15 @@ namespace Kros.Users.Api.Middlewares
         {
             if (httpContext.User != null)
             {
-                string token = await httpContext.GetTokenAsync("access_token");
+                string token = await httpContext.GetTokenAsync(AccessTokenHttpHeaderKey);
 
                 if (token != null)
                 {
-                    using (var client = new HttpClient())
+                    using (var client = _httpClientFactory.CreateClient(Extensions.ServiceCollectionExtensions.IdentityServerHttpClientName))
                     {
                         var response = await client.GetUserInfoAsync(new UserInfoRequest
                         {
-                            Address = $"{_identityServerOptions.AuthorityUrl}/connect/userinfo",
+                            Address = $"{_identityServerOptions.AuthorityUrl}/{IdentityServerUserInfoEndpoint}",
                             Token = token
                         });
 
@@ -90,18 +105,20 @@ namespace Kros.Users.Api.Middlewares
         /// <param name="httpContext">Current Http context.</param>
         private async Task AddUserProfileClaimsToCurrentIdentityAsync(IEnumerable<Claim> userClaims, HttpContext httpContext)
         {
-            Claim claim = userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.Email);
+            Claim emailClaim = userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.Email);
 
-            if (claim != null)
+            if (emailClaim != null)
             {
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity();
-                claimsIdentity.AddClaim(claim);
+                claimsIdentity.AddClaim(emailClaim);
+                claimsIdentity.AddClaim(userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName));
+                claimsIdentity.AddClaim(userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName));
 
-                var isAdmin = await IsUserAdminAsync(claim.Value, httpContext);
+                var isAdmin = await IsUserAdminAsync(emailClaim.Value, httpContext);
 
                 if (isAdmin != null)
                 {
-                    Claim adminClaim = new Claim("isAdmin", isAdmin.Value.ToString());
+                    Claim adminClaim = new Claim(Extensions.ServiceCollectionExtensions.ClaimTypeForAdmin, isAdmin.Value.ToString());
                     claimsIdentity.AddClaim(adminClaim);
                 }
                 
@@ -113,8 +130,7 @@ namespace Kros.Users.Api.Middlewares
         {
             if (!_cache.TryGetValue(userEmail, out bool? isAdmin))
             {
-                var mediator = GetMediatorService(httpContext);
-                var user = await mediator.Send(new GetUserByEmailQuery(userEmail));
+                var user = await _mediator.Send(new GetUserByEmailQuery(userEmail));
 
                 if (user != null)
                 {
@@ -124,11 +140,6 @@ namespace Kros.Users.Api.Middlewares
             }
 
             return isAdmin;
-        }
-
-        private IMediator GetMediatorService(HttpContext httpContext)
-        {
-            return (IMediator)httpContext.RequestServices.GetService(typeof(IMediator));
         }
     }
 }

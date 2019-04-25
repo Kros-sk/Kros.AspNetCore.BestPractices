@@ -5,6 +5,10 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Develop\Kros.BestPractices\Kros.AspNetCore.BestPractices\src\Services\Kros.Users.Api\Kros.Users.Api.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Infrastructure\SqlScripts\20190418001_AddIsAdminColumn.sql" />
   </ItemGroup>
@@ -20,21 +24,15 @@
 
   <ItemGroup>
     <PackageReference Include="Kros.Identity.Extensions" Version="0.4.0" />
-    <PackageReference Include="FluentValidation" Version="8.2.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.2.0" />
+    <PackageReference Include="FluentValidation" Version="8.3.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.3.0" />
     <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.0.0" />
+    <PackageReference Include="Kros.MediatR.Extensions" Version="1.0.2" />
     <PackageReference Include="Mapster" Version="3.3.2" />
-    <PackageReference Include="MediatR" Version="6.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Scrutor" Version="3.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Lib\Kros.MediatR.Extensions\Kros.MediatR.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

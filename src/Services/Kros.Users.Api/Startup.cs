@@ -1,23 +1,26 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Kros.Identity.Extensions;
-using Kros.KORM.Extensions.Asp;
-using Kros.MediatR.Extensions;
-using Kros.Users.Api.Application.Model;
-using Kros.Users.Api.Middlewares;
-using MediatR;
+﻿using FluentValidation.AspNetCore;
+using Kros.Users.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Kros.Users.Api
 {
+    /// <summary>
+    /// Startup class.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Application configuration.
+        /// </summary>
+        public IConfiguration _configuration { get; }
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="env">Enviromnent variables.</param>
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -27,50 +30,30 @@ namespace Kros.Users.Api
                 .AddJsonFile($"appsettings.local.json", optional: true)
                 .AddEnvironmentVariables();
 
-            Configuration = builder.Build();
+            _configuration = builder.Build();
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services">Services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityServerAuthentication(Configuration);
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("admin", policyAdmin =>
-                {
-                    policyAdmin.RequireClaim("isAdmin", "True");
-                });
-            });
+            services.AddAuthenticationAndAuthorization(_configuration);
+            services.AddMvc().AddFluentValidation();
+            services.AddKormDatabase(_configuration);
+            services.AddMediatRDependencies();
+            services.AddCorsAllowAll();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddKorm(Configuration)
-               .InitDatabaseForIdGenerator()
-               .AddKormMigrations(Configuration, o =>
-               {
-                   o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Users.Api.Infrastructure.SqlScripts");
-               })
-               .Migrate();
-
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient<UserRepository>();
-
-            //services.AddMediatRNullCheckPostProcessor();
-            services.Scan(scan =>
-                scan.FromCallingAssembly()
-                .AddClasses()
-                .AsMatchingInterface());
-
-            services.AddCors(o => o.AddPolicy("AllowAllCorsPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
+            services.AddApplicationServices();
+            services.AddSwagger();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        /// <param name="env">Enviromnent variables.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -81,17 +64,20 @@ namespace Kros.Users.Api
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
             app.UseAuthentication();
-            app.UseCors("AllowAllCorsPolicy");
-            app.UseMiddleware<UserProfileMiddleware>(Options.Create(new IdentityServerOptions {
-                AuthorityUrl = Configuration.GetSection("IdentityServerHandlers").Get<IList<IdentityServerOptions>>().First().AuthorityUrl
-            }));
-
-            app.UseHttpsRedirection();
+            app.UseCors(Extensions.ServiceCollectionExtensions.CorsAllowAllPolicy);
+            app.UseUserProfileMiddleware(_configuration);
             app.UseKormMigrations();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users API V1");
+            });
         }
     }
 }

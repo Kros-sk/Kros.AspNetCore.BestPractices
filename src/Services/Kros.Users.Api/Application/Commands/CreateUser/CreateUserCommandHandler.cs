@@ -5,20 +5,20 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kros.Users.Api.Application.Commands
+namespace Kros.Users.Api.Application.Commands.CreateUser
 {
     /// <summary>
-    /// Create ToDo Command Handler.
+    /// Create user command handler.
     /// </summary>
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
     {
-        private readonly UserRepository _repository;
+        private readonly IUserRepository _repository;
 
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="repository">ToDo repository.</param>
-        public CreateUserCommandHandler(UserRepository repository)
+        /// <param name="repository">User repository.</param>
+        public CreateUserCommandHandler(IUserRepository repository)
         {
             _repository = Check.NotNull(repository, nameof(repository));
         }

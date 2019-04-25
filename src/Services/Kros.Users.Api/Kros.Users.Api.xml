@@ -1,0 +1,492 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Kros.Users.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommand">
+            <summary>
+            Create user command.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommand.FirstName">
+            <summary>
+            First name.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommand.LastName">
+            <summary>
+            Last name.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommand.Email">
+            <summary>
+            User's email.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommand.IsAdmin">
+            <summary>
+            Is user admin?
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommandHandler">
+            <summary>
+            Create user command handler.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommandHandler.#ctor(Kros.Users.Api.Application.Model.IUserRepository)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="repository">User repository.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommandHandler.Handle(Kros.Users.Api.Application.Commands.CreateUser.CreateUserCommand,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommand">
+            <summary>
+            Update user command.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommand.Id">
+            <summary>
+            User id.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommand.FirstName">
+            <summary>
+            First name.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommand.LastName">
+            <summary>
+            Last name.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommand.Email">
+            <summary>
+            User's email.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommand.IsAdmin">
+            <summary>
+            Is user admin?
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommandHandler">
+            <summary>
+            Update user command handler.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommandHandler.#ctor(Kros.Users.Api.Application.Model.IUserRepository)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="repository">User repository.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommandHandler.Handle(Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommand,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Kros.Users.Api.Application.Model.IUserRepository">
+            <summary>
+            Interface which describe repository for persistating <see cref="T:Kros.Users.Api.Application.Model.User"/>.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Model.IUserRepository.CreateUserAsync(Kros.Users.Api.Application.Model.User)">
+            <summary>
+            Create new user in repository.
+            </summary>
+            <param name="user">Creating user.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Model.IUserRepository.UpdateUserAsync(Kros.Users.Api.Application.Model.User)">
+            <summary>
+            Update user in repository.
+            </summary>
+            <param name="user">Updating user.</param>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Model.User">
+            <summary>
+            User model.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Model.User.Id">
+            <summary>
+            Id.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Model.User.FirstName">
+            <summary>
+            First name.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Model.User.LastName">
+            <summary>
+            Last name.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Model.User.Email">
+            <summary>
+            User's email.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Model.User.IsAdmin">
+            <summary>
+            Is user admin?
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Model.UserRepository">
+            <summary>
+            Repository for persistating <see cref="T:Kros.Users.Api.Application.Model.User"/>.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Model.UserRepository.#ctor(Kros.KORM.IDatabase)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="database">Database</param>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Model.UserRepository.CreateUserAsync(Kros.Users.Api.Application.Model.User)">
+            <inheritdoc />
+        </member>
+        <member name="M:Kros.Users.Api.Application.Model.UserRepository.UpdateUserAsync(Kros.Users.Api.Application.Model.User)">
+            <inheritdoc />
+        </member>
+        <member name="T:Kros.Users.Api.Application.Queries.GetAllUsersQuery">
+            <summary>
+            Get all users.
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Queries.GetAllUsersQuery.User">
+            <summary>
+            User Header
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetAllUsersQuery.User.Id">
+            <summary>
+            User's Id.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetAllUsersQuery.User.Email">
+            <summary>
+            User's email.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetAllUsersQuery.User.IsAdmin">
+            <summary>
+            Is user admin?
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Queries.GetUserByEmailQuery">
+            <summary>
+            Get user by email.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Queries.GetUserByEmailQuery.#ctor(System.String)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="userEmail">User email.</param>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserByEmailQuery.UserEmail">
+            <summary>
+            User email.
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Queries.GetUserByEmailQuery.User">
+            <summary>
+            User Header
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserByEmailQuery.User.Id">
+            <summary>
+            User's Id.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserByEmailQuery.User.Email">
+            <summary>
+            User's email.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserByEmailQuery.User.IsAdmin">
+            <summary>
+            Is user admin?
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Queries.GetUserQuery">
+            <summary>
+            Get user by email.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Queries.GetUserQuery.#ctor(System.Int32)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="userId">User id.</param>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserQuery.UserId">
+            <summary>
+            User email.
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Queries.GetUserQuery.User">
+            <summary>
+            User Header
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserQuery.User.Id">
+            <summary>
+            User's Id.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserQuery.User.Email">
+            <summary>
+            User's email.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserQuery.User.IsAdmin">
+            <summary>
+            Is user admin?
+            </summary>
+        </member>
+        <member name="T:Kros.Users.Api.Application.Queries.GetUsersQueryHandler">
+            <summary>
+            Query handler for User queries.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Queries.GetUsersQueryHandler.#ctor(Kros.KORM.IDatabase)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="database">Database.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Application.Queries.GetUsersQueryHandler.Handle(Kros.Users.Api.Application.Queries.GetUserQuery,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Kros.Users.Api.Application.Queries.GetUsersQueryHandler.Handle(Kros.Users.Api.Application.Queries.GetUserByEmailQuery,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Kros.Users.Api.Application.Queries.GetUsersQueryHandler.Handle(Kros.Users.Api.Application.Queries.GetAllUsersQuery,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Kros.Users.Api.Controllers.UsersController">
+            <summary>
+            Users controller.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Controllers.UsersController.#ctor(Kros.Users.Api.Services.IUserService,Microsoft.Extensions.Caching.Memory.IMemoryCache)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="userService">User service.</param>
+            <param name="cache">Cache.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Controllers.UsersController.IsAdmin">
+            <summary>
+            Is user admin?
+            </summary>
+            <returns>Return true, if user is admin.</returns>
+        </member>
+        <member name="M:Kros.Users.Api.Controllers.UsersController.GetUser(System.Int32)">
+            <summary>
+            Get user by id.
+            Only admin can call this method.
+            </summary>
+            <param name="userId">User id.</param>
+            <returns>User.</returns>
+        </member>
+        <member name="M:Kros.Users.Api.Controllers.UsersController.GetAllUsers">
+            <summary>
+            Get all users.
+            Only admin can call this method.
+            </summary>
+            <returns>All application users.</returns>
+        </member>
+        <member name="M:Kros.Users.Api.Controllers.UsersController.UpdateUser(System.Int32,Kros.Users.Api.Application.Commands.UpdateUser.UpdateUserCommand)">
+            <summary>
+            Update user.
+            Only admin can call this method.
+            </summary>
+            <param name="command">Data for updating user.</param>
+            <param name="userId">User id.</param>
+            <returns>Return true, if update is success.</returns>
+        </member>
+        <member name="T:Kros.Users.Api.Extensions.ApplicationBuilderExtensions">
+            <summary>
+            Extensions for application builder.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Extensions.ApplicationBuilderExtensions.UseUserProfileMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Use user profile middleware.
+            </summary>
+            <param name="app">Application builder.</param>
+            <param name="configuration">Application configuration.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Kros.Users.Api.Extensions.ServiceCollectionExtensions">
+            <summary>
+            Extensions for registering services for this project to the DI container.
+            </summary>
+        </member>
+        <member name="F:Kros.Users.Api.Extensions.ServiceCollectionExtensions.ClaimTypeForAdmin">
+            <summary>
+            Claim type for admin user role.
+            </summary>
+        </member>
+        <member name="F:Kros.Users.Api.Extensions.ServiceCollectionExtensions.IdentityServerHttpClientName">
+            <summary>
+            Http client name for communication with Identity Server.
+            </summary>
+        </member>
+        <member name="F:Kros.Users.Api.Extensions.ServiceCollectionExtensions.CorsAllowAllPolicy">
+            <summary>
+            Allow all Cors policy.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Extensions.ServiceCollectionExtensions.AddKormDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Add KORM database.
+            </summary>
+            <param name="services">DI container.</param>
+            <param name="configuration">Configuration.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Extensions.ServiceCollectionExtensions.AddMediatRDependencies(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Add MediatR.
+            </summary>
+            <param name="services">DI container.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Extensions.ServiceCollectionExtensions.AddSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Add Swagger.
+            </summary>
+            <param name="services">DI container.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Extensions.ServiceCollectionExtensions.AddAuthenticationAndAuthorization(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Add Authentication and authorization.
+            </summary>
+            <param name="services">DI container.</param>
+            <param name="configuration">Configuration.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Extensions.ServiceCollectionExtensions.AddApplicationServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Add application services.
+            </summary>
+            <param name="services">DI container.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Extensions.ServiceCollectionExtensions.AddCorsAllowAll(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Add Cors.
+            </summary>
+            <param name="services">DI container.</param>
+        </member>
+        <member name="T:Kros.Users.Api.Middlewares.UserProfileMiddleware">
+            <summary>
+            Middleware for user profile.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Middlewares.UserProfileMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Caching.Memory.IMemoryCache,Microsoft.Extensions.Options.IOptions{Kros.Identity.Extensions.IdentityServerOptions})">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="next">Next middleware.</param>
+            <param name="cache">Cache service.</param>
+            <param name="identityServerOptions">Identity Server options.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Middlewares.UserProfileMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext,MediatR.IMediator,System.Net.Http.IHttpClientFactory)">
+            <summary>
+            HttpContext pipeline processing.
+            </summary>
+            <param name="httpContext">Http context.</param>
+            <param name="mediator">Mediator service.</param>
+            <param name="httpClientFactory">Http client factory.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Middlewares.UserProfileMiddleware.GetUserProfileClaimsAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Get user profile's claims from IdentityServer user profile endpoint.
+            </summary>
+            <param name="httpContext">Current Http context.</param>
+            <returns>User profile's claims.</returns>
+        </member>
+        <member name="M:Kros.Users.Api.Middlewares.UserProfileMiddleware.AddUserProfileClaimsToCurrentIdentityAsync(System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Add user profile's claims to the current user identity.
+            </summary>
+            <param name="userClaims">User's claims.</param>
+            <param name="httpContext">Current Http context.</param>
+        </member>
+        <member name="T:Kros.Users.Api.Program">
+            <summary>
+            Startup class.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Program.Main(System.String[])">
+            <summary>
+            Application entry.
+            </summary>
+            <param name="args">Arguments.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            Create web host builder.
+            </summary>
+            <param name="args">Arguments.</param>
+        </member>
+        <member name="T:Kros.Users.Api.Services.IUserService">
+            <summary>
+            Interface which describe service for working with <see cref="T:Kros.Users.Api.Application.Model.User"/>.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Services.IUserService.IsCurrentUserAdminAsync(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Logged user with claims.
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Kros.Users.Api.Services.UserService">
+            <summary>
+            Service for working with <see cref="T:Kros.Users.Api.Application.Model.User"/>.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Services.UserService.#ctor(MediatR.IMediator)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="mediator">Mediator service</param>
+        </member>
+        <member name="M:Kros.Users.Api.Services.UserService.IsCurrentUserAdminAsync(System.Security.Claims.ClaimsPrincipal)">
+            <inheritdoc />
+        </member>
+        <member name="T:Kros.Users.Api.Startup">
+            <summary>
+            Startup class.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Startup._configuration">
+            <summary>
+            Application configuration.
+            </summary>
+        </member>
+        <member name="M:Kros.Users.Api.Startup.#ctor(Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            Ctor.
+            </summary>
+            <param name="env">Enviromnent variables.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services">Services.</param>
+        </member>
+        <member name="M:Kros.Users.Api.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app">Application builder.</param>
+            <param name="env">Enviromnent variables.</param>
+        </member>
+    </members>
+</doc>
