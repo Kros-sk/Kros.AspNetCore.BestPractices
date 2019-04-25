@@ -166,6 +166,16 @@
             User's Id.
             </summary>
         </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetAllUsersQuery.User.FirstName">
+            <summary>
+            First name.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetAllUsersQuery.User.LastName">
+            <summary>
+            Last name.
+            </summary>
+        </member>
         <member name="P:Kros.Users.Api.Application.Queries.GetAllUsersQuery.User.Email">
             <summary>
             User's email.
@@ -236,6 +246,16 @@
         <member name="P:Kros.Users.Api.Application.Queries.GetUserQuery.User.Id">
             <summary>
             User's Id.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserQuery.User.FirstName">
+            <summary>
+            First name.
+            </summary>
+        </member>
+        <member name="P:Kros.Users.Api.Application.Queries.GetUserQuery.User.LastName">
+            <summary>
+            Last name.
             </summary>
         </member>
         <member name="P:Kros.Users.Api.Application.Queries.GetUserQuery.User.Email">

@@ -21,6 +21,16 @@ namespace Kros.Users.Api.Application.Queries
             public int Id { get; set; }
 
             /// <summary>
+            /// First name.
+            /// </summary>
+            public string FirstName { get; set; }
+
+            /// <summary>
+            /// Last name.
+            /// </summary>
+            public string LastName { get; set; }
+
+            /// <summary>
             /// User's email.
             /// </summary>
             public string Email { get; set; }

@@ -59,17 +59,24 @@ namespace Kros.Users.Api.Extensions
         /// </summary>
         /// <param name="services">DI container.</param>
         public static IServiceCollection AddSwagger(this IServiceCollection services)
-            => services.AddSwaggerGen(c =>
+        {
+            services.ConfigureSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Users API", Version = "v1" } );
+                options.CustomSchemaIds(x => x.FullName); // https://wegotcode.com/microsoft/swagger-fix-for-dotnetcore/
+            });
+
+            return services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Users API", Version = "v1" });
                 var filePath = Path.Combine(AppContext.BaseDirectory, "Kros.Users.Api.xml");
 
                 if (File.Exists(filePath))
                 {
                     c.IncludeXmlComments(filePath);
                 }
-                //c.AddFluentValidationRules();
+                c.AddFluentValidationRules();
             });
+        }
 
         /// <summary>
         /// Add Authentication and authorization.
