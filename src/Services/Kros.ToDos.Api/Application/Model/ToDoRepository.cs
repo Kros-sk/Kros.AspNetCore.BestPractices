@@ -12,7 +12,7 @@ namespace Kros.ToDos.Api.Application.Model
     /// </summary>
     public class ToDoRepository : IToDoRepository
     {
-        private IDatabase _database;
+        private readonly IDatabase _database;
 
         /// <summary>
         /// Ctor.
@@ -61,6 +61,17 @@ namespace Kros.ToDos.Api.Application.Model
         }
 
         /// <inheritdoc />
+        public async Task DeleteCompletedToDosAsync()
+        {
+            var dbSet = _database.Query<ToDo>().AsDbSet();
+            var todos = _database.Query<ToDo>().Select(t => t.Id).Where(t => t.IsDone);
+
+            dbSet.Delete(todos);
+
+            await dbSet.CommitChangesAsync();
+        }
+
+        /// <inheritdoc />
         public async Task ChangeIsDoneState(int id, bool isDone)
         {
             var todos = _database.Query<ToDoIsDoneEdit>().AsDbSet();
@@ -69,7 +80,7 @@ namespace Kros.ToDos.Api.Application.Model
             await todos.CommitChangesAsync();
         }
 
-        //Dočasne pokia KORM nevie injektovať Created a LastChange
+        // Dočasne pokiaľ KORM nevie injektovať Created a LastChange
         private static Lazy<string[]> _editColumns
             = new Lazy<string[]>(()
                 => typeof(ToDo).GetProperties()
