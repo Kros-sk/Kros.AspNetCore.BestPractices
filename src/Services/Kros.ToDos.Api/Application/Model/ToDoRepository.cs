@@ -55,7 +55,7 @@ namespace Kros.ToDos.Api.Application.Model
         public async Task DeleteToDoAsync(int id)
         {
             var todos = _database.Query<ToDo>().AsDbSet();
-            todos.Delete(new ToDo() { Id = id});
+            todos.Delete(new ToDo() { Id = id });
 
             await todos.CommitChangesAsync();
         }
@@ -63,12 +63,21 @@ namespace Kros.ToDos.Api.Application.Model
         /// <inheritdoc />
         public async Task DeleteCompletedToDosAsync()
         {
-            var dbSet = _database.Query<ToDo>().AsDbSet();
-            var todos = _database.Query<ToDo>().Select(t => t.Id).Where(t => t.IsDone);
+            using (var transaction = _database.BeginTransaction())
+            {
+                try
+                {
+                    var todoIds = _database.Query<int>().Sql("SELECT Id FROM ToDos WHERE (IsDone = 0)");
+                    await _database.ExecuteNonQueryAsync("DELETE FROM ToDos WHERE (IsDone = 0)");
 
-            dbSet.Delete(todos);
-
-            await dbSet.CommitChangesAsync();
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -84,8 +93,8 @@ namespace Kros.ToDos.Api.Application.Model
         private static Lazy<string[]> _editColumns
             = new Lazy<string[]>(()
                 => typeof(ToDo).GetProperties()
-                .Where(p=> p.Name != nameof(ToDo.Created))
-                .Select(p=> p.Name)
+                .Where(p => p.Name != nameof(ToDo.Created))
+                .Select(p => p.Name)
                 .ToArray());
 
 
