@@ -2,6 +2,7 @@
 using Kros.KORM.Metadata.Attribute;
 using Kros.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace Kros.ToDos.Api.Application.Model
     /// </summary>
     public class ToDoRepository : IToDoRepository
     {
-        private IDatabase _database;
+        private readonly IDatabase _database;
 
         /// <summary>
         /// Ctor.
@@ -55,9 +56,31 @@ namespace Kros.ToDos.Api.Application.Model
         public async Task DeleteToDoAsync(int id)
         {
             var todos = _database.Query<ToDo>().AsDbSet();
-            todos.Delete(new ToDo() { Id = id});
+            todos.Delete(new ToDo() { Id = id });
 
             await todos.CommitChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<int>> DeleteCompletedToDosAsync()
+        {
+            using (var transaction = _database.BeginTransaction())
+            {
+                try
+                {
+                    var todoIds = _database.Query<int>().Sql("SELECT Id FROM ToDos WHERE (IsDone = 1)").ToList();
+                    await _database.ExecuteNonQueryAsync("DELETE FROM ToDos WHERE (IsDone = 1)");
+
+                    transaction.Commit();
+
+                    return todoIds;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -69,12 +92,12 @@ namespace Kros.ToDos.Api.Application.Model
             await todos.CommitChangesAsync();
         }
 
-        //Dočasne pokia KORM nevie injektovať Created a LastChange
+        // Dočasne pokiaľ KORM nevie injektovať Created a LastChange
         private static Lazy<string[]> _editColumns
             = new Lazy<string[]>(()
                 => typeof(ToDo).GetProperties()
-                .Where(p=> p.Name != nameof(ToDo.Created))
-                .Select(p=> p.Name)
+                .Where(p => p.Name != nameof(ToDo.Created))
+                .Select(p => p.Name)
                 .ToArray());
 
 
