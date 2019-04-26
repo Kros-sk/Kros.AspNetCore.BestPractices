@@ -75,7 +75,7 @@ namespace Kros.ToDos.Api.Application.Model
 
                     return todoIds;
                 }
-                catch (Exception)
+                catch
                 {
                     transaction.Rollback();
                     throw;
