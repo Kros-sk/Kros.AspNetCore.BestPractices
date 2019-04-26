@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Kros.ToDos.Api.Application.Model
 {
@@ -28,7 +29,7 @@ namespace Kros.ToDos.Api.Application.Model
         /// <summary>
         /// Deletes completed Todos.
         /// </summary>
-        Task DeleteCompletedToDosAsync();
+        Task<IEnumerable<int>> DeleteCompletedToDosAsync();
 
         /// <summary>
         /// Change is done state to <paramref name="isDone"/>.

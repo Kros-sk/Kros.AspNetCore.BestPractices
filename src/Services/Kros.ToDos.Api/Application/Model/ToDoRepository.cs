@@ -2,6 +2,7 @@
 using Kros.KORM.Metadata.Attribute;
 using Kros.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -61,16 +62,18 @@ namespace Kros.ToDos.Api.Application.Model
         }
 
         /// <inheritdoc />
-        public async Task DeleteCompletedToDosAsync()
+        public async Task<IEnumerable<int>> DeleteCompletedToDosAsync()
         {
             using (var transaction = _database.BeginTransaction())
             {
                 try
                 {
-                    var todoIds = _database.Query<int>().Sql("SELECT Id FROM ToDos WHERE (IsDone = 0)");
-                    await _database.ExecuteNonQueryAsync("DELETE FROM ToDos WHERE (IsDone = 0)");
+                    var todoIds = _database.Query<int>().Sql("SELECT Id FROM ToDos WHERE (IsDone = 1)").ToList();
+                    await _database.ExecuteNonQueryAsync("DELETE FROM ToDos WHERE (IsDone = 1)");
 
                     transaction.Commit();
+
+                    return todoIds;
                 }
                 catch (Exception)
                 {
