@@ -5,25 +5,15 @@ using Newtonsoft.Json;
 namespace Kros.ToDos.Api.Application.Commands
 {
     /// <summary>
-    /// Update ToDo command.
+    /// Change is done state command.
     /// </summary>
-    public class UpdateToDoCommand : IRequest, IUserResourceCommand
+    public class ChangeIsDoneStateCommand : IRequest<Unit>, IUserResourceCommand
     {
         /// <summary>
         /// Id.
         /// </summary>
         [JsonIgnore]
         public int Id { get; set; }
-
-        /// <summary>
-        /// ToDo Name.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Description.
-        /// </summary>
-        public string Description { get; set; }
 
         /// <summary>
         /// User Id.

@@ -15,10 +15,11 @@ namespace Kros.ToDos.Api.Application.Queries
     /// <summary>
     /// Query handler for ToDo queries.
     /// </summary>
-    public class GetToDosQueryHandler
-        : IRequestHandler<GetAllToDoHeadersQuery, IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>>,
+    public class GetToDosQueryHandler : 
+        IRequestHandler<GetAllToDoHeadersQuery, IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>>,
         IRequestHandler<GetToDoQuery, GetToDoQuery.ToDo>,
-        INotificationHandler<ToDoUpdated>
+        INotificationHandler<ToDoUpdated>,
+        INotificationHandler<ToDosDeleted>
     {
         private readonly IDatabase _database;
         private readonly IDistributedCache _cache;
@@ -61,6 +62,18 @@ namespace Kros.ToDos.Api.Application.Queries
         {
             _cache.RemoveAsync(GetKey<GetAllToDoHeadersQuery.ToDoHeader>(notification.UserId));
             _cache.RemoveAsync(GetKey<GetToDoQuery.ToDo>(notification.Id));
+
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc />
+        public Task Handle(ToDosDeleted notification, CancellationToken cancellationToken)
+        {
+            _cache.RemoveAsync(GetKey<GetAllToDoHeadersQuery.ToDoHeader>(notification.UserId));
+            foreach (var id in notification.Ids)
+            {
+                _cache.RemoveAsync(GetKey<GetAllToDoHeadersQuery.ToDoHeader>(id));
+            }
 
             return Task.CompletedTask;
         }

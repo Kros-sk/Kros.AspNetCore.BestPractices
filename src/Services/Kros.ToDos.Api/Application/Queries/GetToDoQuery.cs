@@ -66,6 +66,11 @@ namespace Kros.ToDos.Api.Application.Queries
             /// User Id.
             /// </summary>
             public int UserId { get; set; }
+
+            /// <summary>
+            /// Is todo marked as done?
+            /// </summary>
+            public bool IsDone { get; set; }
         }
     }
 }
