@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kros.Users.Api.Application.Commands.CreateUser
+namespace Kros.Users.Api.Application.Commands
 {
     /// <summary>
     /// Create user command handler.

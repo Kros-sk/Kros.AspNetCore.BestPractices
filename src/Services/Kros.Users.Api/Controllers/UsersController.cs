@@ -1,13 +1,10 @@
-﻿using IdentityModel;
-using Kros.Users.Api.Application.Commands.CreateUser;
-using Kros.Users.Api.Application.Commands.UpdateUser;
+﻿using Kros.Users.Api.Application.Commands;
 using Kros.Users.Api.Application.Queries;
-using Kros.Users.Api.Services;
+using Kros.Users.Api.Application.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Kros.Users.Api.Controllers
@@ -21,20 +18,13 @@ namespace Kros.Users.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IMemoryCache _cache;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="userService">User service.</param>
-        /// <param name="cache">Cache.</param>
-        public UsersController(
-            IUserService userService,
-            IMemoryCache cache)
-        {
-            _userService = userService;
-            _cache = cache;
-        }
+        public UsersController(IUserService userService)
+            => _userService = userService;
 
         /// <summary>
         /// Is user admin?
@@ -44,7 +34,15 @@ namespace Kros.Users.Api.Controllers
         [ProducesResponseType(200, Type = typeof(bool))]
         public async Task<bool> IsAdmin()
         {
-            return await _userService.IsCurrentUserAdminAsync(this.User);
+            var isAdmin = _userService.TryIsAdminFromClaims(this.User);
+
+            if (isAdmin == null)
+            {
+                await _userService.TryCreateDefaultUserAsync(this.User);
+                return false;
+            }
+
+            return isAdmin.Value;
         }
 
         /// <summary>
@@ -57,9 +55,7 @@ namespace Kros.Users.Api.Controllers
         [ProducesResponseType(200, Type = typeof(GetUserQuery.User))]
         [Authorize("admin")]
         public async Task<GetUserQuery.User> GetUser(int userId)
-        {
-            return await this.SendRequest(new GetUserQuery(userId));
-        }
+            => await this.SendRequest(new GetUserQuery(userId));
 
         /// <summary>
         /// Get all users.
@@ -70,9 +66,7 @@ namespace Kros.Users.Api.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllUsersQuery.User>))]
         [Authorize("admin")]
         public async Task<IEnumerable<GetAllUsersQuery.User>> GetAllUsers()
-        {
-            return await this.SendRequest(new GetAllUsersQuery());
-        }
+            => await this.SendRequest(new GetAllUsersQuery());
 
         /// <summary>
         /// Update user.
@@ -80,17 +74,17 @@ namespace Kros.Users.Api.Controllers
         /// </summary>
         /// <param name="command">Data for updating user.</param>
         /// <param name="userId">User id.</param>
-        /// <returns>Return true, if update is success.</returns>
+        /// <returns>Return Ok, if update is success.</returns>
         [HttpPut("{userId}")]
         [ProducesResponseType(200)]
         [Authorize("admin")]
-        public async Task<ActionResult> UpdateUser(int userId, UpdateUserCommand command)
+        public async Task<ActionResult> UpdateUser(
+            int userId,
+            UpdateUserCommand command)
         {
             command.Id = userId;
 
-            await this.SendRequest(command);
-
-            _cache.Remove(command.Email); // Removing old user values from cache
+            await _userService.UpdateUserAsync(command);
 
             return Ok();
         }

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="Infrastructure\SqlScripts\20190418001_AddIsAdminColumn.sql" />
+    <None Remove="Kros.Users.Api.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,9 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Flurl" Version="2.8.1" />
     <PackageReference Include="Kros.Identity.Extensions" Version="0.4.0" />
-    <PackageReference Include="FluentValidation" Version="8.3.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.3.0" />
     <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.0.0" />
     <PackageReference Include="Kros.MediatR.Extensions" Version="1.0.2" />
     <PackageReference Include="Mapster" Version="3.3.2" />

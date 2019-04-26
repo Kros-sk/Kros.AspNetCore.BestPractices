@@ -1,6 +1,7 @@
-﻿using FluentValidation.AspNetCore;
-using Kros.Users.Api.Extensions;
+﻿using Kros.Users.Api.Extensions;
+using Kros.Users.Api.Infrastructure;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,10 +41,10 @@ namespace Kros.Users.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthenticationAndAuthorization(_configuration);
-            services.AddMvc().AddFluentValidation();
+            services.AddWebApi();
             services.AddKormDatabase(_configuration);
             services.AddMediatRDependencies();
-            services.AddCorsAllowAll();
+            services.AddCorsAllowAny();
 
             services.AddApplicationServices();
             services.AddSwagger();
@@ -68,7 +69,8 @@ namespace Kros.Users.Api
             }
 
             app.UseAuthentication();
-            app.UseCors(Extensions.ServiceCollectionExtensions.CorsAllowAllPolicy);
+            app.UseCors(Extensions.ServiceCollectionExtensions.CorsAllowAnyPolicy);
+            app.UseErrorHandling();
             app.UseUserProfileMiddleware(_configuration);
             app.UseKormMigrations();
             app.UseMvc();

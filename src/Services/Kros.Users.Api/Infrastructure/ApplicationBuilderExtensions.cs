@@ -1,12 +1,11 @@
 ﻿using Kros.Identity.Extensions;
-using Kros.Users.Api.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kros.Users.Api.Extensions
+namespace Kros.Users.Api.Infrastructure
 {
     /// <summary>
     /// Extensions for application builder.
@@ -24,10 +23,7 @@ namespace Kros.Users.Api.Extensions
         public static IApplicationBuilder UseUserProfileMiddleware(
             this IApplicationBuilder app,
             IConfiguration configuration)
-
-            => app.UseMiddleware<UserProfileMiddleware>(Options.Create(new IdentityServerOptions
-            {
-                AuthorityUrl = configuration.GetSection(IdentityServerHandlersConfigSectionKey).Get<IList<IdentityServerOptions>>().First().AuthorityUrl
-            }));
+            => app.UseMiddleware<UserProfileMiddleware>(configuration.GetSection(IdentityServerHandlersConfigSectionKey)
+                .Get<IList<IdentityServerOptions>>().First());
     }
 }

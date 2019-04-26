@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Kros.Users.Api.Application.Commands.CreateUser
+namespace Kros.Users.Api.Application.Commands
 {
     /// <summary>
     /// Create user command.

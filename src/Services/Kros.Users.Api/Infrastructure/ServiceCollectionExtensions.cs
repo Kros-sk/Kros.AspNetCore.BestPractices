@@ -31,7 +31,7 @@ namespace Kros.Users.Api.Extensions
         /// <summary>
         /// Allow all Cors policy.
         /// </summary>
-        public const string CorsAllowAllPolicy = "AllowAllCorsPolicy";
+        public const string CorsAllowAnyPolicy = "AllowAllCorsPolicy";
 
         /// <summary>
         /// Add KORM database.
@@ -86,7 +86,6 @@ namespace Kros.Users.Api.Extensions
         public static IServiceCollection AddAuthenticationAndAuthorization(
             this IServiceCollection services,
             IConfiguration configuration)
-
             => services.AddIdentityServerAuthentication(configuration)
                 .AddAuthorization(options =>
                 {
@@ -116,8 +115,8 @@ namespace Kros.Users.Api.Extensions
         /// Add Cors.
         /// </summary>
         /// <param name="services">DI container.</param>
-        public static IServiceCollection AddCorsAllowAll(this IServiceCollection services)
-            => services.AddCors(o => o.AddPolicy(CorsAllowAllPolicy, builder =>
+        public static IServiceCollection AddCorsAllowAny(this IServiceCollection services)
+            => services.AddCors(o => o.AddPolicy(CorsAllowAnyPolicy, builder =>
                 {
                     builder.AllowAnyOrigin()
                         .AllowAnyMethod()

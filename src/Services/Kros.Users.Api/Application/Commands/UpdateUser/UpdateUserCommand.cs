@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Newtonsoft.Json;
 
-namespace Kros.Users.Api.Application.Commands.UpdateUser
+namespace Kros.Users.Api.Application.Commands
 {
     /// <summary>
     /// Update user command.

@@ -1,4 +1,5 @@
-﻿using IdentityModel;
+﻿using Flurl;
+using IdentityModel;
 using IdentityModel.Client;
 using Kros.Identity.Extensions;
 using Kros.Users.Api.Application.Queries;
@@ -8,22 +9,31 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Kros.Users.Api.Middlewares
+namespace Kros.Users.Api.Infrastructure
 {
     /// <summary>
     /// Middleware for user profile.
     /// </summary>
     public class UserProfileMiddleware
     {
-        private const string AccessTokenHttpHeaderKey = "access_token";
-        private const string IdentityServerUserInfoEndpoint = "connect/userinfo";
+        /// <summary>
+        /// Claim type for admin user role.
+        /// </summary>
+        public const string ClaimTypeForAdmin = "IsAdmin";
 
+        /// <summary>
+        /// Http client name for communication with Identity Server.
+        /// </summary>
+        public const string IdentityServerHttpClientName = "IdentityServerClient";
+        private const string IdentityServerUserInfoEndpoint = "connect/userinfo";
+        
         private readonly RequestDelegate _next;
         private readonly IdentityServerOptions _identityServerOptions;
         private readonly IMemoryCache _cache;
@@ -39,11 +49,11 @@ namespace Kros.Users.Api.Middlewares
         public UserProfileMiddleware(
             RequestDelegate next, 
             IMemoryCache cache,
-            IOptions<IdentityServerOptions> identityServerOptions)
+            IdentityServerOptions identityServerOptions)
         {
             _next = Check.NotNull(next, nameof(next));
             _cache = Check.NotNull(cache, nameof(cache));
-            _identityServerOptions = identityServerOptions.Value;
+            _identityServerOptions = identityServerOptions;
         }
 
         /// <summary>
@@ -73,24 +83,22 @@ namespace Kros.Users.Api.Middlewares
         /// <returns>User profile's claims.</returns>
         private async Task<IEnumerable<Claim>> GetUserProfileClaimsAsync(HttpContext httpContext)
         {
-            if (httpContext.User != null)
+            string token = await httpContext.GetTokenAsync(
+                    OidcConstants.AuthenticationSchemes.FormPostBearer); // FormPostBearer == "access_token"
+
+            if (token != null)
             {
-                string token = await httpContext.GetTokenAsync(AccessTokenHttpHeaderKey);
-
-                if (token != null)
+                using (var client = _httpClientFactory.CreateClient(IdentityServerHttpClientName))
                 {
-                    using (var client = _httpClientFactory.CreateClient(Extensions.ServiceCollectionExtensions.IdentityServerHttpClientName))
+                    var response = await client.GetUserInfoAsync(new UserInfoRequest
                     {
-                        var response = await client.GetUserInfoAsync(new UserInfoRequest
-                        {
-                            Address = $"{_identityServerOptions.AuthorityUrl}/{IdentityServerUserInfoEndpoint}",
-                            Token = token
-                        });
+                        Address = Url.Combine(_identityServerOptions.AuthorityUrl, IdentityServerUserInfoEndpoint),
+                        Token = token
+                    });
 
-                        if (!response.IsError)
-                        {
-                            return response.Claims;
-                        }
+                    if (!response.IsError)
+                    {
+                        return response.Claims;
                     }
                 }
             }
@@ -103,7 +111,9 @@ namespace Kros.Users.Api.Middlewares
         /// </summary>
         /// <param name="userClaims">User's claims.</param>
         /// <param name="httpContext">Current Http context.</param>
-        private async Task AddUserProfileClaimsToCurrentIdentityAsync(IEnumerable<Claim> userClaims, HttpContext httpContext)
+        private async Task AddUserProfileClaimsToCurrentIdentityAsync(
+            IEnumerable<Claim> userClaims,
+            HttpContext httpContext)
         {
             Claim emailClaim = userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.Email);
 
@@ -118,7 +128,7 @@ namespace Kros.Users.Api.Middlewares
 
                 if (isAdmin != null)
                 {
-                    Claim adminClaim = new Claim(Extensions.ServiceCollectionExtensions.ClaimTypeForAdmin, isAdmin.Value.ToString());
+                    Claim adminClaim = new Claim(ClaimTypeForAdmin, isAdmin.Value.ToString());
                     claimsIdentity.AddClaim(adminClaim);
                 }
                 
