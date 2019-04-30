@@ -29,7 +29,7 @@ namespace Kros.ToDos.Api.Application.Model
         /// <summary>
         /// Deletes completed Todos.
         /// </summary>
-        Task<IEnumerable<int>> DeleteCompletedToDosAsync();
+        Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId);
 
         /// <summary>
         /// Change is done state to <paramref name="isDone"/>.
