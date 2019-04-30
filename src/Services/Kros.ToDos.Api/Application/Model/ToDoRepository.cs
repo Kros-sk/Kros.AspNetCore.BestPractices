@@ -62,14 +62,17 @@ namespace Kros.ToDos.Api.Application.Model
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<int>> DeleteCompletedToDosAsync()
+        public async Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId)
         {
             using (var transaction = _database.BeginTransaction())
             {
                 try
                 {
-                    var todoIds = _database.Query<int>().Sql("SELECT Id FROM ToDos WHERE (IsDone = 1)").ToList();
-                    await _database.ExecuteNonQueryAsync("DELETE FROM ToDos WHERE (IsDone = 1)");
+                    var todoIds = _database
+                        .Query<int>()
+                        .Sql($"SELECT Id FROM ToDos WHERE (UserId = {userId}) AND (IsDone = 1)")
+                        .ToList();
+                    await _database.ExecuteNonQueryAsync($"DELETE FROM ToDos WHERE (UserId = {userId}) AND (IsDone = 1)");
 
                     transaction.Commit();
 
