@@ -1,18 +1,28 @@
 ﻿using System.Reflection;
-using ApiGateway.Infrastructure;
 using Kros.KORM.Extensions.Asp;
-using Kros.Users.Api.Infrastructure;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Kros.Users.Api
 {
+    /// <summary>
+    /// Startup class.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Application configuration.
+        /// </summary>
+        public IConfiguration _configuration { get; }
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="env">Enviromnent variables.</param>
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -22,32 +32,31 @@ namespace Kros.Users.Api
                 .AddJsonFile($"appsettings.local.json", optional: true)
                 .AddEnvironmentVariables();
 
-            Configuration = builder.Build();
+            _configuration = builder.Build();
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services">Services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppAuthorization();
+            services.AddAuthenticationAndAuthorization(_configuration);
+            services.AddWebApi();
+            services.AddKormDatabase(_configuration);
+            services.AddMediatRDependencies();
+            services.AddCorsAllowAny();
 
-            services.AddKorm(Configuration)
-               .InitDatabaseForIdGenerator()
-               .AddKormMigrations(Configuration, o =>
-               {
-                   o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Users.Api.Infrastructure.SqlScripts");
-               })
-               .Migrate();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "Users Api", Version = "v1" });
-            });
+            services.AddApplicationServices();
+            services.AddSwagger();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        /// <param name="env">Enviromnent variables.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -58,16 +67,21 @@ namespace Kros.Users.Api
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseCors(Extensions.ServiceCollectionExtensions.CorsAllowAnyPolicy);
+            app.UseErrorHandling();
+            app.UseUserProfileMiddleware(_configuration);
+            app.UseKormMigrations();
             app.UseMvc();
-            app.UseSwagger()
-                .UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users Api V1");
-                });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users API V1");
+            });
         }
     }
 }
