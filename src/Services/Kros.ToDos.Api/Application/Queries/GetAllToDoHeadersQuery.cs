@@ -38,6 +38,11 @@ namespace Kros.ToDos.Api.Application.Queries
             /// ToDo Name.
             /// </summary>
             public string Name { get; set; }
+
+            /// <summary>
+            /// Is todo marked as done?
+            /// </summary>
+            public bool IsDone { get; set; }
         }
     }
 }

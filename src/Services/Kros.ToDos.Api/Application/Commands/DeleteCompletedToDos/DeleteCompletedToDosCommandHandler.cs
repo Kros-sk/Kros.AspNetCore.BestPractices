@@ -1,7 +1,6 @@
 ﻿using Kros.ToDos.Api.Application.Model;
 using Kros.ToDos.Api.Application.Notifications;
 using Kros.Utils;
-using Mapster;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 namespace Kros.ToDos.Api.Application.Commands
 {
     /// <summary>
-    /// Delete ToDo Command Handler.
+    /// Delete completed ToDos Command Handler.
     /// </summary>
-    public class DeleteToDoCommandHandler: IRequestHandler<DeleteToDoCommand, Unit>
+    public class DeleteCompletedToDosCommandHandler : IRequestHandler<DeleteCompletedToDosCommand, Unit>
     {
         private readonly IToDoRepository _repository;
         private readonly IMediator _mediator;
@@ -21,17 +20,17 @@ namespace Kros.ToDos.Api.Application.Commands
         /// </summary>
         /// <param name="repository">ToDo repository.</param>
         /// <param name="mediator">Mediator for publishing events.</param>
-        public DeleteToDoCommandHandler(IToDoRepository repository, IMediator mediator)
+        public DeleteCompletedToDosCommandHandler(IToDoRepository repository, IMediator mediator)
         {
             _repository = Check.NotNull(repository, nameof(repository));
             _mediator = Check.NotNull(mediator, nameof(mediator));
         }
 
         /// <inheritdoc />
-        public async Task<Unit> Handle(DeleteToDoCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteCompletedToDosCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteToDoAsync(request.Id);
-            await _mediator.Publish(new ToDoUpdated(request.Id, request.UserId));
+            var todoIds = await _repository.DeleteCompletedToDosAsync(request.UserId);
+            await _mediator.Publish(new ToDosDeleted(todoIds, request.UserId));
 
             return Unit.Value;
         }

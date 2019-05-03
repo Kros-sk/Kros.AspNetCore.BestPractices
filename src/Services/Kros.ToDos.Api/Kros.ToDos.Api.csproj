@@ -14,8 +14,9 @@
   <ItemGroup>
     <None Remove="Infrastructure\SqlScripts\20190401001_AddToDosTable.sql" />
     <None Remove="Infrastructure\SqlScripts\20190403001_AddUserIdColumn.sql" />
-    <None Remove="Infrastructure\SqlScripts\20190411001_ChangeDateTimeToDateTimeOffset - Copy.sql" />
-    <None Remove="Infrastructure\SqlScripts\20190411002_AddLasttChangeColumn.sql" />
+    <None Remove="Infrastructure\SqlScripts\20190411001_ChangeDateTimeToDateTimeOffset.sql" />
+    <None Remove="Infrastructure\SqlScripts\20190411002_AddLastChangeColumn.sql" />
+    <None Remove="Infrastructure\SqlScripts\20190424001_AddIsDoneColumn.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,10 +26,13 @@
     <EmbeddedResource Include="Infrastructure\SqlScripts\20190403001_AddUserIdColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Infrastructure\SqlScripts\20190411001_ChangeDateTimeToDateTimeOffset - Copy.sql">
+    <EmbeddedResource Include="Infrastructure\SqlScripts\20190411001_ChangeDateTimeToDateTimeOffset.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Infrastructure\SqlScripts\20190411002_AddLasttChangeColumn.sql">
+    <EmbeddedResource Include="Infrastructure\SqlScripts\20190424001_AddIsDoneColumn.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Infrastructure\SqlScripts\20190411002_AddLastChangeColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Infrastructure\SqlScripts\20190403002_InserDummyToDos.sql">
@@ -39,6 +43,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.2.3" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.2.2" />
+    <PackageReference Include="Kros.AspNetCore" Version="1.0.2-Alpha" />
     <PackageReference Include="Kros.KORM" Version="3.9.0" />
     <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.0.0" />
     <PackageReference Include="Kros.Utils" Version="1.9.0" />
@@ -63,7 +68,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Lib\Kros.AspNetCore\Kros.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Lib\Kros.MediatR.Extensions\Kros.MediatR.Extensions.csproj" />
   </ItemGroup>
 

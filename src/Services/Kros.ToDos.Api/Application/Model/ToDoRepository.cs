@@ -1,6 +1,8 @@
 ﻿using Kros.KORM;
+using Kros.KORM.Metadata.Attribute;
 using Kros.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +13,7 @@ namespace Kros.ToDos.Api.Application.Model
     /// </summary>
     public class ToDoRepository : IToDoRepository
     {
-        private IDatabase _database;
+        private readonly IDatabase _database;
 
         /// <summary>
         /// Ctor.
@@ -29,6 +31,8 @@ namespace Kros.ToDos.Api.Application.Model
 
             toDo.Created = DateTimeOffset.Now;
             toDo.LastChange = DateTimeOffset.Now;
+            toDo.IsDone = false;
+
             todos.Add(toDo);
 
             await todos.CommitChangesAsync();
@@ -52,17 +56,61 @@ namespace Kros.ToDos.Api.Application.Model
         public async Task DeleteToDoAsync(int id)
         {
             var todos = _database.Query<ToDo>().AsDbSet();
-            todos.Delete(new ToDo() { Id = id});
+            todos.Delete(new ToDo() { Id = id });
 
             await todos.CommitChangesAsync();
         }
 
-        //Dočasne pokia KORM nevie injektovať Created a LastChange
+        /// <inheritdoc />
+        public async Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId)
+        {
+            using (var transaction = _database.BeginTransaction())
+            {
+                try
+                {
+                    var todoIds = _database
+                        .Query<int>()
+                        .Sql($"SELECT Id FROM ToDos WHERE (UserId = {userId}) AND (IsDone = 1)")
+                        .ToList();
+                    await _database.ExecuteNonQueryAsync($"DELETE FROM ToDos WHERE (UserId = {userId}) AND (IsDone = 1)");
+
+                    transaction.Commit();
+
+                    return todoIds;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task ChangeIsDoneState(int id, bool isDone)
+        {
+            var todos = _database.Query<ToDoIsDoneEdit>().AsDbSet();
+            todos.Edit(new ToDoIsDoneEdit() { Id = id, IsDone = isDone });
+
+            await todos.CommitChangesAsync();
+        }
+
+        // Dočasne pokiaľ KORM nevie injektovať Created a LastChange
         private static Lazy<string[]> _editColumns
             = new Lazy<string[]>(()
                 => typeof(ToDo).GetProperties()
-                .Where(p=> p.Name != nameof(ToDo.Created))
-                .Select(p=> p.Name)
+                .Where(p => p.Name != nameof(ToDo.Created))
+                .Select(p => p.Name)
                 .ToArray());
+
+
+        [Alias("ToDos")]
+        private class ToDoIsDoneEdit
+        {
+            [Key]
+            public int Id { get; set; }
+
+            public bool IsDone { get; set; }
+        }
     }
 }
