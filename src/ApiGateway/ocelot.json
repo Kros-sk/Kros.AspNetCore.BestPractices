@@ -1,0 +1,46 @@
+{
+  "ReRoutes": [
+    {
+      "AddHeadersToRequest": {
+        "OpenIdUserId": "Claims[sub] > value",
+        "OpenIdUserEmail": "Claims[email] > value"
+      },
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9002
+        }
+      ],
+      "UpstreamPathTemplate": "/users/{everything}",
+      "UpstreamHttpMethod": [],
+      "SwaggerKey": "UsersKey",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "UsersKey",
+        "AllowedScopes": [
+          "openid",
+          "email",
+          "api"
+        ]
+      }
+    }
+  ],
+
+  "SwaggerEndPoints": [
+    {
+      "Key": "UsersKey",
+      "Config": [
+        {
+          "Name": "Users API",
+          "Version": "v1",
+          "Url": "http://localhost:9002/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+
+  //"GlobalConfiguration": {
+  //  "BaseUrl": "http://localhost"
+  //}
+}

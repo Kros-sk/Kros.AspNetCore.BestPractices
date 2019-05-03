@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{15B43234-BFB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8CB018F4-EB2D-409A-8C2C-A1520690E766}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{DF9CF3D3-3396-46E5-9C3C-624ACD743852}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{DF9CF3D3-3396-46E5-9C3C-624ACD743852}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Users.Api", "src\Services\Kros.Users.Api\Kros.Users.Api.csproj", "{58BDA07C-ED87-4D2B-BD70-04D8D31E4135}"
 EndProject
@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Statistics.Api", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "src\ApiGateway\ApiGateway.csproj", "{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{F4144276-E6B5-40AE-AC34-8519B1B09650}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{F4144276-E6B5-40AE-AC34-8519B1B09650}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.AspNetCore", "src\Lib\Kros.AspNetCore\Kros.AspNetCore.csproj", "{7A637705-1EDB-4B42-ACC8-50467813D2F0}"
 EndProject
