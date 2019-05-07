@@ -1,6 +1,7 @@
 ﻿using Kros.Users.Api.Application.Commands;
 using Kros.Users.Api.Application.Queries;
 using Kros.Users.Api.Application.Services;
+using Kros.Users.Api.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -34,7 +35,7 @@ namespace Kros.Users.Api.Controllers
         [ProducesResponseType(200, Type = typeof(bool))]
         public async Task<bool> IsAdmin()
         {
-            var isAdmin = _userService.TryIsAdminFromClaims(this.User);
+            var isAdmin = _userService.TryGetIsAdminFromClaims(this.User);
 
             if (isAdmin == null)
             {
@@ -53,7 +54,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>User.</returns>
         [HttpGet("{userId}")]
         [ProducesResponseType(200, Type = typeof(GetUserQuery.User))]
-        [Authorize("admin")]
+        [Authorize(Policies.Admin)]
         public async Task<GetUserQuery.User> GetUser(int userId)
             => await this.SendRequest(new GetUserQuery(userId));
 
@@ -64,7 +65,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>All application users.</returns>
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllUsersQuery.User>))]
-        [Authorize("admin")]
+        [Authorize(Policies.Admin)]
         public async Task<IEnumerable<GetAllUsersQuery.User>> GetAllUsers()
             => await this.SendRequest(new GetAllUsersQuery());
 
@@ -77,7 +78,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>Return Ok, if update is success.</returns>
         [HttpPut("{userId}")]
         [ProducesResponseType(200)]
-        [Authorize("admin")]
+        [Authorize(Policies.Admin)]
         public async Task<ActionResult> UpdateUser(
             int userId,
             UpdateUserCommand command)

@@ -1,15 +1,14 @@
 ﻿using Kros.Identity.Extensions;
 using Kros.KORM.Extensions.Asp;
+using Kros.Users.Api.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Kros.Users.Api.Extensions
 {
@@ -89,7 +88,7 @@ namespace Kros.Users.Api.Extensions
             => services.AddIdentityServerAuthentication(configuration)
                 .AddAuthorization(options =>
                 {
-                    options.AddPolicy("admin", policyAdmin =>
+                    options.AddPolicy(Policies.Admin, policyAdmin =>
                     {
                         policyAdmin.RequireClaim(ClaimTypeForAdmin, "True");
                     });

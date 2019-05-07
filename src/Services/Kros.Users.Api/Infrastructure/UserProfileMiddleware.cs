@@ -8,8 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -33,7 +31,7 @@ namespace Kros.Users.Api.Infrastructure
         /// </summary>
         public const string IdentityServerHttpClientName = "IdentityServerClient";
         private const string IdentityServerUserInfoEndpoint = "connect/userinfo";
-        
+
         private readonly RequestDelegate _next;
         private readonly IdentityServerOptions _identityServerOptions;
         private readonly IMemoryCache _cache;
@@ -47,7 +45,7 @@ namespace Kros.Users.Api.Infrastructure
         /// <param name="cache">Cache service.</param>
         /// <param name="identityServerOptions">Identity Server options.</param>
         public UserProfileMiddleware(
-            RequestDelegate next, 
+            RequestDelegate next,
             IMemoryCache cache,
             IdentityServerOptions identityServerOptions)
         {
@@ -84,7 +82,7 @@ namespace Kros.Users.Api.Infrastructure
         private async Task<IEnumerable<Claim>> GetUserProfileClaimsAsync(HttpContext httpContext)
         {
             string token = await httpContext.GetTokenAsync(
-                    OidcConstants.AuthenticationSchemes.FormPostBearer); // FormPostBearer == "access_token"
+                    OidcConstants.AuthenticationSchemes.FormPostBearer);
 
             if (token != null)
             {
@@ -121,22 +119,22 @@ namespace Kros.Users.Api.Infrastructure
             {
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity();
                 claimsIdentity.AddClaim(emailClaim);
-                claimsIdentity.AddClaim(userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName));
-                claimsIdentity.AddClaim(userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName));
+                claimsIdentity.AddClaim(userClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName));
+                claimsIdentity.AddClaim(userClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName));
 
-                var isAdmin = await IsUserAdminAsync(emailClaim.Value, httpContext);
+                var isAdmin = await IsUserAdminAsync(emailClaim.Value);
 
                 if (isAdmin != null)
                 {
                     Claim adminClaim = new Claim(ClaimTypeForAdmin, isAdmin.Value.ToString());
                     claimsIdentity.AddClaim(adminClaim);
                 }
-                
+
                 httpContext.User?.AddIdentity(claimsIdentity);
             }
         }
 
-        private async Task<bool?> IsUserAdminAsync(string userEmail, HttpContext httpContext)
+        private async Task<bool?> IsUserAdminAsync(string userEmail)
         {
             if (!_cache.TryGetValue(userEmail, out bool? isAdmin))
             {

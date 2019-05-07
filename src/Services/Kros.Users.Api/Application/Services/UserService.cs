@@ -49,7 +49,7 @@ namespace Kros.Users.Api.Application.Services
         }
 
         /// <inheritdoc />
-        public bool? TryIsAdminFromClaims(ClaimsPrincipal user)
+        public bool? TryGetIsAdminFromClaims(ClaimsPrincipal user)
         {
             var adminClaim = user.FindFirstValue(UserProfileMiddleware.ClaimTypeForAdmin);
 

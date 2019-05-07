@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\Projects\GitHubRepos\Kros-sk\Kros.AspNetCore.BestPractices\src\Services\Kros.ToDos.Api\Kros.ToDos.Api.xml</DocumentationFile>
+    <DocumentationFile>$(OutDir)\Kros.ToDos.Api.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

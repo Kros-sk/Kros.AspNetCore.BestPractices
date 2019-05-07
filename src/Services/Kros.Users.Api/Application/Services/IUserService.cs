@@ -14,13 +14,13 @@ namespace Kros.Users.Api.Application.Services
         /// Is user admin?
         /// </summary>
         /// <param name="user">User for detect.</param>
-        /// <returns>true, if it's admin, false otherwise.</returns>
-        bool? TryIsAdminFromClaims(ClaimsPrincipal user);
+        /// <returns><see langword="true"/>, if it's admin, <see langword="false"/> otherwise.</returns>
+        bool? TryGetIsAdminFromClaims(ClaimsPrincipal user);
 
         /// <summary>
         /// Try create new user.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">User.</param>
         Task TryCreateDefaultUserAsync(ClaimsPrincipal user);
 
         /// <summary>
