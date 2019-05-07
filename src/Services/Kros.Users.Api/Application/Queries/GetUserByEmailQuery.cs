@@ -14,7 +14,7 @@ namespace Kros.Users.Api.Application.Queries
         /// <param name="userEmail">User email.</param>
         public GetUserByEmailQuery(string userEmail)
         {
-            UserEmail = userEmail;
+            UserEmail = Check.NotNullOrWhiteSpace(userEmail, nameOf(userEmail));
         }
 
         /// <summary>
