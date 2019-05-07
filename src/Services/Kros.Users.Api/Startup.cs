@@ -1,63 +1,54 @@
-﻿using Kros.Users.Api.Extensions;
+﻿using Kros.AspNetCore;
+using Kros.Users.Api.Extensions;
 using Kros.Users.Api.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Kros.Users.Api
 {
     /// <summary>
-    /// Startup class.
+    /// Startup.
     /// </summary>
-    public class Startup
+    public class Startup : BaseStartup
     {
-        /// <summary>
-        /// Application configuration.
-        /// </summary>
-        public IConfiguration _configuration { get; }
-
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="env">Enviromnent variables.</param>
+        /// <param name="env">Environment.</param>
         public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile($"appsettings.local.json", optional: true)
-                .AddEnvironmentVariables();
-
-            _configuration = builder.Build();
-        }
+            : base(env)
+        { }
 
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
         /// <param name="services">Services.</param>
-        public void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthenticationAndAuthorization(_configuration);
+            base.ConfigureServices(services);
+
+            services.AddAuthenticationAndAuthorization(Configuration);
             services.AddWebApi();
-            services.AddKormDatabase(_configuration);
+            services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
-            services.AddCorsAllowAny();
 
             services.AddApplicationServices();
             services.AddSwagger();
         }
 
         /// <summary>
-        /// // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// configure web api pipeline.
         /// </summary>
         /// <param name="app">Application builder.</param>
-        /// <param name="env">Enviromnent variables.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <param name="loggerFactory">The logger factory.</param>
+        public override void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
+            base.Configure(app, loggerFactory);
+
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -69,9 +60,8 @@ namespace Kros.Users.Api
             }
 
             app.UseAuthentication();
-            app.UseCors(Extensions.ServiceCollectionExtensions.CorsAllowAnyPolicy);
             app.UseErrorHandling();
-            app.UseUserProfileMiddleware(_configuration);
+            app.UseUserProfileMiddleware(Configuration);
             app.UseKormMigrations();
             app.UseMvc();
 
