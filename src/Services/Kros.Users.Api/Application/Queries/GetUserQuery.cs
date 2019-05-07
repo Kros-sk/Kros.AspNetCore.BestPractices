@@ -18,7 +18,7 @@ namespace Kros.Users.Api.Application.Queries
         }
 
         /// <summary>
-        /// User email.
+        /// User Id.
         /// </summary>
         public int UserId { get; }
 
