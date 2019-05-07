@@ -4,7 +4,7 @@ using MediatR;
 namespace Kros.Users.Api.Application.Queries
 {
     /// <summary>
-    /// Get user by email.
+    /// Get user by Id.
     /// </summary>
     public class GetUserQuery : IRequest<GetUserQuery.User>
     {
