@@ -3,8 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Kros.KORM.Extensions.Asp;
 using System.Reflection;
 using MediatR;
-using Kros.ToDos.Api.Application.Queries.PipeLines;
 using Kros.MediatR.Extensions;
+using Kros.ToDos.Api.Application.Queries.PipeLines;
 using Kros.ToDos.Api.Application.Commands.PipeLines;
 using System.IO;
 using Swashbuckle.AspNetCore.Swagger;
@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">DI container.</param>
         public static IServiceCollection AddMediatRDependencies(this IServiceCollection services)
             => services.AddMediatR(Assembly.GetExecutingAssembly())
-                .AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>()
+                .AddPipelineBehaviorsForRequest<IUserResourceQuery>()
                 .AddPipelineBehaviorsForRequest<IUserResourceCommand>()
                 .AddMediatRNullCheckPostProcessor();
 

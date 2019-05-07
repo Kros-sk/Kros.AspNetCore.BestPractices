@@ -1,24 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Kros.Users.Api
 {
+    /// <summary>
+    /// Startup class.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Application entry.
+        /// </summary>
+        /// <param name="args">Arguments.</param>
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
         }
 
+        /// <summary>
+        /// Create web host builder.
+        /// </summary>
+        /// <param name="args">Arguments.</param>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
                 .UseStartup<Startup>();
     }
 }

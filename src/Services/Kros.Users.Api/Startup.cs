@@ -1,46 +1,54 @@
-﻿using System.Reflection;
-using Kros.KORM.Extensions.Asp;
+﻿using Kros.AspNetCore;
+using Kros.Users.Api.Extensions;
+using Kros.Users.Api.Infrastructure;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Kros.Users.Api
 {
-    public class Startup
+    /// <summary>
+    /// Startup.
+    /// </summary>
+    public class Startup : BaseStartup
     {
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="env">Environment.</param>
         public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile($"appsettings.local.json", optional: true)
-                .AddEnvironmentVariables();
+            : base(env)
+        { }
 
-            Configuration = builder.Build();
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services">Services.</param>
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            base.ConfigureServices(services);
+
+            services.AddAuthenticationAndAuthorization(Configuration);
+            services.AddWebApi();
+            services.AddKormDatabase(Configuration);
+            services.AddMediatRDependencies();
+
+            services.AddApplicationServices();
+            services.AddSwagger();
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        /// <summary>
+        /// configure web api pipeline.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        public override void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddKorm(Configuration)
-               .InitDatabaseForIdGenerator()
-               .AddKormMigrations(Configuration, o =>
-               {
-                   o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Users.Api.Infrastructure.SqlScripts");
-               })
-               .Migrate();
-        }
+            base.Configure(app, loggerFactory);
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -48,10 +56,20 @@ namespace Kros.Users.Api
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseErrorHandling();
+            app.UseUserProfileMiddleware(Configuration);
+            app.UseKormMigrations();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users API V1");
+            });
         }
     }
 }
