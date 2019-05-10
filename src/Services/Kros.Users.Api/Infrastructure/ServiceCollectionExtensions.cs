@@ -1,6 +1,8 @@
 ﻿using Kros.Identity.Extensions;
 using Kros.KORM.Extensions.Asp;
+using Kros.Users.Api.Infrastructure;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;

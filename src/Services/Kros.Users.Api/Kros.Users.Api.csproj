@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Develop\Kros.BestPractices\Kros.AspNetCore.BestPractices\src\Services\Kros.Users.Api\Kros.Users.Api.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\Kros.Users.Api.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,11 +1,9 @@
-﻿using System.Reflection;
-using Kros.KORM.Extensions.Asp;
+﻿using Kros.Users.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace Kros.Users.Api
 {
@@ -42,12 +40,11 @@ namespace Kros.Users.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppAuthorization();
-            services.AddAuthenticationAndAuthorization(_configuration);
-            services.AddWebApi();
+            services.AddWebApi()
+                .AddAuthorization();
             services.AddKormDatabase(_configuration);
             services.AddMediatRDependencies();
             services.AddCorsAllowAny();
-
             services.AddApplicationServices();
             services.AddSwagger();
         }
@@ -73,7 +70,6 @@ namespace Kros.Users.Api
             app.UseAuthentication();
             app.UseCors(Extensions.ServiceCollectionExtensions.CorsAllowAnyPolicy);
             app.UseErrorHandling();
-            app.UseUserProfileMiddleware(_configuration);
             app.UseKormMigrations();
             app.UseMvc();
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using Kros.AspNetCore.Extensions;
 
 namespace ApiGateway.Infrastructure
 {
@@ -22,7 +23,8 @@ namespace ApiGateway.Infrastructure
         public static IApplicationBuilder UseUserProfileMiddleware(
             this IApplicationBuilder app,
             IConfiguration configuration)
-            => app.UseMiddleware<UserProfileMiddleware>(configuration.GetSection(IdentityServerHandlersConfigSectionKey)
-                .Get<IList<IdentityServerOptions>>().First());
+            => app.UseMiddleware<UserProfileMiddleware>(
+                configuration.GetSection<IList<IdentityServerOptions>>(IdentityServerHandlersConfigSectionKey).First(),
+                configuration.GetSection<AppSettingsOptions>());
     }
 }

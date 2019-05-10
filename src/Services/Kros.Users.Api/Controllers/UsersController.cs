@@ -1,9 +1,9 @@
 ﻿using Kros.Users.Api.Application.Commands;
 using Kros.Users.Api.Application.Queries;
 using Kros.Users.Api.Application.Services;
+using Kros.Users.Api.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,7 +14,7 @@ namespace Kros.Users.Api.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize()]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -25,6 +25,18 @@ namespace Kros.Users.Api.Controllers
         /// <param name="userService">User service.</param>
         public UsersController(IUserService userService)
             => _userService = userService;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("abc")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        [Authorize(Policy = CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
+        public async Task<bool> Test()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Is user admin?
@@ -53,7 +65,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>User.</returns>
         [HttpGet("{userId}")]
         [ProducesResponseType(200, Type = typeof(GetUserQuery.User))]
-        [Authorize("admin")]
+        [Authorize(CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
         public async Task<GetUserQuery.User> GetUser(int userId)
             => await this.SendRequest(new GetUserQuery(userId));
 
@@ -64,7 +76,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>All application users.</returns>
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllUsersQuery.User>))]
-        [Authorize("admin")]
+        [Authorize(CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
         public async Task<IEnumerable<GetAllUsersQuery.User>> GetAllUsers()
             => await this.SendRequest(new GetAllUsersQuery());
 
@@ -77,7 +89,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>Return Ok, if update is success.</returns>
         [HttpPut("{userId}")]
         [ProducesResponseType(200)]
-        [Authorize("admin")]
+        [Authorize(CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
         public async Task<ActionResult> UpdateUser(
             int userId,
             UpdateUserCommand command)

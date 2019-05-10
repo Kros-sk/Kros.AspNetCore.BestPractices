@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Kros.Users.Api.Infrastructure
 {
+    /// <summary>
+    /// Custom authentication handler for authentication from Http headers
+    /// </summary>
     public class CustomAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         /// <summary>
@@ -34,7 +37,13 @@ namespace Kros.Users.Api.Infrastructure
         /// </summary>
         public const string ClaimTypeForAdmin = "IsAdmin";
 
-
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="options">Handler options.</param>
+        /// <param name="logger">Logger.</param>
+        /// <param name="encoder">Encoder.</param>
+        /// <param name="clock">Clock system.</param>
         public CustomAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
@@ -43,6 +52,10 @@ namespace Kros.Users.Api.Infrastructure
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             KeyValuePair<string, StringValues> userIdlHttpValue = Request.Headers.FirstOrDefault(x => x.Key == "OpenIdUserId");

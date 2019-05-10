@@ -6,11 +6,17 @@ using Kros.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using static IdentityModel.OidcConstants;
 
 namespace ApiGateway.Infrastructure
 {
@@ -27,6 +33,7 @@ namespace ApiGateway.Infrastructure
 
         private readonly RequestDelegate _next;
         private readonly IdentityServerOptions _identityServerOptions;
+        private readonly AppSettingsOptions _appSettingsOptions;
         private IHttpClientFactory _httpClientFactory;
 
         /// <summary>
@@ -37,10 +44,12 @@ namespace ApiGateway.Infrastructure
         /// <param name="identityServerOptions">Identity Server options.</param>
         public UserProfileMiddleware(
             RequestDelegate next,
-            IdentityServerOptions identityServerOptions)
+            IdentityServerOptions identityServerOptions,
+            AppSettingsOptions appSettingsOptions)
         {
             _next = Check.NotNull(next, nameof(next));
             _identityServerOptions = identityServerOptions;
+            _appSettingsOptions = appSettingsOptions;
         }
 
         /// <summary>
@@ -54,12 +63,11 @@ namespace ApiGateway.Infrastructure
         {
             _httpClientFactory = httpClientFactory;
 
-            var userClaims = await GetUserProfileClaimsAsync(httpContext);
-            if (userClaims != null)
+            var userProfileClaims = await GetUserProfileClaimsAsync(httpContext);
+            if (userProfileClaims != null)
             {
-                AddUserProfileClaimsToCurrentIdentity(userClaims, httpContext);
+                AddUserProfileClaimsToIdentityAndHttpHeaders(userProfileClaims, httpContext);
             }
-            
 
             await _next(httpContext);
         }
@@ -95,32 +103,61 @@ namespace ApiGateway.Infrastructure
         }
 
         /// <summary>
-        /// Add user profile's claims to the current user identity.
+        /// Add user profile's claims to the current user identity and to http headers as JWT token.
         /// </summary>
         /// <param name="userClaims">User's claims.</param>
         /// <param name="httpContext">Current Http context.</param>
-        private void AddUserProfileClaimsToCurrentIdentity(
-            IEnumerable<Claim> userClaims,
+        private void AddUserProfileClaimsToIdentityAndHttpHeaders(
+            IEnumerable<Claim> userProfileClaims,
             HttpContext httpContext)
         {
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity();
+            ClaimsIdentity claimsIdentity = CreateUserClaimsIdentity(userProfileClaims);
+            AddClaimsToUserIdentity(httpContext, claimsIdentity);
+            AddJwtTokenToHttpHeaders(httpContext, CreateUserJwtToken(claimsIdentity));
+        }
 
-            if (httpContext.User?.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject) == null)
+        private void AddClaimsToUserIdentity(HttpContext httpContext, ClaimsIdentity claimsIdentity)
+        {
+            httpContext.User?.AddIdentity(claimsIdentity);
+        }
+
+        private string CreateUserJwtToken(ClaimsIdentity claimsIdentity)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettingsOptions.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Claim subClaim = userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject);
-                if (subClaim != null)
-                {
-                    claimsIdentity.AddClaim(subClaim);
-                }
+                Subject = claimsIdentity,
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(securityToken);
+        }
+
+        private void AddJwtTokenToHttpHeaders(HttpContext httpContext, string token)
+        {
+            httpContext.Request.Headers.Add(HeaderNames.Authorization, $"{AuthenticationSchemes.AuthorizationHeaderBearer} {token}");
+        }
+
+        private ClaimsIdentity CreateUserClaimsIdentity(IEnumerable<Claim> userClaims)
+        {
+            ClaimsIdentity claims = new ClaimsIdentity();
+
+            Claim subClaim = userClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject);
+            if (subClaim != null)
+            {
+                claims.AddClaim(subClaim);
             }
 
-            Claim emailClaim = userClaims?.FirstOrDefault(x => x.Type == JwtClaimTypes.Email);
+            Claim emailClaim = userClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email);
             if (emailClaim != null)
             {
-                claimsIdentity.AddClaim(emailClaim);
+                claims.AddClaim(emailClaim);
             }
 
-            httpContext.User?.AddIdentity(claimsIdentity);
+            return claims;
         }
     }
 }
