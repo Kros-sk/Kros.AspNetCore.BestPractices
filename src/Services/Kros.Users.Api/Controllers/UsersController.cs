@@ -32,7 +32,8 @@ namespace Kros.Users.Api.Controllers
         /// <returns></returns>
         [HttpGet("abc")]
         [ProducesResponseType(200, Type = typeof(bool))]
-        [Authorize(Policy = CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
+        //[Authorize(Policy = CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
+        [Authorize("permission")]
         public async Task<bool> Test()
         {
             return true;

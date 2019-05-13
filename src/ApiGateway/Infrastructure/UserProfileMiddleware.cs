@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using Ocelot.JwtAuthorize;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -35,6 +36,7 @@ namespace ApiGateway.Infrastructure
         private readonly IdentityServerOptions _identityServerOptions;
         private readonly AppSettingsOptions _appSettingsOptions;
         private IHttpClientFactory _httpClientFactory;
+        private ITokenBuilder _tokenBuilder;
 
         /// <summary>
         /// Ctor.
@@ -59,9 +61,11 @@ namespace ApiGateway.Infrastructure
         /// <param name="httpClientFactory">Http client factory.</param>
         public async Task Invoke(
             HttpContext httpContext,
-            IHttpClientFactory httpClientFactory)
+            IHttpClientFactory httpClientFactory,
+            ITokenBuilder tokenBuilder)
         {
             _httpClientFactory = httpClientFactory;
+            _tokenBuilder = tokenBuilder;
 
             var userProfileClaims = await GetUserProfileClaimsAsync(httpContext);
             if (userProfileClaims != null)
@@ -113,7 +117,7 @@ namespace ApiGateway.Infrastructure
         {
             ClaimsIdentity claimsIdentity = CreateUserClaimsIdentity(userProfileClaims);
             AddClaimsToUserIdentity(httpContext, claimsIdentity);
-            AddJwtTokenToHttpHeaders(httpContext, CreateUserJwtToken(claimsIdentity));
+            AddJwtTokenToHttpHeaders(httpContext, CreateUserJwtToken(claimsIdentity), userProfileClaims);
         }
 
         private void AddClaimsToUserIdentity(HttpContext httpContext, ClaimsIdentity claimsIdentity)
@@ -136,9 +140,11 @@ namespace ApiGateway.Infrastructure
             return tokenHandler.WriteToken(securityToken);
         }
 
-        private void AddJwtTokenToHttpHeaders(HttpContext httpContext, string token)
+        private void AddJwtTokenToHttpHeaders(HttpContext httpContext, string token, IEnumerable<Claim> userClaims)
         {
-            httpContext.Request.Headers.Add(HeaderNames.Authorization, $"{AuthenticationSchemes.AuthorizationHeaderBearer} {token}");
+            //httpContext.Request.Headers.Add(HeaderNames.Authorization, $"{AuthenticationSchemes.AuthorizationHeaderBearer} {token}");
+
+            var tokenTest = _tokenBuilder.BuildJwtToken(userClaims.ToArray(), null);
         }
 
         private ClaimsIdentity CreateUserClaimsIdentity(IEnumerable<Claim> userClaims)

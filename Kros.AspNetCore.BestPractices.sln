@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.AspNetCore.Tests", "te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Users.Api", "src\Services\Kros.Users.Api\Kros.Users.Api.csproj", "{A2FF39A7-68C7-4AFB-B354-528AEC55D6D9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ocelot.JWTAuthorize", "..\..\..\Users\mikulamarian\Desktop\Ocelot.JWTAuthorize-master\Ocelot.JWTAuthorize\Ocelot.JWTAuthorize\Ocelot.JWTAuthorize.csproj", "{796B821B-5232-4645-BB1B-35D9A00E5286}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{A2FF39A7-68C7-4AFB-B354-528AEC55D6D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2FF39A7-68C7-4AFB-B354-528AEC55D6D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2FF39A7-68C7-4AFB-B354-528AEC55D6D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{796B821B-5232-4645-BB1B-35D9A00E5286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{796B821B-5232-4645-BB1B-35D9A00E5286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{796B821B-5232-4645-BB1B-35D9A00E5286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{796B821B-5232-4645-BB1B-35D9A00E5286}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

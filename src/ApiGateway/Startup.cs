@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
+using Ocelot.JwtAuthorize;
 using Ocelot.Middleware;
 
 namespace ApiGateway
@@ -38,12 +39,16 @@ namespace ApiGateway
         /// <param name="services">Services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOcelotJwtAuthorize();
+
             services.AddIdentityServerAuthentication(_configuration);
             services.AddApplicationServices();
             services.AddWebApi();
             services.AddOcelot();
             services.AddSwaggerForOcelot(_configuration);
             services.AddCorsAllowAny();
+
+            services.AddTokenJwtAuthorize();
         }
 
         /// <summary>

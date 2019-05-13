@@ -2,8 +2,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ocelot.JwtAuthorize;
+using System.Linq;
+using System.Security.Claims;
 
 namespace Kros.Users.Api
 {
@@ -39,6 +43,11 @@ namespace Kros.Users.Api
         /// <param name="services">Services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApiJwtAuthorize((context) =>
+            {
+                return ValidatePermission(context);
+            });
+
             services.AddAppAuthorization();
             services.AddWebApi()
                 .AddAuthorization();
@@ -47,6 +56,48 @@ namespace Kros.Users.Api
             services.AddCorsAllowAny();
             services.AddApplicationServices();
             services.AddSwagger();
+        }
+
+        /// <summary>
+        /// Cusomer Validate Method
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
+        private bool ValidatePermission(HttpContext httpContext)
+        {
+            if (httpContext.User.Claims.Count() > 0)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+            //var permissions = new List<Permission>() {
+            //    new Permission { Name="admin", Predicate="Get", Url="/api/values" },
+            //    new Permission { Name="admin", Predicate="Post", Url="/api/values" }
+            //};
+            //var questUrl = httpContext.Request.Path.Value.ToLower();
+
+            //if (permissions != null && permissions.Where(w => w.Url.Contains("}") ? questUrl.Contains(w.Url.Split('{')[0]) : w.Url.ToLower() == questUrl && w.Predicate.ToLower() == httpContext.Request.Method.ToLower()).Count() > 0)
+            //{
+            //    var roles = httpContext.User.Claims.SingleOrDefault(s => s.Type == ClaimTypes.Role).Value;
+            //    var roleArr = roles.Split(',');
+            //    var perCount = permissions.Where(w => roleArr.Contains(w.Name)).Count();
+            //    if (perCount == 0)
+            //    {
+            //        httpContext.Response.Headers.Add("error", "no permission");
+            //        return false;
+            //    }
+            //    else
+            //    {
+            //        return true;
+            //    }
+            //}
+            //else
+            //{
+            //    return false;
+            //}
+            //return true;
         }
 
         /// <summary>
