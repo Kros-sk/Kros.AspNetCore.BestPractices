@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <PackageReference Include="Flurl" Version="2.8.1" />
-    <PackageReference Include="Kros.Identity.Extensions" Version="0.4.0" />
     <PackageReference Include="Kros.KORM" Version="3.9.0" />
     <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.0.0" />
     <PackageReference Include="Kros.MediatR.Extensions" Version="1.0.2" />
@@ -35,10 +34,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Scrutor" Version="3.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Users\mikulamarian\Desktop\Ocelot.JWTAuthorize-master\Ocelot.JWTAuthorize\Ocelot.JWTAuthorize\Ocelot.JWTAuthorize.csproj" />
   </ItemGroup>
 
 </Project>

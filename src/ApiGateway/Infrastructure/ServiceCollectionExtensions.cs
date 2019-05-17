@@ -69,7 +69,7 @@ namespace ApiGateway.Infrastructure
         /// <param name="services">DI container.</param>
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddHttpClient(IdentityServerHttpClientName);
+            services.AddHttpClient();
             return services;
         }
 

@@ -1,8 +1,6 @@
-﻿using IdentityModel;
-using Kros.Users.Api.Application.Commands;
+﻿using Kros.Users.Api.Application.Commands;
 using Kros.Users.Api.Application.Model;
 using Kros.Users.Api.Application.Queries;
-using Kros.Users.Api.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
@@ -32,30 +30,39 @@ namespace Kros.Users.Api.Application.Services
         }
 
         /// <inheritdoc />
-        public async Task TryCreateDefaultUserAsync(ClaimsPrincipal user)
+        public async Task<GetUserByEmailQuery.User> TryCreateDefaultUserAsync(ClaimsPrincipal userClaims)
         {
-            var userEmail = user.FindFirstValue(JwtClaimTypes.Email);
+            var userEmail = userClaims.FindFirstValue(ClaimTypes.Email);
+            var user = await GetUserAsync(userEmail);
 
-            if (!await UserExists(userEmail))
+            if (user == null)
             {
-                await CreateNewUserAsync(new CreateUserCommand()
+                user = new GetUserByEmailQuery.User()
                 {
                     Email = userEmail,
-                    FirstName = user.FindFirstValue(JwtClaimTypes.GivenName),
-                    LastName = user.FindFirstValue(JwtClaimTypes.FamilyName),
+                    IsAdmin = false
+                };
+
+                user.Id = await CreateNewUserAsync(new CreateUserCommand()
+                {
+                    Email = userEmail,
+                    FirstName = userClaims.FindFirstValue(ClaimTypes.GivenName),
+                    LastName = userClaims.FindFirstValue(ClaimTypes.Surname),
                     IsAdmin = false
                 });
             }
+
+            return user;
         }
 
         /// <inheritdoc />
-        public bool? TryIsAdminFromClaims(ClaimsPrincipal user)
+        public bool IsAdminFromClaims(ClaimsPrincipal user)
         {
-            var adminClaim = user.FindFirstValue(CustomAuthenticationHandler.ClaimTypeForAdmin);
+            string adminClaim = user.FindFirstValue("IsAdmin");
 
             if (adminClaim == null)
             {
-                return null;
+                return false;
             }
 
             return bool.Parse(adminClaim);
@@ -68,15 +75,14 @@ namespace Kros.Users.Api.Application.Services
             _cache.Remove(command.Email); // Removing old user values from cache
         }
 
-        private async Task<bool> UserExists(string userEmail)
+        private async Task<GetUserByEmailQuery.User> GetUserAsync(string userEmail)
         {
-            var userFromDb = await _mediator.Send(new GetUserByEmailQuery(userEmail));
-            return (userFromDb != null);
+            return await _mediator.Send(new GetUserByEmailQuery(userEmail));
         }
 
-        private async Task CreateNewUserAsync(CreateUserCommand createUserCommand)
+        private async Task<int> CreateNewUserAsync(CreateUserCommand createUserCommand)
         {
-            await _mediator.Send(createUserCommand);
+            return await _mediator.Send(createUserCommand);
         }
     }
 }

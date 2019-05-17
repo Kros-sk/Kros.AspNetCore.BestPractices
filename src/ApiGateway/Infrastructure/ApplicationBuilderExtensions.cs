@@ -1,9 +1,6 @@
-﻿using Kros.Identity.Extensions;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using Kros.AspNetCore.Extensions;
+using System;
 
 namespace ApiGateway.Infrastructure
 {
@@ -12,19 +9,16 @@ namespace ApiGateway.Infrastructure
     /// </summary>
     public static class ApplicationBuilderExtensions
     {
-        private const string IdentityServerHandlersConfigSectionKey = "IdentityServerHandlers";
-
-        /// <summary>
-        /// Use user profile middleware.
-        /// </summary>
-        /// <param name="app">Application builder.</param>
-        /// <param name="configuration">Application configuration.</param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseUserProfileMiddleware(
+        public static IApplicationBuilder UseAuthorizationMiddleware(
             this IApplicationBuilder app,
             IConfiguration configuration)
-            => app.UseMiddleware<UserProfileMiddleware>(
-                configuration.GetSection<IList<IdentityServerOptions>>(IdentityServerHandlersConfigSectionKey).First(),
-                configuration.GetSection<AppSettingsOptions>());
+            => app.UseMiddleware<AuthorizationMiddleware>(
+                configuration.GetSection<JwtAuthorizationSecurityOptions>());
+
+        public static IApplicationBuilder UseAuthorizationMiddleware(
+            this IApplicationBuilder app,
+            Func<JwtAuthorizationSecurityOptions> configureOptions)
+            => app.UseMiddleware<AuthorizationMiddleware>(
+                configureOptions.Invoke());
     }
 }

@@ -1,17 +1,12 @@
-﻿using Kros.Identity.Extensions;
-using Kros.KORM.Extensions.Asp;
-using Kros.Users.Api.Infrastructure;
+﻿using Kros.KORM.Extensions.Asp;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Kros.Users.Api.Extensions
 {
@@ -81,23 +76,6 @@ namespace Kros.Users.Api.Extensions
         }
 
         /// <summary>
-        /// Add Authentication and authorization.
-        /// </summary>
-        /// <param name="services">DI container.</param>
-        /// <param name="configuration">Configuration.</param>
-        public static IServiceCollection AddAuthenticationAndAuthorization(
-            this IServiceCollection services,
-            IConfiguration configuration)
-            => services.AddIdentityServerAuthentication(configuration)
-                .AddAuthorization(options =>
-                {
-                    options.AddPolicy("admin", policyAdmin =>
-                    {
-                        policyAdmin.RequireClaim(ClaimTypeForAdmin, "True");
-                    });
-                });
-
-        /// <summary>
         /// Add application services.
         /// </summary>
         /// <param name="services">DI container.</param>
@@ -124,25 +102,5 @@ namespace Kros.Users.Api.Extensions
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 }));
-
-        /// <summary>
-        /// Add authorization.
-        /// </summary>
-        /// <param name="services">DI container.</param>
-        public static IServiceCollection AddAppAuthorization(
-            this IServiceCollection services)
-        {
-            services.AddAuthentication(CustomAuthenticationHandler.CustomAuthenticationSchemaName)
-                .AddScheme<AuthenticationSchemeOptions, CustomAuthenticationHandler>
-                (CustomAuthenticationHandler.CustomAuthenticationSchemaName, null);
-            return services.AddAuthorization(options =>
-            {
-                options.AddPolicy(CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName, policyAdmin =>
-                {
-                    policyAdmin.RequireClaim(CustomAuthenticationHandler.ClaimTypeForAdmin,
-                        CustomAuthenticationHandler.CustomAuthorizationAdminPolicyValue);
-                });
-            });
-        }
     }
 }

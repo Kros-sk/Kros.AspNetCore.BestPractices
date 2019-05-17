@@ -1,10 +1,10 @@
 ﻿using Kros.Users.Api.Application.Commands;
 using Kros.Users.Api.Application.Queries;
 using Kros.Users.Api.Application.Services;
-using Kros.Users.Api.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Kros.Users.Api.Controllers
@@ -30,13 +30,17 @@ namespace Kros.Users.Api.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet("abc")]
+        [HttpGet("get-user-claims")]
         [ProducesResponseType(200, Type = typeof(bool))]
-        //[Authorize(Policy = CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
-        [Authorize("permission")]
-        public async Task<bool> Test()
+        public async Task<IEnumerable<Claim>> GetUserClaims()
         {
-            return true;
+            var user = await _userService.TryCreateDefaultUserAsync(User);
+
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim("UserId", user.Id.ToString()));
+            claims.Add(new Claim("IsAdmin", user.IsAdmin.ToString()));
+
+            return claims;
         }
 
         /// <summary>
@@ -45,17 +49,9 @@ namespace Kros.Users.Api.Controllers
         /// <returns>Return true, if user is admin.</returns>
         [HttpGet(nameof(IsAdmin))]
         [ProducesResponseType(200, Type = typeof(bool))]
-        public async Task<bool> IsAdmin()
+        public bool IsAdmin()
         {
-            var isAdmin = _userService.TryIsAdminFromClaims(this.User);
-
-            if (isAdmin == null)
-            {
-                await _userService.TryCreateDefaultUserAsync(this.User);
-                return false;
-            }
-
-            return isAdmin.Value;
+            return _userService.IsAdminFromClaims(User);
         }
 
         /// <summary>
@@ -66,7 +62,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>User.</returns>
         [HttpGet("{userId}")]
         [ProducesResponseType(200, Type = typeof(GetUserQuery.User))]
-        [Authorize(CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
+        [Authorize("admin")]
         public async Task<GetUserQuery.User> GetUser(int userId)
             => await this.SendRequest(new GetUserQuery(userId));
 
@@ -77,7 +73,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>All application users.</returns>
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllUsersQuery.User>))]
-        [Authorize(CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
+        [Authorize("admin")]
         public async Task<IEnumerable<GetAllUsersQuery.User>> GetAllUsers()
             => await this.SendRequest(new GetAllUsersQuery());
 
@@ -90,7 +86,7 @@ namespace Kros.Users.Api.Controllers
         /// <returns>Return Ok, if update is success.</returns>
         [HttpPut("{userId}")]
         [ProducesResponseType(200)]
-        [Authorize(CustomAuthenticationHandler.CustomAuthorizationAdminPolicyName)]
+        [Authorize("admin")]
         public async Task<ActionResult> UpdateUser(
             int userId,
             UpdateUserCommand command)

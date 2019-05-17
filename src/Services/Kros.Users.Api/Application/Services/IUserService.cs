@@ -1,5 +1,6 @@
 ﻿using Kros.Users.Api.Application.Commands;
 using Kros.Users.Api.Application.Model;
+using Kros.Users.Api.Application.Queries;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -15,13 +16,13 @@ namespace Kros.Users.Api.Application.Services
         /// </summary>
         /// <param name="user">User for detect.</param>
         /// <returns>true, if it's admin, false otherwise.</returns>
-        bool? TryIsAdminFromClaims(ClaimsPrincipal user);
+        bool IsAdminFromClaims(ClaimsPrincipal user);
 
         /// <summary>
         /// Try create new user.
         /// </summary>
         /// <param name="user"></param>
-        Task TryCreateDefaultUserAsync(ClaimsPrincipal user);
+        Task<GetUserByEmailQuery.User> TryCreateDefaultUserAsync(ClaimsPrincipal user);
 
         /// <summary>
         /// Update user values;

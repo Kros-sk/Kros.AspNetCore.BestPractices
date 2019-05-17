@@ -1,13 +1,14 @@
 ﻿using Kros.Users.Api.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Ocelot.JwtAuthorize;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
-using System.Security.Claims;
+using System.Text;
 
 namespace Kros.Users.Api
 {
@@ -43,12 +44,31 @@ namespace Kros.Users.Api
         /// <param name="services">Services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApiJwtAuthorize((context) =>
+            services.AddAuthentication(options =>
             {
-                return ValidatePermission(context);
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = false;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("XL3TcKtY5y7i6DR6wYkAp3EKBoZNke05PSMSs5Enrzun2bjmZsM")),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
-
-            services.AddAppAuthorization();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("admin", policyAdmin =>
+                {
+                    policyAdmin.RequireClaim("IsAdmin", "True");
+                });
+            });
+            //services.AddAppAuthorization();
             services.AddWebApi()
                 .AddAuthorization();
             services.AddKormDatabase(_configuration);

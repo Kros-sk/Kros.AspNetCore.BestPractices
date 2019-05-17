@@ -1,10 +1,6 @@
 {
   "ReRoutes": [
     {
-      "AddHeadersToRequest": {
-        "OpenIdUserId": "Claims[sub] > value",
-        "OpenIdUserEmail": "Claims[email] > value"
-      },
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
