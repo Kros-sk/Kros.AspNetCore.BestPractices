@@ -1,7 +1,19 @@
 {
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/api/users",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9002
+        }
+      ],
+      "UpstreamPathTemplate": "/users",
+      "SwaggerKey": "UsersKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/users/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -10,16 +22,7 @@
         }
       ],
       "UpstreamPathTemplate": "/users/{everything}",
-      "UpstreamHttpMethod": [],
-      "SwaggerKey": "UsersKey",
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "UsersKey",
-        "AllowedScopes": [
-          "openid",
-          "email",
-          "api"
-        ]
-      }
+      "SwaggerKey": "UsersKey"
     }
   ],
 

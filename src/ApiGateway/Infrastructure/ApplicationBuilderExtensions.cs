@@ -12,13 +12,11 @@ namespace ApiGateway.Infrastructure
         public static IApplicationBuilder UseAuthorizationMiddleware(
             this IApplicationBuilder app,
             IConfiguration configuration)
-            => app.UseMiddleware<AuthorizationMiddleware>(
-                configuration.GetSection<JwtAuthorizationSecurityOptions>());
+            => app.UseMiddleware<AuthorizationMiddleware>(configuration.GetSection<JwtAuthorizationOptions>());
 
         public static IApplicationBuilder UseAuthorizationMiddleware(
             this IApplicationBuilder app,
-            Func<JwtAuthorizationSecurityOptions> configureOptions)
-            => app.UseMiddleware<AuthorizationMiddleware>(
-                configureOptions.Invoke());
+            Func<JwtAuthorizationOptions> configureOptions)
+            => app.UseMiddleware<AuthorizationMiddleware>(configureOptions.Invoke());
     }
 }

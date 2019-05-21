@@ -1,18 +1,8 @@
-﻿using IdentityModel.Client;
-using IdentityServer4.Stores.Serialization;
-using Kros.Utils;
-using Microsoft.AspNetCore.Authentication;
+﻿using Kros.Utils;
 using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using static IdentityModel.OidcConstants;
 
@@ -24,21 +14,21 @@ namespace ApiGateway.Infrastructure
     public class AuthorizationMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly JwtAuthorizationSecurityOptions _jwtAuthorizationSecurityOptions;
+        private readonly JwtAuthorizationOptions _jwtAuthorizationOptions;
         private IHttpClientFactory _httpClientFactory;
+        private HttpContext _httpContext;
 
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="next">Next middleware.</param>
-        /// <param name="cache">Cache service.</param>
-        /// <param name="identityServerOptions">Identity Server options.</param>
+        /// <param name="jwtAuthorizationOptions">Authorization options.</param>
         public AuthorizationMiddleware(
             RequestDelegate next,
-            JwtAuthorizationSecurityOptions jwtAuthorizationSecurityOptions)
+            JwtAuthorizationOptions jwtAuthorizationOptions)
         {
             _next = Check.NotNull(next, nameof(next));
-            _jwtAuthorizationSecurityOptions = Check.NotNull(jwtAuthorizationSecurityOptions, nameof(jwtAuthorizationSecurityOptions));
+            _jwtAuthorizationOptions = Check.NotNull(jwtAuthorizationOptions, nameof(jwtAuthorizationOptions));
         }
 
         /// <summary>
@@ -50,94 +40,36 @@ namespace ApiGateway.Infrastructure
             HttpContext httpContext,
             IHttpClientFactory httpClientFactory)
         {
+            _httpContext = httpContext;
             _httpClientFactory = httpClientFactory;
 
-            var oidcUserClaims = await GetOidcUserClaimsAsync(httpContext);
-            var oicdUserJwtToken = CreateJwtTokenFromClaims(oidcUserClaims);
-            var userAuthorizationClaims = await GetUserAuthorizationClaimsAsync(httpContext, oicdUserJwtToken);
+            var userJwt = await GetUserAuthorizationJwtAsync();
 
-            var allUserClaims = new List<Claim>();
-            allUserClaims.AddRange(oidcUserClaims);
-            allUserClaims.AddRange(userAuthorizationClaims);
-
-            var userJwtToken = CreateJwtTokenFromClaims(allUserClaims);
-            AddUserProfileClaimsToIdentityAndHttpHeaders(userJwtToken, httpContext);
+            if (!string.IsNullOrEmpty(userJwt))
+            {
+                AddUserProfileClaimsToIdentityAndHttpHeaders(userJwt);
+            }
 
             await _next(httpContext);
         }
 
-        private string CreateJwtTokenFromClaims(IEnumerable<Claim> userClaims)
+        private async Task<string> GetUserAuthorizationJwtAsync()
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtAuthorizationSecurityOptions.JwtSecret);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            using (var client = _httpClientFactory.CreateClient())
             {
-                Subject = new ClaimsIdentity(userClaims),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            try
-            {
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                return tokenHandler.WriteToken(securityToken);
-            }
-            catch (Exception ex)
-            {
+                if (_httpContext.Request.Headers.TryGetValue(HeaderNames.Authorization, out StringValues value)) {
+                    client.DefaultRequestHeaders.Add(HeaderNames.Authorization, value.ToString());
 
-                throw ex;
-            }
-        }
-
-        private async Task<IEnumerable<Claim>> GetOidcUserClaimsAsync(HttpContext httpContext)
-        {
-            string token = await httpContext.GetTokenAsync(AuthenticationSchemes.FormPostBearer); // FormPostBearer == "access_token"
-
-            if (token != null)
-            {
-                using (var client = _httpClientFactory.CreateClient())
-                {
-                    var response = await client.GetUserInfoAsync(new UserInfoRequest
-                    {
-                        Address = _jwtAuthorizationSecurityOptions.IdentityServerUserInfoEndpoint,
-                        Token = token
-                    });
-
-                    if (!response.IsError)
-                    {
-                        return response.Claims;
-                    }
-                }
-            }
-
-            return new List<Claim>();
-        }
-
-        /// <summary>
-        /// Get user profile's claims from IdentityServer user profile endpoint.
-        /// </summary>
-        /// <param name="httpContext">Current Http context.</param>
-        /// <returns>User profile's claims.</returns>
-        private async Task<IEnumerable<Claim>> GetUserAuthorizationClaimsAsync(HttpContext httpContext, string jwtToken)
-        {
-            string token = await httpContext.GetTokenAsync(AuthenticationSchemes.FormPostBearer); // FormPostBearer == "access_token"
-
-            if (token != null)
-            {
-                using (var client = _httpClientFactory.CreateClient())
-                {
-                    client.DefaultRequestHeaders.Authorization = 
-                        new AuthenticationHeaderValue(AuthenticationSchemes.AuthorizationHeaderBearer, jwtToken);
-                    var response = await client.GetAsync(_jwtAuthorizationSecurityOptions.UserClaimsEndpoint);
+                    var response = await client.GetAsync(_jwtAuthorizationOptions.AuthorizationUri);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        var result = await response.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<IEnumerable<Claim>>(result, new ClaimConverter());
+                        return await response.Content.ReadAsStringAsync();
                     }
                 }
             }
 
-            return new List<Claim>();
+            return string.Empty;
         }
 
         /// <summary>
@@ -145,11 +77,9 @@ namespace ApiGateway.Infrastructure
         /// </summary>
         /// <param name="userClaims">User's claims.</param>
         /// <param name="httpContext">Current Http context.</param>
-        private void AddUserProfileClaimsToIdentityAndHttpHeaders(
-            string userJwtToken,
-            HttpContext httpContext)
+        private void AddUserProfileClaimsToIdentityAndHttpHeaders(string userJwtToken)
         {
-            httpContext.Request.Headers[HeaderNames.Authorization] = $"{AuthenticationSchemes.AuthorizationHeaderBearer} {userJwtToken}";
+            _httpContext.Request.Headers[HeaderNames.Authorization] = $"{AuthenticationSchemes.AuthorizationHeaderBearer} {userJwtToken}";
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace ApiGateway.Infrastructure
+﻿namespace Kros.Authorization.Api.Application.Options
 {
     public class JwtAuthorizationSecurityOptions
     {
         public string IdentityServerUserInfoEndpoint { get; set; }
-        public string UserClaimsEndpoint { get; set; }
         public string JwtSecret { get; set; }
     }
 }

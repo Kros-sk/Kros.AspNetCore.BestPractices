@@ -39,16 +39,11 @@ namespace ApiGateway
         /// <param name="services">Services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddOcelotJwtAuthorize();
-
-            services.AddIdentityServerAuthentication(_configuration);
             services.AddApplicationServices();
             services.AddWebApi();
             services.AddOcelot();
             services.AddSwaggerForOcelot(_configuration);
             services.AddCorsAllowAny();
-
-            //services.AddTokenJwtAuthorize();
         }
 
         /// <summary>
@@ -67,7 +62,6 @@ namespace ApiGateway
                 app.UseHttpsRedirection();
             }
 
-            app.UseAuthentication();
             app.UseAuthorizationMiddleware(_configuration);
             app.UseCors(Infrastructure.ServiceCollectionExtensions.CorsAllowAnyPolicy);
             app.UseErrorHandling();
