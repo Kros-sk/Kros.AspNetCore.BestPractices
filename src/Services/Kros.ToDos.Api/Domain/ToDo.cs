@@ -2,7 +2,7 @@
 using Kros.KORM.Metadata.Attribute;
 using System;
 
-namespace Kros.ToDos.Api.Application.Model
+namespace Kros.ToDos.Api.Domain
 {
     /// <summary>
     /// ToDo model.

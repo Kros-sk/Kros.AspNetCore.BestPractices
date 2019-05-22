@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Kros.ToDos.Api.Controllers
+namespace Kros.ToDos.Api.Application.Controllers
 {
     /// <summary>
     /// ToDos controller

@@ -1,4 +1,4 @@
-﻿namespace Kros.ToDos.Api.Infrastructure
+﻿namespace Kros.ToDos.Api.Application
 {
     /// <summary>
     /// Redis cache options.
