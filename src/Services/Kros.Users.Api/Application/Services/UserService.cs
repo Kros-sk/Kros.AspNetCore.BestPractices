@@ -56,7 +56,7 @@ namespace Kros.Users.Api.Application.Services
         }
 
         /// <inheritdoc />
-        public bool IsAdminFromClaims(ClaimsPrincipal user)
+        public bool? TryGetIsAdminFromClaims(ClaimsPrincipal user)
         {
             string adminClaim = user.FindFirstValue("IsAdmin");
 

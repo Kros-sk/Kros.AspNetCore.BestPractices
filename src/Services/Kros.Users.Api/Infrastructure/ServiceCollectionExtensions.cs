@@ -1,4 +1,5 @@
 ﻿using Kros.KORM.Extensions.Asp;
+using Kros.Users.Api.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,11 +25,6 @@ namespace Kros.Users.Api.Extensions
         /// Http client name for communication with Identity Server.
         /// </summary>
         public const string IdentityServerHttpClientName = "IdentityServerClient";
-
-        /// <summary>
-        /// Allow all Cors policy.
-        /// </summary>
-        public const string CorsAllowAnyPolicy = "AllowAllCorsPolicy";
 
         /// <summary>
         /// Add KORM database.
@@ -90,17 +86,5 @@ namespace Kros.Users.Api.Extensions
                     .AddClasses()
                     .AsMatchingInterface());
         }
-
-        /// <summary>
-        /// Add Cors.
-        /// </summary>
-        /// <param name="services">DI container.</param>
-        public static IServiceCollection AddCorsAllowAny(this IServiceCollection services)
-            => services.AddCors(o => o.AddPolicy(CorsAllowAnyPolicy, builder =>
-                {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                }));
     }
 }

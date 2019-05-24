@@ -1,52 +1,37 @@
 ﻿using FluentValidation.AspNetCore;
+using Kros.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Kros.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace Kros.ToDos.Api
 {
     /// <summary>
     /// Startup.
     /// </summary>
-    public class Startup
+    public class Startup : BaseStartup
     {
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="env">Environment.</param>
         public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile($"appsettings.local.json", optional: true)
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
-            Environment = env;
-        }
-
-        /// <summary>
-        /// Configuration.
-        /// </summary>
-        public IConfiguration Configuration { get; }
-
-        /// <summary>
-        /// Environment.
-        /// </summary>
-        public IHostingEnvironment Environment { get; }
+            : base(env)
+        { }
 
         /// <summary>
         /// Configure IoC container.
         /// </summary>
         /// <param name="services">Service.</param>
-        public void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddWebApi()
+            base.ConfigureServices(services);
+
+            services
+                .AddWebApi()
                 .AddFluentValidation();
 
             services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
@@ -62,24 +47,18 @@ namespace Kros.ToDos.Api
 
             services.AddSwagger();
             services.AddDistributedCache(Configuration);
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigins",
-                    builder => builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
-            });
         }
 
         /// <summary>
         /// configure web api pipeline.
         /// </summary>
         /// <param name="app">Application builder.</param>
-        /// <param name="env">Environment</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <param name="loggerFactory">The logger factory.</param>
+        public override void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
+            base.Configure(app, loggerFactory);
+
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -90,7 +69,6 @@ namespace Kros.ToDos.Api
                 app.UseHttpsRedirection();
             }
 
-            app.UseCors("AllowAllOrigins");
             app.UseErrorHandling();
             app.UseAuthentication();
             app.UseKormMigrations();

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\$(Configuration)\Kros.Users.Api.xml</DocumentationFile>
+    <DocumentationFile>$(OutDir)\Kros.Users.Api.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +25,8 @@
 
   <ItemGroup>
     <PackageReference Include="Flurl" Version="2.8.1" />
+    <PackageReference Include="Kros.AspNetCore" Version="1.0.2-Alpha" />
+    <PackageReference Include="Kros.Identity.Extensions" Version="0.4.0" />
     <PackageReference Include="Kros.KORM" Version="3.9.0" />
     <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.0.0" />
     <PackageReference Include="Kros.MediatR.Extensions" Version="1.0.2" />
