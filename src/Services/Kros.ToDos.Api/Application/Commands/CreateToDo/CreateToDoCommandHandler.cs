@@ -1,5 +1,5 @@
-﻿using Kros.ToDos.Api.Application.Model;
-using Kros.ToDos.Api.Application.Notifications;
+﻿using Kros.ToDos.Api.Application.Notifications;
+using Kros.ToDos.Api.Domain;
 using Kros.Utils;
 using Mapster;
 using MediatR;
