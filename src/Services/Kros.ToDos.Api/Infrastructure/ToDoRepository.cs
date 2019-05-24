@@ -1,12 +1,13 @@
 ﻿using Kros.KORM;
 using Kros.KORM.Metadata.Attribute;
+using Kros.ToDos.Api.Domain;
 using Kros.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Kros.ToDos.Api.Application.Model
+namespace Kros.ToDos.Api.Infrastructure
 {
     /// <summary>
     /// Repository for persistating <see cref="ToDo"/>.
@@ -96,7 +97,7 @@ namespace Kros.ToDos.Api.Application.Model
         }
 
         // Dočasne pokiaľ KORM nevie injektovať Created a LastChange
-        private static Lazy<string[]> _editColumns
+        private static readonly Lazy<string[]> _editColumns
             = new Lazy<string[]>(()
                 => typeof(ToDo).GetProperties()
                 .Where(p => p.Name != nameof(ToDo.Created))

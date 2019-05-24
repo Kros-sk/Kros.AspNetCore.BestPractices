@@ -10,7 +10,7 @@ using System.IO;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using Microsoft.Extensions.Caching.Distributed;
-using Kros.ToDos.Api.Infrastructure;
+using Kros.ToDos.Api.Application;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -41,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .InitDatabaseForIdGenerator()
                 .AddKormMigrations(configuration, o =>
                 {
-                    o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.ToDos.Api.Infrastructure.SqlScripts");
+                    o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.ToDos.Api.SqlScripts");
                 })
                 .Migrate();
 

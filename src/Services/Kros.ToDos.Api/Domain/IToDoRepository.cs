@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Kros.ToDos.Api.Application.Model
+namespace Kros.ToDos.Api.Domain
 {
     /// <summary>
     /// Interface which describe repository for persistating <see cref="ToDo"/>.

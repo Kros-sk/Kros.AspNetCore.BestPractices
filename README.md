@@ -1,6 +1,6 @@
 # Kros.AspNetCore.BestPractices
 
-Toto repo bude obsahovať demo príklad, ktorý bude ukazovať architektúru našich služieb.
+Toto repo **bude** obsahovať demo príklad, ktorý bude ukazovať architektúru našich služieb.
 
 Mal by obsahovať:
 - vzorovú štruktúru projektov
@@ -9,6 +9,41 @@ Mal by obsahovať:
 - ukážku architektúry jednotlivých služieb
 
 Na základne tohto dema by mal človek pochopiť architektúru našich služieb a mal by byť schopný vytvoriť nový projekt v podobnom duchu.
+
+- [Kros.AspNetCore.BestPractices](#krosaspnetcorebestpractices)
+  - [Quick start](#quick-start)
+  - [Overview](#overview)
+  - [Project physical structure](#project-physical-structure)
+  - [Microservices internal architecture](#microservices-internal-architecture)
+    - [Prehľad CQRS](#preh%C4%BEad-cqrs)
+    - [CQRS](#cqrs)
+  - [Použité knižnice](#pou%C5%BEit%C3%A9-kni%C5%BEnice)
+
+## Quick start
+
+## Overview
+
+## Project physical structure
+
+## Microservices internal architecture
+
+Táto sekcia sa venuje tomu ako sú vnútorne organizované služby. Popisuje ich vnútornú architekúru.
+
+Existuje niekoľko spôsobov ako sa k tomu postaviť. Pokiaľ je služba naozaj jednoduchá, zameraná na výkon a nepredpokladáme jej postupné zozložiťovanie, tak môžme využiť `CRUD` príst a úpne bezstarosti priamo v controlleroch *(alebo vo vlastnom routingu, ak je to naozaj kritická služba z pohľadu výkonu)* napísať požadovanú funkčnosť. Samozrejme na t musí by jasný dôvod.
+
+My sme sa rozhodli pre netriviálne služby využiť architektonický návrhový vzor `CQRS`.
+
+### Prehľad CQRS
+
+Predstavme si triedu `ToDosService`. Štandardná trieda v prípade, že nechceme písať kód priamo v controlleroch. Takéto triedy obsahujú metódy typu `GetAllToDos()`, `GetToDoById(id)`, `CreateToDo(toDoViewModel)`, ... . Obsahovala implementáciu všetkej funkčnosti, ktorú očakávame od `ToDos`. Takéto triedy majú tendenciu narastať. Každá zmena si vyžaduje zložité skúmanie ako dané veci fungujú a aký by mohl byť vedľajší účinok týchto zmien. Nehovoriac o tom, že takúto triedu ťažko použijeme na inom mieste ak z nej potrebujeme nejakú funkčnosť.
+
+Vo väčšine prípadov môžme v jednoduchosti hovoriť o dvoch typoch operácií. Operácie, ktoré čítajú dáta a ktoré ich menia. *(čítajú stav a menia stav systému)* Vo väčšine aplikácií (systémov) sú jasné rozdiely medzi operáciami, ktoré čítajú stav (**queries**) a ktoré menia stav (**commands**). Keď čítame dáta, tak zvyčajne nepotrebujeme validovať tieto dáta, alebo nejakú ďalšiu business logiku. Ale často práve potrebujeme kešovať. Model pre čítanie a zápis môže byť (často býva) iný.
+
+### CQRS
+
+
+Poznámky
+- v query nemusý byť
 
 ## Použité knižnice
 
