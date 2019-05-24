@@ -60,16 +60,6 @@
           "Url": "http://localhost:9002/swagger/v1/swagger.json"
         }
       ]
-    },
-    {
-      "Key": "TodosKey",
-      "Config": [
-        {
-          "Name": "Todos API",
-          "Version": "v1",
-          "Url": "http://localhost:9001/swagger/v1/swagger.json"
-        }
-      ]
     }
   ]
 }

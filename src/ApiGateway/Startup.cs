@@ -1,9 +1,11 @@
 ﻿using ApiGateway.Infrastructure;
 using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
+using Kros.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ocelot.DependencyInjection;
@@ -14,23 +16,36 @@ namespace ApiGateway
     /// <summary>
     /// Startup.
     /// </summary>
-    public class Startup : BaseStartup
+    public class Startup
     {
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="env">Environment.</param>
-        public Startup(IHostingEnvironment env)
-            : base(env)
-        { }
+        /// <param name="env">Enviromnent variables.</param>
+        /// <param name="configuration">App configuration.</param>
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        {
+            Environment = Check.NotNull(env, nameof(env));
+            Configuration = Check.NotNull(configuration, nameof(configuration));
+        }
+
+        /// <summary>
+        /// Configuration.
+        /// </summary>
+        public IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Environment.
+        /// </summary>
+        public IHostingEnvironment Environment { get; }
 
         /// <summary>
         /// Configure IoC container.
         /// </summary>
         /// <param name="services">Service.</param>
-        public override void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
+            //base.ConfigureServices(services);
 
             services.AddGatewayJwtAuthorization();
             services.AddWebApi();
@@ -44,10 +59,8 @@ namespace ApiGateway
         /// </summary>
         /// <param name="app">Application builder.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public override async void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            base.Configure(app, loggerFactory);
-
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
