@@ -23,6 +23,30 @@
       ],
       "UpstreamPathTemplate": "/users/{everything}",
       "SwaggerKey": "UsersKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/todos",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9001
+        }
+      ],
+      "UpstreamPathTemplate": "/todos",
+      "SwaggerKey": "TodosKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/todos/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9001
+        }
+      ],
+      "UpstreamPathTemplate": "/todos/{everything}",
+      "SwaggerKey": "TodosKey"
     }
   ],
 
@@ -36,10 +60,16 @@
           "Url": "http://localhost:9002/swagger/v1/swagger.json"
         }
       ]
+    },
+    {
+      "Key": "TodosKey",
+      "Config": [
+        {
+          "Name": "Todos API",
+          "Version": "v1",
+          "Url": "http://localhost:9001/swagger/v1/swagger.json"
+        }
+      ]
     }
-  ],
-
-  //"GlobalConfiguration": {
-  //  "BaseUrl": "http://localhost"
-  //}
+  ]
 }

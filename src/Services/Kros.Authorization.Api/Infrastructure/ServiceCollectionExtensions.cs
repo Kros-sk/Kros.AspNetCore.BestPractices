@@ -1,4 +1,4 @@
-﻿using Kros.Authorization.Api.Application.Options;
+﻿using Kros.AspNetCore.Authorization;
 using Kros.KORM.Extensions.Asp;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -16,11 +16,6 @@ namespace Kros.Authorization.Api.Extensions
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        /// <summary>
-        /// Claim type for admin user role.
-        /// </summary>
-        public const string ClaimTypeForAdmin = "IsAdmin";
-
         /// <summary>
         /// Http client name for communication with Identity Server.
         /// </summary>
@@ -77,16 +72,15 @@ namespace Kros.Authorization.Api.Extensions
         }
 
         /// <summary>
-        /// Add application services.
+        /// Add application services and configure options.
         /// </summary>
         /// <param name="services">DI container.</param>
+        /// <param name="configuration">App configuration.</param>
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient(IdentityServerHttpClientName);
-
-            //services.AddMediatRNullCheckPostProcessor();
-
-            services.ConfigureOptions<JwtAuthorizationSecurityOptions>(configuration);
+            services.AddHttpClient();
+            services.ConfigureOptions<JwtAuthorizationOptions>(configuration);
+            services.ConfigureOptions<ApiJwtAuthorizationOptions>(configuration);
 
             return services.Scan(scan =>
                 scan.FromCallingAssembly()
@@ -105,5 +99,6 @@ namespace Kros.Authorization.Api.Extensions
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 }));
+
     }
 }

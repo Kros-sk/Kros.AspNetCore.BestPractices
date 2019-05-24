@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Kros.AspNetCore.Middlewares;
-using FluentValidation.AspNetCore;
+using Kros.AspNetCore.Authorization;
 
 namespace Kros.ToDos.Api
 {
@@ -48,6 +49,9 @@ namespace Kros.ToDos.Api
             services.AddWebApi()
                 .AddFluentValidation();
 
+            services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
+            services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
+
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
 
@@ -88,6 +92,7 @@ namespace Kros.ToDos.Api
 
             app.UseCors("AllowAllOrigins");
             app.UseErrorHandling();
+            app.UseAuthentication();
             app.UseKormMigrations();
             app.UseMvc();
 

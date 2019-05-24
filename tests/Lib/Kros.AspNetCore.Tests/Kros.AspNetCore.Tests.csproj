@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Lib\Kros.AspNetCore\Kros.AspNetCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Extensions\appsettings.configuration-test.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

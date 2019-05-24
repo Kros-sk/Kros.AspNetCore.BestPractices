@@ -17,8 +17,4 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Lib\Kros.MediatR.Extensions\Kros.MediatR.Extensions.csproj" />
-  </ItemGroup>
-
 </Project>

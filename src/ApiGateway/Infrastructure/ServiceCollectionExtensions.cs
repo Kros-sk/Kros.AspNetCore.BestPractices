@@ -11,19 +11,9 @@ namespace ApiGateway.Infrastructure
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Claim type for admin user role.
-        /// </summary>
-        public const string ClaimTypeForAdmin = "IsAdmin";
-
-        /// <summary>
         /// Allow all Cors policy.
         /// </summary>
         public const string CorsAllowAnyPolicy = "AllowAllCorsPolicy";
-
-        /// <summary>
-        /// Http client name for communication with Identity Server.
-        /// </summary>
-        public const string IdentityServerHttpClientName = "IdentityServerClient";
 
         /// <summary>
         /// Add Swagger.
@@ -46,31 +36,6 @@ namespace ApiGateway.Infrastructure
                     c.IncludeXmlComments(filePath);
                 }
             });
-        }
-
-        /// <summary>
-        /// Add authorization.
-        /// </summary>
-        /// <param name="services">DI container.</param>
-        /// <param name="configuration">Configuration.</param>
-        public static IServiceCollection AddAuthorization(
-            this IServiceCollection services)
-            => services.AddAuthorization(options =>
-                {
-                    options.AddPolicy("admin", policyAdmin =>
-                    {
-                        policyAdmin.RequireClaim(ClaimTypeForAdmin, "True");
-                    });
-                });
-
-        /// <summary>
-        /// Add application services.
-        /// </summary>
-        /// <param name="services">DI container.</param>
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-        {
-            services.AddHttpClient();
-            return services;
         }
 
         /// <summary>

@@ -20,13 +20,14 @@ namespace Kros.Authorization.Api.Application.Services
         bool IsAdminFromClaims(ClaimsPrincipal user);
 
         /// <summary>
-        /// Try create new user.
+        /// Get user by email or create it, if doesn't exist.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="userClaims">All user claims (contains email).</param>
+        /// <returns>User.</returns>
         Task<GetUserByEmailQuery.User> TryCreateDefaultUserAsync(IEnumerable<Claim> userClaims);
 
         /// <summary>
-        /// Update user values;
+        /// Update user values.
         /// </summary>
         /// <param name="command">Update command.</param>
         Task UpdateUserAsync(UpdateUserCommand command);

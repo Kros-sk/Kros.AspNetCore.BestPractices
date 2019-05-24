@@ -51,7 +51,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">DI container.</param>
         public static IServiceCollection AddMediatRDependencies(this IServiceCollection services)
             => services.AddMediatR(Assembly.GetExecutingAssembly())
-                .AddPipelineBehaviorsForRequest<IUserResourceQuery, IUserResourceQueryResult>()
+                .AddPipelineBehaviorsForRequest<IUserResourceQuery>()
                 .AddPipelineBehaviorsForRequest<IUserResourceCommand>()
                 .AddMediatRNullCheckPostProcessor();
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Security.Claims;
-using IdentityModel;
+using Kros.AspNetCore.Authorization;
 
 namespace Kros.Authorization.Api.Application.Services
 {
@@ -35,7 +35,7 @@ namespace Kros.Authorization.Api.Application.Services
         /// <inheritdoc />
         public async Task<GetUserByEmailQuery.User> TryCreateDefaultUserAsync(IEnumerable<Claim> userClaims)
         {
-            var userEmail = userClaims.First(x => x.Type == JwtClaimTypes.Email).Value;
+            var userEmail = userClaims.First(x => x.Type == UserClaimTypes.Email).Value;
             var user = await GetUserAsync(userEmail);
 
             if (user == null)
@@ -49,8 +49,8 @@ namespace Kros.Authorization.Api.Application.Services
                 user.Id = await CreateNewUserAsync(new CreateUserCommand()
                 {
                     Email = user.Email,
-                    FirstName = userClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName)?.Value,
-                    LastName = userClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName)?.Value,
+                    FirstName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.GivenName)?.Value,
+                    LastName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.FamilyName)?.Value,
                     IsAdmin = false
                 });
             }
@@ -61,7 +61,7 @@ namespace Kros.Authorization.Api.Application.Services
         /// <inheritdoc />
         public bool IsAdminFromClaims(ClaimsPrincipal user)
         {
-            string adminClaim = user.FindFirstValue("IsAdmin");
+            string adminClaim = user.FindFirstValue(UserClaimTypes.IsAdmin);
 
             if (adminClaim == null)
             {

@@ -1,15 +1,11 @@
 ﻿using ApiGateway.Infrastructure;
-using Kros.Identity.Extensions;
-using Microsoft.AspNetCore.Authorization;
+using Kros.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
-using Ocelot.JwtAuthorize;
 using Ocelot.Middleware;
 
 namespace ApiGateway
@@ -39,7 +35,7 @@ namespace ApiGateway
         /// <param name="services">Services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationServices();
+            services.AddGatewayJwtAuthorization();
             services.AddWebApi();
             services.AddOcelot();
             services.AddSwaggerForOcelot(_configuration);
@@ -62,7 +58,7 @@ namespace ApiGateway
                 app.UseHttpsRedirection();
             }
 
-            app.UseAuthorizationMiddleware(_configuration);
+            app.UseGatewayJwtAuthorization(_configuration);
             app.UseCors(Infrastructure.ServiceCollectionExtensions.CorsAllowAnyPolicy);
             app.UseErrorHandling();
             app.UseMvc();
