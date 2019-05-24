@@ -50,7 +50,7 @@ namespace Kros.ToDos.Api
         }
 
         /// <summary>
-        /// configure web api pipeline.
+        /// Configure web api pipeline.
         /// </summary>
         /// <param name="app">Application builder.</param>
         /// <param name="loggerFactory">The logger factory.</param>

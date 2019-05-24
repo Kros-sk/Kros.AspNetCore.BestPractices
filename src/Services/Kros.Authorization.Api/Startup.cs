@@ -1,4 +1,5 @@
-﻿using Kros.AspNetCore.Authorization;
+﻿using Kros.AspNetCore;
+using Kros.AspNetCore.Authorization;
 using Kros.Authorization.Api.Extensions;
 using Kros.Identity.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -6,60 +7,52 @@ using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Kros.Authorization.Api
 {
     /// <summary>
-    /// Startup class.
+    /// Startup.
     /// </summary>
-    public class Startup
+    public class Startup : BaseStartup
     {
-        /// <summary>
-        /// Application configuration.
-        /// </summary>
-        public IConfiguration _configuration { get; }
-
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="env">Enviromnent variables.</param>
+        /// <param name="env">Environment.</param>
         public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile($"appsettings.local.json", optional: true)
-                .AddEnvironmentVariables();
-
-            _configuration = builder.Build();
-        }
+            : base(env)
+        { }
 
         /// <summary>
-        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// Configure IoC container.
         /// </summary>
-        /// <param name="services">Services.</param>
-        public void ConfigureServices(IServiceCollection services)
+        /// <param name="services">Service.</param>
+        public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityServerAuthentication(_configuration);
-            services.AddAuthJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, _configuration);
+            base.ConfigureServices(services);
+
+            services.AddIdentityServerAuthentication(Configuration);
+            services.AddAuthJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
 
             services.AddWebApi();
-            services.AddKormDatabase(_configuration);
+            services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
             services.AddCorsAllowAny();
-            services.AddApplicationServices(_configuration);
+            services.AddApplicationServices(Configuration);
             services.AddSwagger();
         }
 
         /// <summary>
-        /// // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// Configure web api pipeline.
         /// </summary>
         /// <param name="app">Application builder.</param>
-        /// <param name="env">Enviromnent variables.</param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <param name="loggerFactory">The logger factory.</param>
+        public override void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
+            base.Configure(app, loggerFactory);
+
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -70,16 +63,15 @@ namespace Kros.Authorization.Api
                 app.UseHttpsRedirection();
             }
 
-            app.UseAuthentication();
-            app.UseCors(Extensions.ServiceCollectionExtensions.CorsAllowAnyPolicy);
             app.UseErrorHandling();
+            app.UseAuthentication();
             app.UseKormMigrations();
             app.UseMvc();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authorization and User API V1");
             });
         }
     }
