@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>$(OutDir)\Kros.ToDos.Api.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\Kros.ToDos.Api.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

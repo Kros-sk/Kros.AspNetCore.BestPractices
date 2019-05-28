@@ -17,16 +17,6 @@ namespace Kros.Authorization.Api.Extensions
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Http client name for communication with Identity Server.
-        /// </summary>
-        public const string IdentityServerHttpClientName = "IdentityServerClient";
-
-        /// <summary>
-        /// Allow all Cors policy.
-        /// </summary>
-        public const string CorsAllowAnyPolicy = "AllowAllCorsPolicy";
-
-        /// <summary>
         /// Add KORM database.
         /// </summary>
         /// <param name="services">DI container.</param>
@@ -87,18 +77,5 @@ namespace Kros.Authorization.Api.Extensions
                     .AddClasses()
                     .AsMatchingInterface());
         }
-
-        /// <summary>
-        /// Add Cors.
-        /// </summary>
-        /// <param name="services">DI container.</param>
-        public static IServiceCollection AddCorsAllowAny(this IServiceCollection services)
-            => services.AddCors(o => o.AddPolicy(CorsAllowAnyPolicy, builder =>
-                {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                }));
-
     }
 }

@@ -37,7 +37,6 @@ namespace Kros.Authorization.Api
             services.AddWebApi();
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
-            services.AddCorsAllowAny();
             services.AddApplicationServices(Configuration);
             services.AddSwagger();
         }

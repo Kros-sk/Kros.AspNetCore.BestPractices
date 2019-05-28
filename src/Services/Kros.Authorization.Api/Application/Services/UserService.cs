@@ -35,27 +35,32 @@ namespace Kros.Authorization.Api.Application.Services
         /// <inheritdoc />
         public async Task<GetUserByEmailQuery.User> TryCreateDefaultUserAsync(IEnumerable<Claim> userClaims)
         {
-            var userEmail = userClaims.First(x => x.Type == UserClaimTypes.Email).Value;
-            var user = await GetUserAsync(userEmail);
-
-            if (user == null)
+            var userEmailClaim = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.Email);
+            
+            if (userEmailClaim != null)
             {
-                user = new GetUserByEmailQuery.User()
-                {
-                    Email = userEmail,
-                    IsAdmin = false
-                };
+                var userEmail = userEmailClaim.Value;
+                var user = await GetUserAsync(userEmail);
 
-                user.Id = await CreateNewUserAsync(new CreateUserCommand()
+                if (user == null)
                 {
-                    Email = user.Email,
-                    FirstName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.GivenName)?.Value,
-                    LastName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.FamilyName)?.Value,
-                    IsAdmin = false
-                });
+                    user = new GetUserByEmailQuery.User()
+                    {
+                        Email = userEmail,
+                        IsAdmin = false
+                    };
+
+                    user.Id = await CreateNewUserAsync(new CreateUserCommand()
+                    {
+                        Email = user.Email,
+                        FirstName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.GivenName)?.Value,
+                        LastName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.FamilyName)?.Value,
+                        IsAdmin = false
+                    });
+                }
             }
 
-            return user;
+            return null;
         }
 
         /// <inheritdoc />

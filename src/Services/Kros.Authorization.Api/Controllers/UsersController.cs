@@ -29,7 +29,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <summary>
         /// Is user admin?
         /// </summary>
-        /// <returns>Return true, if user is admin.</returns>
+        /// <returns>Return <see langword="true"/>, if user is admin.</returns>
         [HttpGet(nameof(IsAdmin))]
         [ProducesResponseType(200, Type = typeof(bool))]
         public bool IsAdmin()

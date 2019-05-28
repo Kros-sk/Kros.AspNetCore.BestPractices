@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <None Remove="Infrastructure\SqlScripts\20190418001_AddIsAdminColumn.sql" />
-    <None Remove="Kros.Authorization.Api.xml" />
   </ItemGroup>
 
   <ItemGroup>

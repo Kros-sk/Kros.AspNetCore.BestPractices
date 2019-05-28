@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Kros.Authorization.Api.Application.Services
         private readonly ApiJwtAuthorizationOptions _apiJwtAuthorizationOptions;
         private readonly JwtAuthorizationOptions _jwtAuthorizationOptions;
         private readonly IUserService _userService;
-        private readonly HttpContext _httpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         /// <summary>
         /// Ctor.
@@ -43,7 +44,7 @@ namespace Kros.Authorization.Api.Application.Services
             _apiJwtAuthorizationOptions = Check.NotNull(apiJwtAuthorizationOptions, nameof(apiJwtAuthorizationOptions)).Value;
             _jwtAuthorizationOptions = Check.NotNull(jwtAuthorizationOptions, nameof(jwtAuthorizationOptions)).Value;
             _userService = Check.NotNull(userService, nameof(userService));
-            _httpContext = Check.NotNull(httpContextAccessor, nameof(httpContextAccessor)).HttpContext;
+            _httpContextAccessor = Check.NotNull(httpContextAccessor, nameof(httpContextAccessor));
         }
 
         /// <inheritdoc />
@@ -52,11 +53,16 @@ namespace Kros.Authorization.Api.Application.Services
             var oidcClaims = await GetOidcUserClaimsAsync();
             var user = await _userService.TryCreateDefaultUserAsync(oidcClaims);
 
-            var allUserClaims = new List<Claim>();
-            allUserClaims.AddRange(oidcClaims);
-            allUserClaims.AddRange(GetUserAuthorizationClaims(user));
+            if (user != null)
+            {
+                var allUserClaims = new List<Claim>();
+                allUserClaims.AddRange(oidcClaims);
+                allUserClaims.AddRange(GetUserAuthorizationClaims(user));
 
-            return JwtAuthorizationHelper.CreateJwtTokenFromClaims(allUserClaims, _apiJwtAuthorizationOptions.JwtSecret);
+                return JwtAuthorizationHelper.CreateJwtTokenFromClaims(allUserClaims, _apiJwtAuthorizationOptions.JwtSecret);
+            }
+
+            return string.Empty;
         }
 
         private IEnumerable<Claim> GetUserAuthorizationClaims(GetUserByEmailQuery.User user)
@@ -70,7 +76,9 @@ namespace Kros.Authorization.Api.Application.Services
 
         private async Task<IEnumerable<Claim>> GetOidcUserClaimsAsync()
         {
-            string accessToken = await _httpContext.GetTokenAsync(JwtAuthorizationHelper.OAuthSchemeName, AuthenticationSchemes.FormPostBearer);
+            string accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(
+                JwtAuthorizationHelper.OAuthSchemeName, AuthenticationSchemes.FormPostBearer);
+
             if (accessToken != null)
             {
                 using (var client = _httpClientFactory.CreateClient())
@@ -88,7 +96,7 @@ namespace Kros.Authorization.Api.Application.Services
                 }
             }
 
-            return new List<Claim>();
+            return Enumerable.Empty<Claim>();
         }
     }
 }

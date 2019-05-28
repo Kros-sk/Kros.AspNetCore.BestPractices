@@ -16,7 +16,7 @@ namespace Kros.Authorization.Api.Application.Services
         /// Is user admin?
         /// </summary>
         /// <param name="user">User for detect.</param>
-        /// <returns>true, if it's admin, false otherwise.</returns>
+        /// <returns><see langword="true"/>, if it's admin, <see langword="false"/> otherwise.</returns>
         bool IsAdminFromClaims(ClaimsPrincipal user);
 
         /// <summary>
