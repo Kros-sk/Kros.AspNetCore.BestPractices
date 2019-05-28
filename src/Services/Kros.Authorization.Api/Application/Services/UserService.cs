@@ -58,6 +58,8 @@ namespace Kros.Authorization.Api.Application.Services
                         IsAdmin = false
                     });
                 }
+
+                return user;
             }
 
             return null;

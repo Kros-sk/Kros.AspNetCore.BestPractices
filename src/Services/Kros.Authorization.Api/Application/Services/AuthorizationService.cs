@@ -5,6 +5,7 @@ using Kros.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -62,7 +63,7 @@ namespace Kros.Authorization.Api.Application.Services
                 return JwtAuthorizationHelper.CreateJwtTokenFromClaims(allUserClaims, _apiJwtAuthorizationOptions.JwtSecret);
             }
 
-            return string.Empty;
+            throw new UnauthorizedAccessException(Properties.Resources.AuthorizationServiceForbiddenRequest);
         }
 
         private IEnumerable<Claim> GetUserAuthorizationClaims(GetUserByEmailQuery.User user)
