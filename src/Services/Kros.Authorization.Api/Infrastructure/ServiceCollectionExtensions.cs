@@ -1,5 +1,6 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Kros.KORM.Extensions.Asp;
+using Kros.ToDos.Api.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,6 +77,26 @@ namespace Kros.Authorization.Api.Extensions
                 scan.FromCallingAssembly()
                     .AddClasses()
                     .AsMatchingInterface());
+        }
+
+        /// <summary>
+        /// Configure api authorization.
+        /// </summary>
+        /// <param name="services">Collection of app services.</param>
+        /// <param name="scheme">Scheme name for authentication.</param>
+        /// <returns></returns>
+        public static IServiceCollection AddApiJwtAuthorization(
+            this IServiceCollection services,
+            string scheme)
+        {
+            return services.AddAuthorization(options =>
+            {
+                options.AddPolicy(AuthorizationHelper.AdminAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(UserClaimTypes.IsAdmin, bool.TrueString);
+                });
+            });
         }
     }
 }

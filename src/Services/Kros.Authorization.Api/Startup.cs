@@ -32,7 +32,8 @@ namespace Kros.Authorization.Api
             base.ConfigureServices(services);
 
             services.AddIdentityServerAuthentication(Configuration);
-            services.AddAuthJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
+            services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
+            services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
 
             services.AddWebApi();
             services.AddKormDatabase(Configuration);
