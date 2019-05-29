@@ -1,30 +1,64 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Kros.AspNetCore.Authorization;
+using Kros.AspNetCore.Extensions;
+using Kros.Utils;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 
 namespace ApiGateway
 {
+    /// <summary>
+    /// Startup.
+    /// </summary>
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="env">Enviromnent variables.</param>
+        /// <param name="configuration">App configuration.</param>
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
-            Configuration = configuration;
+            Environment = Check.NotNull(env, nameof(env));
+            Configuration = Check.NotNull(configuration, nameof(configuration));
         }
 
+        /// <summary>
+        /// Configuration.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// Environment.
+        /// </summary>
+        public IHostingEnvironment Environment { get; }
+
+        /// <summary>
+        /// Configure IoC container.
+        /// </summary>
+        /// <param name="services">Service.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddGatewayJwtAuthorization();
+            services.AddWebApi();
+            services.AddOcelot();
+            services.AddSwaggerForOcelot(Configuration);
+            services.AddAllowAnyOriginCors();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <summary>
+        /// Configure web api pipeline.
+        /// </summary>
+        /// <param name="app">Application builder.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        public async void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -32,10 +66,16 @@ namespace ApiGateway
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
-            app.UseHttpsRedirection();
+            app.UseErrorHandling();
+            app.UseAllowAllOriginsCors();
+            app.UseGatewayJwtAuthorization(Configuration);
             app.UseMvc();
+
+            app.UseSwaggerForOcelotUI(Configuration);
+            await app.UseOcelot();
         }
     }
 }

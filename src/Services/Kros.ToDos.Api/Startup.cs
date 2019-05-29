@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Kros.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace Kros.ToDos.Api
@@ -33,6 +34,8 @@ namespace Kros.ToDos.Api
                 .AddWebApi()
                 .AddFluentValidation();
 
+            services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
+
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
 
@@ -46,7 +49,7 @@ namespace Kros.ToDos.Api
         }
 
         /// <summary>
-        /// configure web api pipeline.
+        /// Configure web api pipeline.
         /// </summary>
         /// <param name="app">Application builder.</param>
         /// <param name="loggerFactory">The logger factory.</param>
@@ -66,6 +69,7 @@ namespace Kros.ToDos.Api
             }
 
             app.UseErrorHandling();
+            app.UseAuthentication();
             app.UseKormMigrations();
             app.UseMvc();
 

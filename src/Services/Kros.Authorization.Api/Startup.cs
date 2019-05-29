@@ -1,13 +1,14 @@
 ﻿using Kros.AspNetCore;
-using Kros.Users.Api.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Kros.AspNetCore.Authorization;
+using Kros.Authorization.Api.Extensions;
+using Kros.Identity.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Kros.Users.Api
+namespace Kros.Authorization.Api
 {
     /// <summary>
     /// Startup.
@@ -23,24 +24,26 @@ namespace Kros.Users.Api
         { }
 
         /// <summary>
-        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// Configure IoC container.
         /// </summary>
-        /// <param name="services">Services.</param>
+        /// <param name="services">Service.</param>
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
 
-            services.AddAuthenticationAndAuthorization(Configuration);
+            services.AddIdentityServerAuthentication(Configuration);
+            services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
+            services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
+
             services.AddWebApi();
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
-
-            services.AddApplicationServices();
+            services.AddApplicationServices(Configuration);
             services.AddSwagger();
         }
 
         /// <summary>
-        /// configure web api pipeline.
+        /// Configure web api pipeline.
         /// </summary>
         /// <param name="app">Application builder.</param>
         /// <param name="loggerFactory">The logger factory.</param>
@@ -59,16 +62,15 @@ namespace Kros.Users.Api
                 app.UseHttpsRedirection();
             }
 
-            app.UseAuthentication();
             app.UseErrorHandling();
-            app.UseUserProfileMiddleware(Configuration);
+            app.UseAuthentication();
             app.UseKormMigrations();
             app.UseMvc();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Users API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authorization and User API V1");
             });
         }
     }

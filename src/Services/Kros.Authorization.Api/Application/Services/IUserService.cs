@@ -1,10 +1,11 @@
-﻿using Kros.Users.Api.Application.Commands;
-using Kros.Users.Api.Application.Model;
-using Kros.Users.Api.Application.Queries;
+﻿using Kros.Authorization.Api.Application.Commands;
+using Kros.Authorization.Api.Application.Model;
+using Kros.Authorization.Api.Application.Queries;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Kros.Users.Api.Application.Services
+namespace Kros.Authorization.Api.Application.Services
 {
     /// <summary>
     /// Interface which describe service for working with <see cref="User"/>.
@@ -16,16 +17,17 @@ namespace Kros.Users.Api.Application.Services
         /// </summary>
         /// <param name="user">User for detect.</param>
         /// <returns><see langword="true"/>, if it's admin, <see langword="false"/> otherwise.</returns>
-        bool? TryGetIsAdminFromClaims(ClaimsPrincipal user);
+        bool IsAdminFromClaims(ClaimsPrincipal user);
 
         /// <summary>
-        /// Try create new user.
+        /// Get user by email or create it, if doesn't exist.
         /// </summary>
-        /// <param name="user">User.</param>
-        Task TryCreateDefaultUserAsync(ClaimsPrincipal user);
+        /// <param name="userClaims">All user claims (contains email).</param>
+        /// <returns>User.</returns>
+        Task<GetUserByEmailQuery.User> TryCreateDefaultUserAsync(IEnumerable<Claim> userClaims);
 
         /// <summary>
-        /// Update user values;
+        /// Update user values.
         /// </summary>
         /// <param name="command">Update command.</param>
         Task UpdateUserAsync(UpdateUserCommand command);

@@ -1,5 +1,7 @@
-﻿using Kros.ToDos.Api.Application.Commands;
+﻿using Kros.AspNetCore.Authorization;
+using Kros.ToDos.Api.Application.Commands;
 using Kros.ToDos.Api.Application.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ namespace Kros.ToDos.Api.Application.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtAuthorizationHelper.JwtSchemeName)]
     public class ToDosController : ControllerBase
     {
         /// <summary>
@@ -20,7 +23,7 @@ namespace Kros.ToDos.Api.Application.Controllers
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>))]
         public async Task<IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>> Get()
-            => await this.SendRequest(new GetAllToDoHeadersQuery(1));
+            => await this.SendRequest(new GetAllToDoHeadersQuery(User.GetUserId()));
 
         /// <summary>
         /// Get ToDo by id.
@@ -33,7 +36,7 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         public async Task<GetToDoQuery.ToDo> GetToDo(int id)
-            => await this.SendRequest(new GetToDoQuery(id, 1));
+            => await this.SendRequest(new GetToDoQuery(id, User.GetUserId()));
 
         /// <summary>
         /// Create new ToDo.
@@ -47,7 +50,7 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(201)]
         public async Task<ActionResult> CreateToDo(CreateToDoCommand command)
         {
-            command.UserId = 1;
+            command.UserId = User.GetUserId();
 
             return await this.SendCreateCommand(command, nameof(GetToDo));
         }
@@ -65,7 +68,7 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> UpdateToDo(int id, UpdateToDoCommand command)
         {
-            command.UserId = 1;
+            command.UserId = User.GetUserId();
             command.Id = id;
 
             await this.SendRequest(command);
@@ -85,7 +88,7 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> DeleteToDo(int id)
         {
-            await this.SendRequest(new DeleteToDoCommand(id, 1));
+            await this.SendRequest(new DeleteToDoCommand(id, User.GetUserId()));
 
             return Ok();
         }
@@ -99,7 +102,7 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(403)]
         public async Task<ActionResult> DeleteCompletedToDos()
         {
-            await this.SendRequest(new DeleteCompletedToDosCommand(1));
+            await this.SendRequest(new DeleteCompletedToDosCommand(User.GetUserId()));
 
             return Ok();
         }
@@ -117,7 +120,7 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> ChangeIsDoneState(int id, ChangeIsDoneStateCommand command)
         {
-            command.UserId = 1;
+            command.UserId = User.GetUserId();
             command.Id = id;
 
             await this.SendRequest(command);

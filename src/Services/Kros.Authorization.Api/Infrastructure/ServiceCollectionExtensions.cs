@@ -1,5 +1,6 @@
-﻿using Kros.KORM.Extensions.Asp;
-using Kros.Users.Api.Infrastructure;
+﻿using Kros.AspNetCore.Authorization;
+using Kros.KORM.Extensions.Asp;
+using Kros.ToDos.Api.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,23 +10,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Kros.Users.Api.Extensions
+namespace Kros.Authorization.Api.Extensions
 {
     /// <summary>
     /// Extensions for registering services for this project to the DI container.
     /// </summary>
     public static class ServiceCollectionExtensions
     {
-        /// <summary>
-        /// Claim type for admin user role.
-        /// </summary>
-        public const string ClaimTypeForAdmin = "IsAdmin";
-
-        /// <summary>
-        /// Http client name for communication with Identity Server.
-        /// </summary>
-        public const string IdentityServerHttpClientName = "IdentityServerClient";
-
         /// <summary>
         /// Add KORM database.
         /// </summary>
@@ -36,7 +27,7 @@ namespace Kros.Users.Api.Extensions
                 .InitDatabaseForIdGenerator()
                 .AddKormMigrations(configuration, o =>
                 {
-                    o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Users.Api.Infrastructure.SqlScripts");
+                    o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Authorization.Api.Infrastructure.SqlScripts");
                 })
                 .Migrate();
 
@@ -61,7 +52,7 @@ namespace Kros.Users.Api.Extensions
             return services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Users API", Version = "v1" });
-                var filePath = Path.Combine(AppContext.BaseDirectory, "Kros.Users.Api.xml");
+                var filePath = Path.Combine(AppContext.BaseDirectory, "Kros.Authorization.Api.xml");
 
                 if (File.Exists(filePath))
                 {
@@ -72,19 +63,40 @@ namespace Kros.Users.Api.Extensions
         }
 
         /// <summary>
-        /// Add application services.
+        /// Add application services and configure options.
         /// </summary>
         /// <param name="services">DI container.</param>
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        /// <param name="configuration">App configuration.</param>
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient(IdentityServerHttpClientName);
-
-            //services.AddMediatRNullCheckPostProcessor();
+            services.AddHttpClient();
+            services.ConfigureOptions<JwtAuthorizationOptions>(configuration);
+            services.ConfigureOptions<ApiJwtAuthorizationOptions>(configuration);
 
             return services.Scan(scan =>
                 scan.FromCallingAssembly()
                     .AddClasses()
                     .AsMatchingInterface());
+        }
+
+        /// <summary>
+        /// Configure api authorization.
+        /// </summary>
+        /// <param name="services">Collection of app services.</param>
+        /// <param name="scheme">Scheme name for authentication.</param>
+        /// <returns></returns>
+        public static IServiceCollection AddApiJwtAuthorization(
+            this IServiceCollection services,
+            string scheme)
+        {
+            return services.AddAuthorization(options =>
+            {
+                options.AddPolicy(AuthorizationHelper.AdminAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(UserClaimTypes.IsAdmin, bool.TrueString);
+                });
+            });
         }
     }
 }
