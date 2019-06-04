@@ -1,16 +1,15 @@
 ﻿using FluentValidation.AspNetCore;
-using Microsoft.Extensions.Configuration;
 using Kros.KORM.Extensions.Asp;
-using System.Reflection;
-using MediatR;
 using Kros.MediatR.Extensions;
-using Kros.ToDos.Api.Application.Queries.PipeLines;
-using Kros.ToDos.Api.Application.Commands.PipeLines;
-using System.IO;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
-using Microsoft.Extensions.Caching.Distributed;
+using Kros.Swagger.Extensions;
 using Kros.ToDos.Api.Application;
+using Kros.ToDos.Api.Application.Commands.PipeLines;
+using Kros.ToDos.Api.Application.Queries.PipeLines;
+using MediatR;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -56,21 +55,12 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddMediatRNullCheckPostProcessor();
 
         /// <summary>
-        /// Add MediatR.
+        /// Add Swagger.
         /// </summary>
         /// <param name="services">DI container.</param>
-        public static IServiceCollection AddSwagger(this IServiceCollection services)
-            => services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "ToDo API", Version = "v1" });
-                var filePath = Path.Combine(AppContext.BaseDirectory, "Kros.ToDos.Api.xml");
-
-                if (File.Exists(filePath))
-                {
-                    c.IncludeXmlComments(filePath);
-                }
-                c.AddFluentValidationRules();
-            });
+        /// <param name="configuration">Application configuration.</param>
+        public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
+            => services.AddSwaggerDocumentation(configuration, c => { c.AddFluentValidationRules(); });
 
         /// <summary>
         /// Add distributed cache.

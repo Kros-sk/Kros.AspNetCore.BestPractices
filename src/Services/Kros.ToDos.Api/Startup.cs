@@ -1,10 +1,11 @@
 ﻿using FluentValidation.AspNetCore;
 using Kros.AspNetCore;
+using Kros.AspNetCore.Authorization;
+using Kros.Swagger.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Kros.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace Kros.ToDos.Api
@@ -44,7 +45,7 @@ namespace Kros.ToDos.Api
                 .AddClasses()
                 .AsMatchingInterface());
 
-            services.AddSwagger();
+            services.AddSwagger(Configuration);
             services.AddDistributedCache(Configuration);
         }
 
@@ -72,12 +73,7 @@ namespace Kros.ToDos.Api
             app.UseAuthentication();
             app.UseKormMigrations();
             app.UseMvc();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDos API V1");
-            });
+            app.UseSwaggerDocumentation(Configuration);
         }
     }
 }
