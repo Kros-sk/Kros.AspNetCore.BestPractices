@@ -328,6 +328,12 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder
 .mfractor/
+
+#Ignore local settings
 appsettings.local.json
 
+#Ignore xml comments
 Kros.ToDos.Api.xml
+
+#Add launchSetings.json - ports are important for localhost
+!**/Properties/launchSettings.json

@@ -26,8 +26,8 @@ namespace Kros.Authorization.Api.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet("get-jwt-token")]
-        [ProducesResponseType(200, Type = typeof(bool))]
+        [HttpGet("jwt-token")]
+        [ProducesResponseType(200, Type = typeof(string))]
         public async Task<string> GetJwtToken()
          => await _authorizationService.CreateJwtTokenAsync();
     }

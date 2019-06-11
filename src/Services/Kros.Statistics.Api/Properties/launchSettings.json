@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Kros.Statistics.Api": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:9002/"
+    }
+  }
+}

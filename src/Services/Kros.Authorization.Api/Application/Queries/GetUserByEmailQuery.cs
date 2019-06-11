@@ -1,4 +1,5 @@
 ﻿using Kros.KORM.Metadata.Attribute;
+using Kros.Utils;
 using MediatR;
 
 namespace Kros.Authorization.Api.Application.Queries
@@ -14,7 +15,7 @@ namespace Kros.Authorization.Api.Application.Queries
         /// <param name="userEmail">User email.</param>
         public GetUserByEmailQuery(string userEmail)
         {
-            UserEmail = userEmail;
+            UserEmail = Check.NotNull(userEmail, nameof(userEmail));
         }
 
         /// <summary>
