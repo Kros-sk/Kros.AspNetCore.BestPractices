@@ -2,6 +2,7 @@
 using Kros.AspNetCore.Authorization;
 using Kros.Authorization.Api.Extensions;
 using Kros.Identity.Extensions;
+using Kros.Swagger.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
@@ -39,7 +40,7 @@ namespace Kros.Authorization.Api
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
             services.AddApplicationServices(Configuration);
-            services.AddSwagger();
+            services.AddSwagger(Configuration);
         }
 
         /// <summary>
@@ -66,12 +67,7 @@ namespace Kros.Authorization.Api
             app.UseAuthentication();
             app.UseKormMigrations();
             app.UseMvc();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authorization and User API V1");
-            });
+            app.UseSwaggerDocumentation(Configuration);
         }
     }
 }

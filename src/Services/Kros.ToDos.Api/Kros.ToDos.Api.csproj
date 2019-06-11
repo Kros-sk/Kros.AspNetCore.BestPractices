@@ -47,6 +47,7 @@
     <PackageReference Include="Kros.KORM" Version="3.9.0" />
     <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.0.0" />
     <PackageReference Include="Kros.MediatR.Extensions" Version="1.0.2" />
+    <PackageReference Include="Kros.Swagger.Extensions" Version="1.0.0" />
     <PackageReference Include="Kros.Utils" Version="1.9.0" />
     <PackageReference Include="Mapster" Version="4.0.0" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="2.1.0" />
@@ -61,7 +62,6 @@
     <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
     <PackageReference Include="Scrutor" Version="3.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.2.0" />
   </ItemGroup>
 

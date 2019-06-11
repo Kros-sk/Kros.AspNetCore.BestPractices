@@ -1,12 +1,11 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Kros.KORM.Extensions.Asp;
+using Kros.Swagger.Extensions;
 using Kros.ToDos.Api.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -42,25 +41,9 @@ namespace Kros.Authorization.Api.Extensions
         /// Add Swagger.
         /// </summary>
         /// <param name="services">DI container.</param>
-        public static IServiceCollection AddSwagger(this IServiceCollection services)
-        {
-            services.ConfigureSwaggerGen(options =>
-            {
-                options.CustomSchemaIds(x => x.FullName); // https://wegotcode.com/microsoft/swagger-fix-for-dotnetcore/
-            });
-
-            return services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "Users API", Version = "v1" });
-                var filePath = Path.Combine(AppContext.BaseDirectory, "Kros.Authorization.Api.xml");
-
-                if (File.Exists(filePath))
-                {
-                    c.IncludeXmlComments(filePath);
-                }
-                c.AddFluentValidationRules();
-            });
-        }
+        /// <param name="configuration">Application configuration.</param>
+        public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
+            => services.AddSwaggerDocumentation(configuration, c => { c.AddFluentValidationRules(); });
 
         /// <summary>
         /// Add application services and configure options.

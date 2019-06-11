@@ -29,13 +29,13 @@ Na základne tohto dema by mal človek pochopiť architektúru našich služieb 
 
 Táto sekcia sa venuje tomu ako sú vnútorne organizované služby. Popisuje ich vnútornú architekúru.
 
-Existuje niekoľko spôsobov ako sa k tomu postaviť. Pokiaľ je služba naozaj jednoduchá, zameraná na výkon a nepredpokladáme jej postupné zozložiťovanie, tak môžme využiť `CRUD` príst a úpne bezstarosti priamo v controlleroch *(alebo vo vlastnom routingu, ak je to naozaj kritická služba z pohľadu výkonu)* napísať požadovanú funkčnosť. Samozrejme na t musí by jasný dôvod.
+Existuje niekoľko spôsobov ako sa k tomu postaviť. Pokiaľ je služba naozaj jednoduchá, zameraná na výkon a nepredpokladáme jej postupné zozložiťovanie, tak môžme využiť `CRUD` prístup a úpne bez starosti priamo v controlleroch *(alebo vo vlastnom routingu, ak je to naozaj kritická služba z pohľadu výkonu)* napísať požadovanú funkčnosť. Samozrejme na to musí by jasný dôvod.
 
-My sme sa rozhodli pre netriviálne služby využiť architektonický návrhový vzor `CQRS`.
+My sme sa rozhodli pre netriviálne služby využiť architektonický návrhový vzor `CQRS` (Command Query Responsibility Segregation).
 
 ### Prehľad CQRS
 
-Predstavme si triedu `ToDosService`. Štandardná trieda v prípade, že nechceme písať kód priamo v controlleroch. Takéto triedy obsahujú metódy typu `GetAllToDos()`, `GetToDoById(id)`, `CreateToDo(toDoViewModel)`, ... . Obsahovala implementáciu všetkej funkčnosti, ktorú očakávame od `ToDos`. Takéto triedy majú tendenciu narastať. Každá zmena si vyžaduje zložité skúmanie ako dané veci fungujú a aký by mohl byť vedľajší účinok týchto zmien. Nehovoriac o tom, že takúto triedu ťažko použijeme na inom mieste ak z nej potrebujeme nejakú funkčnosť.
+Predstavme si triedu `ToDosService`. Štandardná trieda v prípade, že nechceme písať kód priamo v controlleroch. Takéto triedy obsahujú metódy typu `GetAllToDos()`, `GetToDoById(id)`, `CreateToDo(toDoViewModel)`,... Obsahovala implementáciu všetkej funkčnosti, ktorú očakávame od `ToDos`. Takéto triedy majú tendenciu narastať. Každá zmena si vyžaduje zložité skúmanie ako dané veci fungujú a aký by mohl byť vedľajší účinok týchto zmien. Nehovoriac o tom, že takúto triedu ťažko použijeme na inom mieste ak z nej potrebujeme nejakú funkčnosť.
 
 Vo väčšine prípadov môžme v jednoduchosti hovoriť o dvoch typoch operácií. Operácie, ktoré čítajú dáta a ktoré ich menia. *(čítajú stav a menia stav systému)* Vo väčšine aplikácií (systémov) sú jasné rozdiely medzi operáciami, ktoré čítajú stav (**queries**) a ktoré menia stav (**commands**). Keď čítame dáta, tak zvyčajne nepotrebujeme validovať tieto dáta, alebo nejakú ďalšiu business logiku. Ale často práve potrebujeme kešovať. Model pre čítanie a zápis môže byť (často býva) iný.
 
@@ -43,7 +43,7 @@ Vo väčšine prípadov môžme v jednoduchosti hovoriť o dvoch typoch operáci
 
 
 Poznámky
-- v query nemusý byť
+- v query nemusí byť
 
 ## Použité knižnice
 
