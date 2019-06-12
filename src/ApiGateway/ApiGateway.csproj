@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kros.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="Kros.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="MMLib.SwaggerForOcelot" Version="1.2.0" />
     <PackageReference Include="Ocelot" Version="13.5.0" />
