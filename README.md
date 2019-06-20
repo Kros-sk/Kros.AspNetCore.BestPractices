@@ -79,7 +79,7 @@ Tento príklad využíva ako úložisko dát `MS SQL` databázy. Na vašom servr
   }
 ```
 
-> `KormMigrations` využíva KORM na spustenie migrácií. Ak máte databázových používateľov s obedzenými právami, tak v tomto connection stringu musí mať používateľ právo na vytváranie schémy.
+> `KormMigrations` využíva KORM na spustenie migrácií. Ak máte databázových používateľov s obmedzenými právami, tak v tomto connection stringu musí mať používateľ právo na vytváranie schémy.
 
 ### Nastavenie kešovania
 
@@ -117,7 +117,7 @@ Projekt využíva na autentifikáciu identity server 4. A konkrétne na demo ú�
 **Client ID** - spa
 **Scope** - `openapi email profile api`
 
-V Postmenovi je možné použiť buť `prerequest script`, alebo priamo okno na z9skanie tokenu:
+V Postmenovi je možné použiť buť `prerequest script`, alebo priamo okno na získanie tokenu:
 ![request token](http://prntscr.com/o4929v)
 
 ### Testovacie nasadenie
@@ -127,6 +127,7 @@ Aplikácia je nasadená na AZURE a apigateway je dostupný na adrese [https://de
 ### Klientská Aplikácia
 
 K tomuto projektu existuje aj Angular klientská aplikácia. Nachádza sa na [https://github.com/Kros-sk/Kros.Angular.BestPractices]([https://link](https://github.com/Kros-sk/Kros.Angular.BestPractices))
+Demo aplikácia je dostupná z na [https://demo.todos.kros.wtf](https://demo.todos.kros.wtf)
 
 ## Overview
 
