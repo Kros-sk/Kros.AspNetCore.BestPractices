@@ -3,6 +3,7 @@
 Toto repo **bude** obsahovať demo príklad, ktorý bude ukazovať architektúru našich služieb.
 
 Mal by obsahovať:
+
 - vzorovú štruktúru projektov
 - použitie našich knižníc
 - použitie odporúčaných externých knižníc
@@ -10,16 +11,122 @@ Mal by obsahovať:
 
 Na základne tohto dema by mal človek pochopiť architektúru našich služieb a mal by byť schopný vytvoriť nový projekt v podobnom duchu.
 
-- [Kros.AspNetCore.BestPractices](#krosaspnetcorebestpractices)
-  - [Quick start](#quick-start)
-  - [Overview](#overview)
-  - [Project physical structure](#project-physical-structure)
-  - [Microservices internal architecture](#microservices-internal-architecture)
-    - [Prehľad CQRS](#preh%C4%BEad-cqrs)
-    - [CQRS](#cqrs)
-  - [Použité knižnice](#pou%C5%BEit%C3%A9-kni%C5%BEnice)
+- [Kros.AspNetCore.BestPractices](#KrosAspNetCoreBestPractices)
+  - [Quick start](#Quick-start)
+    - [Stiahnuť projekt](#Stiahnu%C5%A5-projekt)
+    - [Vytvoriť potrebné databázy](#Vytvori%C5%A5-potrebn%C3%A9-datab%C3%A1zy)
+    - [Nastaviť connection stringy k databázam](#Nastavi%C5%A5-connection-stringy-k-datab%C3%A1zam)
+      - [Služba `Kros.Todos.Api`](#Slu%C5%BEba-KrosTodosApi)
+      - [Služba `Kros.Authorization.Api`](#Slu%C5%BEba-KrosAuthorizationApi)
+    - [Nastavenie kešovania](#Nastavenie-ke%C5%A1ovania)
+    - [Nastavenie spúšťania projektov](#Nastavenie-sp%C3%BA%C5%A1%C5%A5ania-projektov)
+    - [Spustiť projekt](#Spusti%C5%A5-projekt)
+    - [Získanie OAuth 2.0 tokenu](#Z%C3%ADskanie-OAuth-20-tokenu)
+    - [Testovacie nasadenie](#Testovacie-nasadenie)
+    - [Klientská Aplikácia](#Klientsk%C3%A1-Aplik%C3%A1cia)
+  - [Overview](#Overview)
+  - [Project physical structure](#Project-physical-structure)
+  - [Microservices internal architecture](#Microservices-internal-architecture)
+    - [Prehľad CQRS](#Preh%C4%BEad-CQRS)
+    - [CQRS](#CQRS)
+  - [Použité knižnice](#Pou%C5%BEit%C3%A9-kni%C5%BEnice)
 
 ## Quick start
+
+### Stiahnuť projekt
+
+   `git clone https://github.com/Kros-sk/Kros.AspNetCore.BestPractices.git`
+
+### Vytvoriť potrebné databázy
+
+Tento príklad využíva ako úložisko dát `MS SQL` databázy. Na vašom servri je potrebné vytvoriť dve prázdne databázy. `<ToDos>` a `<Users>`.
+`<ToDos>` databáza - bude ju používať služba `Kros.Todos.Api`.
+`<Users>` databáza - bude ju používať služba `Kros.Authorization.Api`.
+
+### Nastaviť connection stringy k databázam
+
+   Jednotlivé služby používajú na prístup k dátam KORM. Je potrebné im nastaviť connection string na prístup k databázam. Ideálne v `appsettings.local.json`.
+
+#### Služba `Kros.Todos.Api`
+
+```json
+  "ConnectionString": {
+    "ProviderName": "System.Data.SqlClient",
+    "ConnectionString": "Server=server;Initial Catalog=<ToDos>;Persist Security Info=False;Integrated Security=True;"
+  },
+  "KormMigrations": {
+    "ConnectionString": {
+      "ProviderName": "System.Data.SqlClient",
+      "ConnectionString": "Server=server;Initial Catalog=<ToDos>;Persist Security Info=False;Integrated Security=True;"
+    },
+    "AutoMigrate": "True"
+  }
+```
+
+#### Služba `Kros.Authorization.Api`
+
+```json
+  "ConnectionString": {
+    "ProviderName": "System.Data.SqlClient",
+    "ConnectionString": "Server=server;Initial Catalog=<Users>;Persist Security Info=False;Integrated Security=True;"
+  },
+  "KormMigrations": {
+    "ConnectionString": {
+      "ProviderName": "System.Data.SqlClient",
+      "ConnectionString": "Server=server;Initial Catalog=<Users>;Persist Security Info=False;Integrated Security=True;"
+    },
+    "AutoMigrate": "True"
+  }
+```
+
+> `KormMigrations` využíva KORM na spustenie migrácií. Ak máte databázových používateľov s obedzenými právami, tak v tomto connection stringu musí mať používateľ právo na vytváranie schémy.
+
+### Nastavenie kešovania
+
+Služba ToDos využíva Redis na distribuovanú keš. Pomocou nasledujúcej konfigurácje je možné ju nastaviť:
+
+```json
+  "RedisCache": {
+    "ConnectionString": "localhost:6379",
+    "InstanceName": "local",
+    "UseRedis": "true"
+  }
+```
+
+> Pokiaľ `UseRedis` necháme nastavené na `false`, tak sa nepoužije Redis, ale memory keš.
+
+### Nastavenie spúšťania projektov
+
+Vo VS je potrebné nastaviť, ktoré projekty sa majú spúšťať. Nasledovne:
+![StartUp](http://prntscr.com/o3pzmh)
+
+### Spustiť projekt
+
+Visual Studio `F5`.
+Na adrese [http://localhost:9000/swagger]([https://link](http://localhost:9000/swagger)) je dostupná swagger dokumentácia.
+
+> Odporúčam stiahnuť si odtiaľ swagger definíciu jednotlivých služieb a importovať do Postmena.
+
+### Získanie OAuth 2.0 tokenu
+
+Projekt využíva na autentifikáciu identity server 4. A konkrétne na demo účel je napojený na ich demo inštanciu [https://demo.identityserver.io]([https://link](https://demo.identityserver.io)).
+
+Údaje na získanie tokenu:
+**Grant type** - Authorization Code
+**Callback URL** - v princípe akákoľvek adresa. Napr.: `http://localhost:4200/something`
+**Client ID** - spa
+**Scope** - `openapi email profile api`
+
+V Postmenovi je možné použiť buť `prerequest script`, alebo priamo okno na z9skanie tokenu:
+![request token](http://prntscr.com/o4929v)
+
+### Testovacie nasadenie
+
+Aplikácia je nasadená na AZURE a apigateway je dostupný na adrese [https://demo.todos.gateway.api.kros.wtf/swagger]([https://link](https://demo.todos.gateway.api.kros.wtf/swagger)).
+
+### Klientská Aplikácia
+
+K tomuto projektu existuje aj Angular klientská aplikácia. Nachádza sa na [https://github.com/Kros-sk/Kros.Angular.BestPractices]([https://link](https://github.com/Kros-sk/Kros.Angular.BestPractices))
 
 ## Overview
 
@@ -41,9 +148,9 @@ Vo väčšine prípadov môžme v jednoduchosti hovoriť o dvoch typoch operáci
 
 ### CQRS
 
-
 Poznámky
-- v query nemusí byť
+
+- v query nemusí byť repository
 
 ## Použité knižnice
 
