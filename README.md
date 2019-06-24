@@ -98,18 +98,18 @@ Služba ToDos využíva Redis na distribuovanú keš. Pomocou nasledujúcej konf
 ### Nastavenie spúšťania projektov
 
 Vo VS je potrebné nastaviť, ktoré projekty sa majú spúšťať. Nasledovne:
-![StartUp](http://prntscr.com/o3pzmh)
+![StartUp](SolutionSetup.png)
 
 ### Spustiť projekt
 
 Visual Studio `F5`.
-Na adrese [http://localhost:9000/swagger]([https://link](http://localhost:9000/swagger)) je dostupná swagger dokumentácia.
+Na adrese [http://localhost:9000/swagger](http://localhost:9000/swagger) je dostupná swagger dokumentácia.
 
 > Odporúčam stiahnuť si odtiaľ swagger definíciu jednotlivých služieb a importovať do Postmena.
 
 ### Získanie OAuth 2.0 tokenu
 
-Projekt využíva na autentifikáciu identity server 4. A konkrétne na demo účel je napojený na ich demo inštanciu [https://demo.identityserver.io]([https://link](https://demo.identityserver.io)).
+Projekt využíva na autentifikáciu identity server 4. A konkrétne na demo účel je napojený na ich demo inštanciu [https://demo.identityserver.io](https://demo.identityserver.io).
 
 Údaje na získanie tokenu:
 **Grant type** - Authorization Code
@@ -118,11 +118,11 @@ Projekt využíva na autentifikáciu identity server 4. A konkrétne na demo ú�
 **Scope** - `openapi email profile api`
 
 V Postmenovi je možné použiť buť `prerequest script`, alebo priamo okno na získanie tokenu:
-![request token](http://prntscr.com/o4929v)
+[request token](files/PostmanSettings.png)
 
 ### Testovacie nasadenie
 
-Aplikácia je nasadená na AZURE a apigateway je dostupný na adrese [https://demo.todos.gateway.api.kros.wtf/swagger]([https://link](https://demo.todos.gateway.api.kros.wtf/swagger)).
+Aplikácia je nasadená na AZURE a apigateway je dostupný na adrese [https://demo.todos.gateway.api.kros.wtf/swagger](https://demo.todos.gateway.api.kros.wtf/swagger).
 
 ### Klientská Aplikácia
 
