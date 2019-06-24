@@ -98,7 +98,7 @@ Služba ToDos využíva Redis na distribuovanú keš. Pomocou nasledujúcej konf
 ### Nastavenie spúšťania projektov
 
 Vo VS je potrebné nastaviť, ktoré projekty sa majú spúšťať. Nasledovne:
-![StartUp](SolutionSetup.png)
+![StartUp](files/SolutionSetup.png)
 
 ### Spustiť projekt
 
@@ -118,7 +118,7 @@ Projekt využíva na autentifikáciu identity server 4. A konkrétne na demo ú�
 **Scope** - `openapi email profile api`
 
 V Postmenovi je možné použiť buť `prerequest script`, alebo priamo okno na získanie tokenu:
-[request token](files/PostmanSettings.png)
+![request token](files/PostmanSettings.png)
 
 ### Testovacie nasadenie
 
