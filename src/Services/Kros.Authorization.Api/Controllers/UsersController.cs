@@ -46,7 +46,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <returns>User.</returns>
         [HttpGet("{userId}")]
         [ProducesResponseType(200, Type = typeof(GetUserQuery.User))]
-        [Authorize(AuthorizationHelper.AdminAuthPolicyName)]
+        [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<GetUserQuery.User> GetUser(int userId)
             => await this.SendRequest(new GetUserQuery(userId));
 
@@ -57,7 +57,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <returns>All application users.</returns>
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllUsersQuery.User>))]
-        [Authorize(AuthorizationHelper.AdminAuthPolicyName)]
+        [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<IEnumerable<GetAllUsersQuery.User>> GetAllUsers()
             => await this.SendRequest(new GetAllUsersQuery());
 
@@ -70,7 +70,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <returns>Return Ok, if update is success.</returns>
         [HttpPut("{userId}")]
         [ProducesResponseType(200)]
-        [Authorize(AuthorizationHelper.AdminAuthPolicyName)]
+        [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<ActionResult> UpdateUser(
             int userId,
             UpdateUserCommand command)

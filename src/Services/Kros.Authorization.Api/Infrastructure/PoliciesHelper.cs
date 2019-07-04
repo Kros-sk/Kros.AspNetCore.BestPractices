@@ -3,7 +3,7 @@
     /// <summary>
     /// Helper for authorization.
     /// </summary>
-    public static class AuthorizationHelper
+    public static class PoliciesHelper
     {
         /// <summary>
         /// Authentication admin policy name.
