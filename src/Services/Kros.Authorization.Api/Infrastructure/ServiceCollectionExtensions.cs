@@ -74,7 +74,7 @@ namespace Kros.Authorization.Api.Extensions
         {
             return services.AddAuthorization(options =>
             {
-                options.AddPolicy(AuthorizationHelper.AdminAuthPolicyName, policyAdmin =>
+                options.AddPolicy(PoliciesHelper.AdminAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
                     policyAdmin.RequireClaim(UserClaimTypes.IsAdmin, bool.TrueString);
