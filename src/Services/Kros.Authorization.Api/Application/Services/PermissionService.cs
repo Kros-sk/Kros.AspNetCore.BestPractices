@@ -28,17 +28,30 @@ namespace Kros.Authorization.Api.Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<GetAllUserPermissionsQuery.Permission>> GetAllUserPermissionsAsync(
-            IEnumerable<Claim> userClaims)
-        {
-            var userIdClaim = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.UserId);
+        public bool IsAdminFromClaims(ClaimsPrincipal claims)
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.AdminRole);
 
-            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+        /// <inheritdoc />
+        public bool IsWriterFromClaims(ClaimsPrincipal claims)
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.AdminRole,
+                                      PermissionsHelper.ClaimValues.WriterRole);
+
+        /// <inheritdoc />
+        public bool IsReaderFromClaims(ClaimsPrincipal claims)
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.AdminRole,
+                                      PermissionsHelper.ClaimValues.WriterRole,
+                                      PermissionsHelper.ClaimValues.ReaderRole);
+
+        private bool CheckUserRoles(ClaimsPrincipal claims, params string[] userRoles)
+        {
+            string userRoleClaim = claims.FindFirstValue(PermissionsHelper.Claims.UserRole);
+
+            if (userRoleClaim == null)
             {
-                return await _mediator.Send(new GetAllUserPermissionsQuery(userId));
+                return false;
             }
 
-            return null;
+            return userRoles.Contains(userRoleClaim);
         }
 
         /// <inheritdoc />

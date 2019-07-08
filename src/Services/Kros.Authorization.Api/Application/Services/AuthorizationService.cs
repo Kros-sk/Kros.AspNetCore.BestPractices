@@ -131,16 +131,8 @@ namespace Kros.Authorization.Api.Application.Services
         /// <returns>Claims based on user permissions.</returns>
         private async Task<IEnumerable<Claim>> GetPermissionsClaimsAsync(IEnumerable<Claim> userClaims)
         {
-            if (userClaims.Any(c => c.Type == PermissionsHelper.Claims.OrganizationId))
-            {
-                var userPermissions = await _permissionService.GetUserPermissionsByOrganizationAsync(userClaims);
-                return userPermissions?.Select(p => new Claim(p.Key, p.Value)).AsEnumerable();
-            }
-            else
-            {
-                var userPermissions = await _permissionService.GetAllUserPermissionsAsync(userClaims);
-                return userPermissions?.Select(p => new Claim(p.Key, p.Value)).AsEnumerable();
-            }
+            var userPermissions = await _permissionService.GetUserPermissionsByOrganizationAsync(userClaims);
+            return userPermissions?.Select(p => new Claim(p.Key, p.Value)).AsEnumerable() ?? new Claim[] { };
         }
     }
 }

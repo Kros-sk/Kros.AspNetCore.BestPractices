@@ -12,8 +12,7 @@ namespace Kros.Authorization.Api.Application.Queries.Permission
     /// Query handler for user permissions queries.
     /// </summary>
     public class GetUserPermissionsQueryHandler :
-        IRequestHandler<GetUserPermissionsForOrganizationQuery, IEnumerable<GetUserPermissionsForOrganizationQuery.Permission>>,
-        IRequestHandler<GetAllUserPermissionsQuery, IEnumerable<GetAllUserPermissionsQuery.Permission>>
+        IRequestHandler<GetUserPermissionsForOrganizationQuery, IEnumerable<GetUserPermissionsForOrganizationQuery.Permission>>
     {
         private readonly IDatabase _database;
 
@@ -32,14 +31,6 @@ namespace Kros.Authorization.Api.Application.Queries.Permission
             CancellationToken cancellationToken)
             => Task.FromResult(_database.Query<GetUserPermissionsForOrganizationQuery.Permission>()
                                         .Where(p => p.UserId == request.UserId && p.OrganizationId == request.OrganizationId)
-                                        .AsEnumerable());
-
-        /// <inheritdoc />
-        public Task<IEnumerable<GetAllUserPermissionsQuery.Permission>> Handle(
-            GetAllUserPermissionsQuery request,
-            CancellationToken cancellationToken)
-            => Task.FromResult(_database.Query<GetAllUserPermissionsQuery.Permission>()
-                                        .Where(p => p.UserId == request.UserId)
                                         .AsEnumerable());
     }
 }
