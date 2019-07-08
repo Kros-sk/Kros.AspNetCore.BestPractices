@@ -77,7 +77,7 @@ namespace Kros.Authorization.Api.Application.Services
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(UserClaimTypes.UserId, user.Id.ToString()));
-            claims.Add(new Claim(UserClaimTypes.IsAdmin, user.IsAdmin.ToString()));
+            //claims.Add(new Claim(UserClaimTypes.IsAdmin, user.IsAdmin.ToString()));
 
             return claims;
         }
@@ -114,9 +114,9 @@ namespace Kros.Authorization.Api.Application.Services
         /// <returns>Organization-related claims.</returns>
         private IEnumerable<Claim> GetOrganizationClaims(IHeaderDictionary headers)
         {
-            if (headers != null && headers.ContainsKey(PermissionsHelper.Headers.OrganizationIdHeader))
+            if (headers != null && headers.ContainsKey(PermissionsHelper.Headers.OrganizationId))
             {
-                return new Claim[] { new Claim(PermissionsHelper.Claims.OrganizationId, headers[PermissionsHelper.Headers.OrganizationIdHeader]) };
+                return new Claim[] { new Claim(PermissionsHelper.Claims.OrganizationId, headers[PermissionsHelper.Headers.OrganizationId]) };
             }
             else
             {
