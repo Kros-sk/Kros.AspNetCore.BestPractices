@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -61,7 +60,7 @@ namespace ApiGateway.Authorization
                 using (HttpClient client = httpClientFactory.CreateClient(AuthorizationHttpClientName))
                 {
                     client.DefaultRequestHeaders.Add(HeaderNames.Authorization, value.ToString());
-                    PreserveHeaders(httpContext, client);
+                    ConvertUrlPartsToHeaders(httpContext, client);
 
                     HttpResponseMessage response = await client.GetAsync(_jwtAuthorizationOptions.AuthorizationUrl);
 
@@ -84,12 +83,22 @@ namespace ApiGateway.Authorization
             httpContext.Request.Headers[HeaderNames.Authorization] = $"Bearer {userJwtToken}";
         }
 
-        private void PreserveHeaders(HttpContext originalContext, HttpClient client)
+        /// <summary>
+        /// Converts specified parts of URL to request headers to preserve important data.
+        /// </summary>
+        /// <param name="originalContext">Original context.</param>
+        /// <param name="client">Http client for authorization request.</param>
+        private void ConvertUrlPartsToHeaders(HttpContext originalContext, HttpClient client)
         {
-            var originalHeaders = originalContext.Request.Headers;
-            foreach (var header in originalHeaders.Where(h => _jwtAuthorizationOptions.HeadersToPreserve.Contains(h.Key)))
+            string[] requestUrlParts = originalContext.Request.Path.Value.Split("/");
+
+            foreach (var template in _jwtAuthorizationOptions.UrlPartsToHeaders)
             {
-                client.DefaultRequestHeaders.Add(header.Key, header.Value.AsEnumerable());
+                int valueIndex = Array.IndexOf(requestUrlParts, template.UrlPart) + 1;
+                if (valueIndex > 0 && valueIndex < requestUrlParts.Length)
+                {
+                    client.DefaultRequestHeaders.Add(template.HeaderKey, requestUrlParts[valueIndex]);
+                }
             }
         }
     }
