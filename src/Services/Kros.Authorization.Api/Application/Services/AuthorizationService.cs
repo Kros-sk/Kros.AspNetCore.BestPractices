@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;
 using Kros.AspNetCore.Authorization;
 using Kros.Authorization.Api.Application.Queries;
+using Kros.Authorization.Api.Infrastructure;
 using Kros.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,7 @@ namespace Kros.Authorization.Api.Application.Services
         private readonly ApiJwtAuthorizationOptions _apiJwtAuthorizationOptions;
         private readonly JwtAuthorizationOptions _jwtAuthorizationOptions;
         private readonly IUserService _userService;
+        private readonly IPermissionService _permissionService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         /// <summary>
@@ -33,18 +35,21 @@ namespace Kros.Authorization.Api.Application.Services
         /// <param name="jwtAuthorizationOptions">Authorization options for authorization service.</param>
         /// <param name="apiJwtAuthorizationOptions">Authorization options for api service.</param>
         /// <param name="userService">User service.</param>
+        /// <param name="permissionService">Permission service.</param>
         /// <param name="httpContextAccessor">Httpc context accessor</param>
         public AuthorizationService(
             IHttpClientFactory httpClientFactory,
             IOptions<JwtAuthorizationOptions> jwtAuthorizationOptions,
             IOptions<ApiJwtAuthorizationOptions> apiJwtAuthorizationOptions,
             IUserService userService,
+            IPermissionService permissionService,
             IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = Check.NotNull(httpClientFactory, nameof(httpClientFactory));
             _apiJwtAuthorizationOptions = Check.NotNull(apiJwtAuthorizationOptions, nameof(apiJwtAuthorizationOptions)).Value;
             _jwtAuthorizationOptions = Check.NotNull(jwtAuthorizationOptions, nameof(jwtAuthorizationOptions)).Value;
             _userService = Check.NotNull(userService, nameof(userService));
+            _permissionService = Check.NotNull(permissionService, nameof(permissionService));
             _httpContextAccessor = Check.NotNull(httpContextAccessor, nameof(httpContextAccessor));
         }
 
@@ -59,6 +64,8 @@ namespace Kros.Authorization.Api.Application.Services
                 var allUserClaims = new List<Claim>();
                 allUserClaims.AddRange(oidcClaims);
                 allUserClaims.AddRange(GetUserAuthorizationClaims(user));
+                allUserClaims.AddRange(GetOrganizationClaims(_httpContextAccessor.HttpContext.Request.Headers));
+                allUserClaims.AddRange(await GetPermissionsClaimsAsync(allUserClaims));
 
                 return JwtAuthorizationHelper.CreateJwtTokenFromClaims(allUserClaims, _apiJwtAuthorizationOptions.JwtSecret);
             }
@@ -98,6 +105,42 @@ namespace Kros.Authorization.Api.Application.Services
             }
 
             return Enumerable.Empty<Claim>();
+        }
+
+        /// <summary>
+        /// Gets organization-related claims.
+        /// </summary>
+        /// <param name="headers">HTTP request headers.</param>
+        /// <returns>Organization-related claims.</returns>
+        private IEnumerable<Claim> GetOrganizationClaims(IHeaderDictionary headers)
+        {
+            if (headers != null && headers.ContainsKey(PermissionsHelper.Headers.OrganizationIdHeader))
+            {
+                return new Claim[] { new Claim(PermissionsHelper.Claims.OrganizationId, headers[PermissionsHelper.Headers.OrganizationIdHeader]) };
+            }
+            else
+            {
+                return new Claim[] { };
+            }
+        }
+
+        /// <summary>
+        /// Gets user permissions and returns them as claims.
+        /// </summary>
+        /// <param name="userClaims">Current user claims.</param>
+        /// <returns>Claims based on user permissions.</returns>
+        private async Task<IEnumerable<Claim>> GetPermissionsClaimsAsync(IEnumerable<Claim> userClaims)
+        {
+            if (userClaims.Any(c => c.Type == PermissionsHelper.Claims.OrganizationId))
+            {
+                var userPermissions = await _permissionService.GetUserPermissionsByOrganizationAsync(userClaims);
+                return userPermissions?.Select(p => new Claim(p.Key, p.Value)).AsEnumerable();
+            }
+            else
+            {
+                var userPermissions = await _permissionService.GetAllUserPermissionsAsync(userClaims);
+                return userPermissions?.Select(p => new Claim(p.Key, p.Value)).AsEnumerable();
+            }
         }
     }
 }
