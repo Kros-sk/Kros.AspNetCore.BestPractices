@@ -10,7 +10,6 @@ namespace Kros.Authorization.Api.Application.Queries.Permission
     /// </summary>
     public class GetAllUserPermissionsQuery : IRequest<IEnumerable<GetAllUserPermissionsQuery.Permission>>
     {
-
         /// <summary>
         /// Ctor.
         /// </summary>
