@@ -39,15 +39,15 @@
             /// <summary>
             /// User role value for company admin.
             /// </summary>
-            public const string AdminRole = "admin";
+            public const string AdminRole = "Admin";
             /// <summary>
             /// User role value for company writer.
             /// </summary>
-            public const string WriterRole = "writer";
+            public const string WriterRole = "Write";
             /// <summary>
             /// User role value for company reader.
             /// </summary>
-            public const string ReaderRole = "reader";
+            public const string ReaderRole = "Read";
         }
     }
 }

@@ -13,8 +13,8 @@
         public string AuthorizationUrl { get; set; }
 
         /// <summary>
-        /// Set of headers to preserve from original request.
+        /// Collection of templates to move data from URL parts to http headers of authorization request.
         /// </summary>
-        public string[] HeadersToPreserve { get; set; }
+        public UrlToHeaderTemplate[] UrlPartsToHeaders { get; set; }
     }
 }

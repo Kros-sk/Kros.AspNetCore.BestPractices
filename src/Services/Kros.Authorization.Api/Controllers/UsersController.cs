@@ -14,7 +14,7 @@ namespace Kros.Authorization.Api.Controllers
     /// <summary>
     /// Users controller.
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/organizationId/{organizationId}/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtAuthorizationHelper.JwtSchemeName)]
     public class UsersController : ControllerBase
