@@ -25,7 +25,7 @@ namespace Kros.Authorization.Api.Application.Model
         {
             var userPermissions = _database.Query<Permission>().AsDbSet();
 
-            if (_database.Query<Permission>().Any("UserId = {0} AND OrganizationId = {1} AND PermissionKey = {2}",
+            if (_database.Query<Permission>().Any("UserId = @1 AND OrganizationId = @2 AND PermissionKey = @3",
                                                    permission.UserId, permission.OrganizationId, permission.Key))
             {
                 userPermissions.Edit(permission);

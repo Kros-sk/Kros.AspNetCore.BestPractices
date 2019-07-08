@@ -22,7 +22,19 @@
         }
       ],
       "UpstreamPathTemplate": "/organizationId/{organizationId}/users/{everything}",
-      "SwaggerKey": "UsersKey"
+      "SwaggerKey": "PermissionsKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/permissions/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9002
+        }
+      ],
+      "UpstreamPathTemplate": "/organizationId/{organizationId}/permissions/{everything}",
+      "SwaggerKey": "PermissionsKey"
     },
     {
       "DownstreamPathTemplate": "/api/todos",
@@ -56,6 +68,16 @@
       "Config": [
         {
           "Name": "Users API",
+          "Version": "v1",
+          "Url": "http://localhost:9002/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "PermissionsKey",
+      "Config": [
+        {
+          "Name": "Permissions API",
           "Version": "v1",
           "Url": "http://localhost:9002/swagger/v1/swagger.json"
         }
