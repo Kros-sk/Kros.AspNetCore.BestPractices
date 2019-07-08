@@ -25,6 +25,18 @@
       "SwaggerKey": "PermissionsKey"
     },
     {
+      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/permissions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9002
+        }
+      ],
+      "UpstreamPathTemplate": "/organizationId/{organizationId}/permissions",
+      "SwaggerKey": "PermissionsKey"
+    },
+    {
       "DownstreamPathTemplate": "/api/organizationId/{organizationId}/permissions/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
