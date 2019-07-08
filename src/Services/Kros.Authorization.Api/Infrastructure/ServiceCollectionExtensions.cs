@@ -1,4 +1,5 @@
 ﻿using Kros.AspNetCore.Authorization;
+using Kros.Authorization.Api.Infrastructure;
 using Kros.KORM.Extensions.Asp;
 using Kros.Swagger.Extensions;
 using Kros.ToDos.Api.Infrastructure;
@@ -77,7 +78,22 @@ namespace Kros.Authorization.Api.Extensions
                 options.AddPolicy(PoliciesHelper.AdminAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
-                    policyAdmin.RequireClaim(UserClaimTypes.IsAdmin, bool.TrueString);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole);
+                });
+
+                options.AddPolicy(PoliciesHelper.WriterAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.WriterRole);
+                });
+
+                options.AddPolicy(PoliciesHelper.ReaderAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.WriterRole,
+                                                                                PermissionsHelper.ClaimValues.ReaderRole);
                 });
             });
         }
