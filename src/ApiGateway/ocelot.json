@@ -1,7 +1,7 @@
 {
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/api/users",
+      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -9,11 +9,11 @@
           "Port": 9002
         }
       ],
-      "UpstreamPathTemplate": "/users",
+      "UpstreamPathTemplate": "/organizationId/{organizationId}/users",
       "SwaggerKey": "UsersKey"
     },
     {
-      "DownstreamPathTemplate": "/api/users/{everything}",
+      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/users/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -21,8 +21,32 @@
           "Port": 9002
         }
       ],
-      "UpstreamPathTemplate": "/users/{everything}",
-      "SwaggerKey": "UsersKey"
+      "UpstreamPathTemplate": "/organizationId/{organizationId}/users/{everything}",
+      "SwaggerKey": "PermissionsKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/permissions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9002
+        }
+      ],
+      "UpstreamPathTemplate": "/organizationId/{organizationId}/permissions",
+      "SwaggerKey": "PermissionsKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/permissions/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9002
+        }
+      ],
+      "UpstreamPathTemplate": "/organizationId/{organizationId}/permissions/{everything}",
+      "SwaggerKey": "PermissionsKey"
     },
     {
       "DownstreamPathTemplate": "/api/todos",
@@ -56,6 +80,16 @@
       "Config": [
         {
           "Name": "Users API",
+          "Version": "v1",
+          "Url": "http://localhost:9002/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "PermissionsKey",
+      "Config": [
+        {
+          "Name": "Permissions API",
           "Version": "v1",
           "Url": "http://localhost:9002/swagger/v1/swagger.json"
         }

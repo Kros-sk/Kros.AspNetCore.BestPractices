@@ -11,9 +11,13 @@
 
   <ItemGroup>
     <None Remove="Infrastructure\SqlScripts\20190418001_AddIsAdminColumn.sql" />
+    <None Remove="Infrastructure\SqlScripts\20190703001_AddPermissionsTable.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Infrastructure\SqlScripts\20190703001_AddPermissionsTable.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Infrastructure\SqlScripts\20190418001_AddIsAdminColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
