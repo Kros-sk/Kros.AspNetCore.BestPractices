@@ -1,6 +1,30 @@
 {
   "ReRoutes": [
     {
+      "DownstreamPathTemplate": "/api/organizations",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9003
+        }
+      ],
+      "UpstreamPathTemplate": "/organizations",
+      "SwaggerKey": "OrganizationsKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/organizations/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9003
+        }
+      ],
+      "UpstreamPathTemplate": "/organizations/{everything}",
+      "SwaggerKey": "OrganizationsKey"
+    },
+    {
       "DownstreamPathTemplate": "/api/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -68,6 +92,16 @@
           "Name": "Todos API",
           "Version": "v1",
           "Url": "http://localhost:9001/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "OrganizationsKey",
+      "Config": [
+        {
+          "Name": "Organizations API",
+          "Version": "v1",
+          "Url": "http://localhost:9003/swagger/v1/swagger.json"
         }
       ]
     }
