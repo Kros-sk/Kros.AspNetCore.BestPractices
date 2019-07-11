@@ -8,6 +8,11 @@ namespace Kros.Organizations.Api.Application.Commands
     /// </summary>
     public class CreateOrganizationCommand : IRequest<int>
     {
+        /// <summary>
+        /// User Id.
+        /// </summary>
+        [JsonIgnore]
+        public int UserId { get; set; }
 
         /// <summary>
         /// Company name
@@ -38,13 +43,5 @@ namespace Kros.Organizations.Api.Application.Commands
         /// Address - Zip Code
         /// </summary>
         public string ZipCode { get; set; }
-
-
-        /// <summary>
-        /// User Id.
-        /// </summary>
-        [JsonIgnore]
-        public int UserId { get; set; }
-
     }
 }

@@ -17,8 +17,6 @@ namespace Kros.Organizations.Api.Application.Queries
     {
         private readonly IDatabase _database;
 
-        private const string FROM = "Organizations INNER JOIN UserOrganization ON (Organizations.Id = UserOrganization.OrganizationId)";
-
         /// <summary>
         /// Ctor.
         /// </summary>
@@ -33,16 +31,13 @@ namespace Kros.Organizations.Api.Application.Queries
             GetAllOrganizationsQuery request,
             CancellationToken cancellationToken)
             => Task.FromResult(_database.Query<GetAllOrganizationsQuery.Organization>()
-                .From(FROM)
-                .Where("UserOrganization.UserId = @1", request.UserId).AsEnumerable());
+                .Where(o => o.UserId == request.UserId).AsEnumerable());
 
         /// <inheritdoc />
         public Task<GetOrganizationQuery.Organization> Handle(
             GetOrganizationQuery request,
             CancellationToken cancellationToken)
             => Task.FromResult(_database.Query<GetOrganizationQuery.Organization>()
-                .From(FROM)
-                .Where("UserOrganization.UserId = @1 AND UserOrganization.OrganizationId = @2", request.UserId, request.OrganizationId)
-                .FirstOrDefault());
+                .FirstOrDefault(o => o.Id == request.OrganizationId && o.UserId == request.UserId));
     }
 }

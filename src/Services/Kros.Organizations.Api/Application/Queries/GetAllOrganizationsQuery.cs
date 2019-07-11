@@ -34,6 +34,11 @@ namespace Kros.Organizations.Api.Application.Queries
             public int Id { get; set; }
 
             /// <summary>
+            /// User id
+            /// </summary>
+            public int UserId { get; set; }
+
+            /// <summary>
             /// Company name
             /// </summary>
             public string CompanyName { get; set; }

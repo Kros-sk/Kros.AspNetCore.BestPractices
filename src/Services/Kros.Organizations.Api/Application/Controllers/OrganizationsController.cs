@@ -32,7 +32,7 @@ namespace Kros.Organizations.Api.Application.Controllers
         /// <response code="403">
         /// Forbidden when user don't have permission for Organization with <paramref name="id"/>.
         /// </response>
-        /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
+        /// <response code="404">If organization with id <paramref name="id"/> doesn't exist.</response>
         [HttpGet("{id}", Name = nameof(GetOrganization))]
         [ProducesResponseType(200, Type = typeof(GetOrganizationQuery.Organization))]
         [ProducesResponseType(403)]

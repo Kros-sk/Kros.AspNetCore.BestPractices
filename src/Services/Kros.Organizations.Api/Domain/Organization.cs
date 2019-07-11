@@ -16,6 +16,11 @@ namespace Kros.Organizations.Api.Domain
         public int Id { get; set; }
 
         /// <summary>
+        /// User Id.
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
         /// Company name
         /// </summary>
         public string CompanyName { get; set; }
