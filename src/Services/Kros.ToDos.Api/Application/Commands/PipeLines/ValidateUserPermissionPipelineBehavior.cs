@@ -1,12 +1,12 @@
-﻿using Kros.KORM;
+﻿using Kros.AspNetCore.Exceptions;
+using Kros.KORM;
+using Kros.KORM.Metadata.Attribute;
 using Kros.Utils;
-using System.Linq;
 using MediatR;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Kros.AspNetCore.Exceptions;
-using System;
-using Kros.KORM.Metadata.Attribute;
 
 namespace Kros.ToDos.Api.Application.Commands.PipeLines
 {
@@ -41,7 +41,7 @@ namespace Kros.ToDos.Api.Application.Commands.PipeLines
                 throw new NotFoundException();
             }
 
-            if (toDo.UserId != request.UserId)
+            if (toDo.UserId != request.UserId || toDo.OrganizationId != request.OrganizationId)
             {
                 throw new ResourceIsForbiddenException(String.Format(Properties.Resources.ForbiddenMessage,
                     request.UserId, typeof(ToDo), request.Id));
@@ -56,6 +56,8 @@ namespace Kros.ToDos.Api.Application.Commands.PipeLines
             public int Id { get; set; }
 
             public int UserId { get; set; }
+
+            public int OrganizationId { get; set; }
         }
     }
 }

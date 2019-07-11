@@ -14,10 +14,12 @@ namespace Kros.ToDos.Api.Application.Commands
         /// </summary>
         /// <param name="id">ToDo id.</param>
         /// <param name="userId">User id.</param>
-        public DeleteToDoCommand(int id, int userId)
+        /// <param name="organizationId">Organization id.</param>
+        public DeleteToDoCommand(int id, int userId, int organizationId)
         {
             Id = id;
             UserId = userId;
+            OrganizationId = organizationId;
         }
 
         /// <summary>
@@ -30,5 +32,11 @@ namespace Kros.ToDos.Api.Application.Commands
         /// </summary>
         [JsonIgnore]
         public int UserId { get; }
+
+        /// <summary>
+        /// Organization id.
+        /// </summary>
+        [JsonIgnore]
+        public int OrganizationId { get; }
     }
 }
