@@ -16,6 +16,12 @@ namespace Kros.Organizations.Api.Application.Commands
         public int Id { get; set; }
 
         /// <summary>
+        /// User Id.
+        /// </summary>
+        [JsonIgnore]
+        public int UserId { get; set; }
+
+        /// <summary>
         /// Company name
         /// </summary>
         public string CompanyName { get; set; }
@@ -44,13 +50,5 @@ namespace Kros.Organizations.Api.Application.Commands
         /// Address - Zip Code
         /// </summary>
         public string ZipCode { get; set; }
-
-
-        /// <summary>
-        /// User Id.
-        /// </summary>
-        [JsonIgnore]
-        public int UserId { get; set; }
-
     }
 }

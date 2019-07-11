@@ -10,15 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="SqlScripts\20190703002_CreateOrganizations.sql" />
-    <None Remove="SqlScripts\20190703003_CreateUserOrganizations.sql" />
+    <None Remove="SqlScripts\20190711001_CreateOrganizations.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="SqlScripts\20190703003_CreateUserOrganizations.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SqlScripts\20190703002_CreateOrganizations.sql">
+    <EmbeddedResource Include="SqlScripts\20190711001_CreateOrganizations.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

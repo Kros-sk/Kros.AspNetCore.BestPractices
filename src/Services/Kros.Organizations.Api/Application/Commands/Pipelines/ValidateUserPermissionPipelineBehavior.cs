@@ -36,15 +36,15 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
             CancellationToken cancellationToken,
             RequestHandlerDelegate<Unit> next)
         {
-            var userOrganization = _database.Query<Organization>()
-                .FirstOrDefault(uo => uo.OrganizationId == request.Id);
+            var organization = _database.Query<Organization>()
+                .FirstOrDefault(uo => uo.Id == request.Id);
 
-            if (userOrganization == null)
+            if (organization == null)
             {
                 throw new NotFoundException();
             }
 
-            if (userOrganization.UserId != request.UserId)
+            if (organization.UserId != request.UserId)
             {
                 throw new ResourceIsForbiddenException(String.Format(Properties.Resources.ForbiddenMessage,
                     request.UserId, typeof(Organization), request.Id));
@@ -53,19 +53,19 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
             return await next();
         }
 
-        [Alias("UserOrganization")]
+        [Alias("Organizations")]
         private class Organization
         {
+
+            /// <summary>
+            /// Organization Id
+            /// </summary>
+            public int Id { get; set; }
 
             /// <summary>
             /// User Id
             /// </summary>
             public int UserId { get; set; }
-
-            /// <summary>
-            /// Organization Id
-            /// </summary>
-            public int OrganizationId { get; set; }
         }
     }
 }

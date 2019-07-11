@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Kros.Organizations.Api.Infrastructure
 {
     /// <summary>
-    /// Repository for persistating <see cref="UserOrganization"/>.
+    /// Repository for persistating <see cref="Organization"/>.
     /// </summary>
     public class OrganizationRepository: IOrganizationRepository
     {
