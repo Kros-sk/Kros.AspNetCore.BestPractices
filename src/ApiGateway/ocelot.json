@@ -33,11 +33,11 @@
           "Port": 9002
         }
       ],
-      "UpstreamPathTemplate": "/organizationId/{organizationId}/users",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/users",
       "SwaggerKey": "UsersKey"
     },
     {
-      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/users/{everything}",
+      "DownstreamPathTemplate": "/api/users/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -45,11 +45,11 @@
           "Port": 9002
         }
       ],
-      "UpstreamPathTemplate": "/organizationId/{organizationId}/users/{everything}",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/users/{everything}",
       "SwaggerKey": "PermissionsKey"
     },
     {
-      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/permissions",
+      "DownstreamPathTemplate": "/api/permissions",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -57,11 +57,11 @@
           "Port": 9002
         }
       ],
-      "UpstreamPathTemplate": "/organizationId/{organizationId}/permissions",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/permissions",
       "SwaggerKey": "PermissionsKey"
     },
     {
-      "DownstreamPathTemplate": "/api/organizationId/{organizationId}/permissions/{everything}",
+      "DownstreamPathTemplate": "/api/permissions/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -69,7 +69,7 @@
           "Port": 9002
         }
       ],
-      "UpstreamPathTemplate": "/organizationId/{organizationId}/permissions/{everything}",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/permissions/{everything}",
       "SwaggerKey": "PermissionsKey"
     },
     {
@@ -81,7 +81,7 @@
           "Port": 9001
         }
       ],
-      "UpstreamPathTemplate": "/todos",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/todos",
       "SwaggerKey": "TodosKey"
     },
     {
@@ -93,7 +93,7 @@
           "Port": 9001
         }
       ],
-      "UpstreamPathTemplate": "/todos/{everything}",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/todos/{everything}",
       "SwaggerKey": "TodosKey"
     }
   ],

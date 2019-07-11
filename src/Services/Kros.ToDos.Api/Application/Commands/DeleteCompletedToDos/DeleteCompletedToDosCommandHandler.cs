@@ -29,8 +29,8 @@ namespace Kros.ToDos.Api.Application.Commands
         /// <inheritdoc />
         public async Task<Unit> Handle(DeleteCompletedToDosCommand request, CancellationToken cancellationToken)
         {
-            var todoIds = await _repository.DeleteCompletedToDosAsync(request.UserId);
-            await _mediator.Publish(new ToDosDeleted(todoIds, request.UserId));
+            var todoIds = await _repository.DeleteCompletedToDosAsync(request.UserId, request.OrganizationId);
+            await _mediator.Publish(new ToDosDeleted(todoIds, request.UserId, request.OrganizationId));
 
             return Unit.Value;
         }

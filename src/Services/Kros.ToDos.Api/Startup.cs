@@ -36,6 +36,7 @@ namespace Kros.ToDos.Api
                 .AddFluentValidation();
 
             services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
+            services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
 
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();

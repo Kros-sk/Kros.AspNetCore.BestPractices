@@ -11,7 +11,7 @@ namespace Kros.ToDos.Api.Application.Commands
     /// <summary>
     /// Create ToDo Command Handler.
     /// </summary>
-    public class CreateToDoCommandHandler: IRequestHandler<CreateToDoCommand, int>
+    public class CreateToDoCommandHandler : IRequestHandler<CreateToDoCommand, int>
     {
         private readonly IToDoRepository _repository;
         private readonly IMediator _mediator;
@@ -32,7 +32,7 @@ namespace Kros.ToDos.Api.Application.Commands
         {
             var toDo = request.Adapt<ToDo>();
             await _repository.CreateToDoAsync(toDo);
-            await _mediator.Publish(new ToDoUpdated(toDo.Id, request.UserId));
+            await _mediator.Publish(new ToDoUpdated(toDo.Id, request.UserId, request.OrganizationId));
 
             return toDo.Id;
         }

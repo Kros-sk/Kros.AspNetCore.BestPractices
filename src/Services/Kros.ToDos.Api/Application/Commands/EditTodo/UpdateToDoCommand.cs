@@ -32,6 +32,12 @@ namespace Kros.ToDos.Api.Application.Commands
         public int UserId { get; set; }
 
         /// <summary>
+        /// Organization id.
+        /// </summary>
+        [JsonIgnore]
+        public int OrganizationId { get; set; }
+
+        /// <summary>
         /// Is todo marked as done?
         /// </summary>
         public bool IsDone { get; set; }
