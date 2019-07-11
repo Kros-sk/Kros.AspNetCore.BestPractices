@@ -12,13 +12,15 @@ namespace Kros.ToDos.Api.Application.Queries
     {
         /// <summary>
         /// Ctor.
-        /// </summary>
-        /// <param name="userId">User id.</param>
+        /// </summary>        
         /// <param name="todoId">ToDo id.</param>
-        public GetToDoQuery(int todoId, int userId)
+        /// <param name="userId">User id.</param>
+        /// <param name="organizationId">Organization id.</param>
+        public GetToDoQuery(int todoId, int userId, int organizationId)
         {
             ToDoId = todoId;
             UserId = userId;
+            OrganizationId = organizationId;
         }
 
         /// <summary>
@@ -30,6 +32,11 @@ namespace Kros.ToDos.Api.Application.Queries
         /// User Id.
         /// </summary>
         public int UserId { get; }
+
+        /// <summary>
+        /// Organization id.
+        /// </summary>
+        public int OrganizationId { get; }
 
         /// <summary>
         /// ToDo Header
@@ -66,6 +73,11 @@ namespace Kros.ToDos.Api.Application.Queries
             /// User Id.
             /// </summary>
             public int UserId { get; set; }
+
+            /// <summary>
+            /// Organization id.
+            /// </summary>
+            public int OrganizationId { get; set; }
 
             /// <summary>
             /// Is todo marked as done?

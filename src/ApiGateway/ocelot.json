@@ -25,7 +25,7 @@
       "SwaggerKey": "OrganizationsKey"
     },
     {
-      "DownstreamPathTemplate": "/api/organizations/{organizationId}/users",
+      "DownstreamPathTemplate": "/api/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -37,7 +37,7 @@
       "SwaggerKey": "UsersKey"
     },
     {
-      "DownstreamPathTemplate": "/api/organizations/{organizationId}/users/{everything}",
+      "DownstreamPathTemplate": "/api/users/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -49,7 +49,7 @@
       "SwaggerKey": "PermissionsKey"
     },
     {
-      "DownstreamPathTemplate": "/api/organizations/{organizationId}/permissions",
+      "DownstreamPathTemplate": "/api/permissions",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -61,7 +61,7 @@
       "SwaggerKey": "PermissionsKey"
     },
     {
-      "DownstreamPathTemplate": "/api/organizations/{organizationId}/permissions/{everything}",
+      "DownstreamPathTemplate": "/api/permissions/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -81,7 +81,7 @@
           "Port": 9001
         }
       ],
-      "UpstreamPathTemplate": "/todos",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/todos",
       "SwaggerKey": "TodosKey"
     },
     {
@@ -93,7 +93,7 @@
           "Port": 9001
         }
       ],
-      "UpstreamPathTemplate": "/todos/{everything}",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/todos/{everything}",
       "SwaggerKey": "TodosKey"
     }
   ],

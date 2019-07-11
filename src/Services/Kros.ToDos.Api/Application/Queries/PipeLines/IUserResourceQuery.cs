@@ -9,5 +9,10 @@
         /// User id.
         /// </summary>
         int UserId { get; }
+
+        /// <summary>
+        /// Organization id.
+        /// </summary>
+        int OrganizationId { get; }
     }
 }

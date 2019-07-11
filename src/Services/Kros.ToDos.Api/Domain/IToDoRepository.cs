@@ -30,7 +30,8 @@ namespace Kros.ToDos.Api.Domain
         /// Deletes completed Todos.
         /// </summary>
         /// <param name="userId">User id.</param>
-        Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId);
+        /// <param name="organizationId">Organization id.</param>
+        Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId, int organizationId);
 
         /// <summary>
         /// Change is done state to <paramref name="isDone"/>.
