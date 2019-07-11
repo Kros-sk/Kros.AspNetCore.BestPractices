@@ -25,7 +25,7 @@
       "SwaggerKey": "OrganizationsKey"
     },
     {
-      "DownstreamPathTemplate": "/api/users",
+      "DownstreamPathTemplate": "/api/organizations/{organizationId}/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -33,11 +33,11 @@
           "Port": 9002
         }
       ],
-      "UpstreamPathTemplate": "/users",
+      "UpstreamPathTemplate": "/organizations/{organizationId}/users",
       "SwaggerKey": "UsersKey"
     },
     {
-      "DownstreamPathTemplate": "/api/users/{everything}",
+      "DownstreamPathTemplate": "/api/organizations/{organizationId}/users/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -45,8 +45,32 @@
           "Port": 9002
         }
       ],
-      "UpstreamPathTemplate": "/users/{everything}",
-      "SwaggerKey": "UsersKey"
+      "UpstreamPathTemplate": "/organizations/{organizationId}/users/{everything}",
+      "SwaggerKey": "PermissionsKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/organizations/{organizationId}/permissions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9002
+        }
+      ],
+      "UpstreamPathTemplate": "/organizations/{organizationId}/permissions",
+      "SwaggerKey": "PermissionsKey"
+    },
+    {
+      "DownstreamPathTemplate": "/api/organizations/{organizationId}/permissions/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 9002
+        }
+      ],
+      "UpstreamPathTemplate": "/organizations/{organizationId}/permissions/{everything}",
+      "SwaggerKey": "PermissionsKey"
     },
     {
       "DownstreamPathTemplate": "/api/todos",
@@ -80,6 +104,16 @@
       "Config": [
         {
           "Name": "Users API",
+          "Version": "v1",
+          "Url": "http://localhost:9002/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "PermissionsKey",
+      "Config": [
+        {
+          "Name": "Permissions API",
           "Version": "v1",
           "Url": "http://localhost:9002/swagger/v1/swagger.json"
         }
