@@ -7,13 +7,13 @@ GO
 CREATE TABLE [dbo].[Permissions](
 	[UserId] [int] NOT NULL,
 	[OrganizationId] [int] NOT NULL,
-	[Key] [nvarchar](255) NOT NULL,
+	[PermissionKey] [nvarchar](255) NOT NULL,
 	[Value] [nvarchar](255) NULL,
  CONSTRAINT [PK_Permissions] PRIMARY KEY CLUSTERED 
 (
 	[UserId] ASC,
 	[OrganizationId] ASC,
-	[Key] ASC
+	[PermissionKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
