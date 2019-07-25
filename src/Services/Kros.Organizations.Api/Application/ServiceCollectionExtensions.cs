@@ -10,6 +10,7 @@ using System;
 using Kros.Swagger.Extensions;
 using Kros.Organizations.Api.Application.Commands.Pipelines;
 using Kros.Organizations.Api.Application.Queries.PipeLines;
+using Kros.Organizations.Api.Infrastructure;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -61,5 +62,40 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
             => services.AddSwaggerDocumentation(configuration, c => { c.AddFluentValidationRules(); });
+
+        /// <summary>
+        /// Configure api authorization.
+        /// </summary>
+        /// <param name="services">Collection of app services.</param>
+        /// <param name="scheme">Scheme name for authentication.</param>
+        /// <returns></returns>
+        public static IServiceCollection AddApiJwtAuthorization(
+            this IServiceCollection services,
+            string scheme)
+        {
+            return services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PoliciesHelper.AdminAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole);
+                });
+
+                options.AddPolicy(PoliciesHelper.WriterAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.WriterRole);
+                });
+
+                options.AddPolicy(PoliciesHelper.ReaderAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.WriterRole,
+                                                                                PermissionsHelper.ClaimValues.ReaderRole);
+                });
+            });
+        }
     }
 }
