@@ -1,6 +1,7 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Kros.Organizations.Api.Application.Commands;
 using Kros.Organizations.Api.Application.Queries;
+using Kros.Organizations.Api.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -22,6 +23,7 @@ namespace Kros.Organizations.Api.Application.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllOrganizationsQuery.Organization>))]
+        //[Authorize(PoliciesHelper.ReaderAuthPolicyName)]
         public async Task<IEnumerable<GetAllOrganizationsQuery.Organization>> Get()
             => await this.SendRequest(new GetAllOrganizationsQuery(User.GetUserId()));
 
@@ -37,6 +39,7 @@ namespace Kros.Organizations.Api.Application.Controllers
         [ProducesResponseType(200, Type = typeof(GetOrganizationQuery.Organization))]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
+        [Authorize(PoliciesHelper.ReaderAuthPolicyName)]
         public async Task<GetOrganizationQuery.Organization> GetOrganization(int id)
             => await this.SendRequest(new GetOrganizationQuery(id, User.GetUserId()));
 
