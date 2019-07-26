@@ -1,4 +1,5 @@
-﻿using Kros.Organizations.Api.Domain;
+﻿using Kros.Organizations.Api.Application.Services;
+using Kros.Organizations.Api.Domain;
 using Kros.Utils;
 using Mapster;
 using MediatR;
@@ -13,24 +14,30 @@ namespace Kros.Organizations.Api.Application.Commands
     public class CreateOrganizationCommandHandler : IRequestHandler<CreateOrganizationCommand, int>
     {
         private readonly IOrganizationRepository _organizationRepository;
+        private readonly IUserRoleService _userRoleService;
 
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="organizationRepository">Organization repository.</param>
-        public CreateOrganizationCommandHandler (IOrganizationRepository organizationRepository)
+        /// <param name="userRoleService"><see cref="IUserRoleService"/></param>
+        public CreateOrganizationCommandHandler(
+            IOrganizationRepository organizationRepository,
+            IUserRoleService userRoleService)
         {
             _organizationRepository = Check.NotNull(organizationRepository, nameof(organizationRepository));
+            _userRoleService = Check.NotNull(userRoleService, nameof(userRoleService));
         }
 
         /// <inheritdoc />
         public async Task<int> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
         {
-            var item = request.Adapt<Organization>();
+            var company = request.Adapt<Organization>();
 
-            await _organizationRepository.CreateOrganizationAsync(item);
+            await _organizationRepository.CreateOrganizationAsync(company);
+            await _userRoleService.CreateOwnerRoleAsync(company.UserId, company.Id);
 
-            return item.Id;
+            return company.Id;
         }
     }
 }

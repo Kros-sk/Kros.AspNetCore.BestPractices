@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation.AspNetCore;
+using Kros.AspNetCore;
+using Kros.AspNetCore.Authorization;
+using Kros.Organizations.Api.Application.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.BuilderMiddlewares;
-using Kros.AspNetCore;
 using Microsoft.Extensions.Logging;
-using Kros.AspNetCore.Authorization;
 
 namespace Kros.Organizations.Api
 {
     /// <summary>
     /// Startup.
     /// </summary>
-    public class Startup: BaseStartup
+    public class Startup : BaseStartup
     {
         /// <summary>
         /// Ctor.
@@ -30,6 +31,8 @@ namespace Kros.Organizations.Api
         {
             base.ConfigureServices(services);
 
+            services.Configure<UserRoleOptions>(Configuration.GetSection("UserRole"));
+
             services.AddWebApi()
                 .AddFluentValidation();
 
@@ -38,6 +41,8 @@ namespace Kros.Organizations.Api
 
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
+
+            services.AddHttpClient();
 
             services.Scan(scan =>
                 scan.FromCallingAssembly()

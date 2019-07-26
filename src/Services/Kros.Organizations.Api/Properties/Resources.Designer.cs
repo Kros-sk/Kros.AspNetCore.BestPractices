@@ -68,5 +68,14 @@ namespace Kros.Organizations.Api.Properties {
                 return ResourceManager.GetString("ForbiddenMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value cannot be null, neither empty string..
+        /// </summary>
+        internal static string StringNotNullOrEmpty {
+            get {
+                return ResourceManager.GetString("StringNotNullOrEmpty", resourceCulture);
+            }
+        }
     }
 }

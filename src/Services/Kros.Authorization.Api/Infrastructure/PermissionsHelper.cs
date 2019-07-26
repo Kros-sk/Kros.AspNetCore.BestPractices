@@ -39,6 +39,10 @@
             /// <summary>
             /// User role value for company admin.
             /// </summary>
+            public const string OvnerRole = "Ovner";
+            /// <summary>
+            /// User role value for company admin.
+            /// </summary>
             public const string AdminRole = "Admin";
             /// <summary>
             /// User role value for company writer.
