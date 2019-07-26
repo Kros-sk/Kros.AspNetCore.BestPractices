@@ -75,16 +75,24 @@ namespace Kros.Authorization.Api.Extensions
         {
             return services.AddAuthorization(options =>
             {
+                options.AddPolicy(PoliciesHelper.OvnerAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.OvnerRole);
+                });
+
                 options.AddPolicy(PoliciesHelper.AdminAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
-                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.OvnerRole);
                 });
 
                 options.AddPolicy(PoliciesHelper.WriterAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
                     policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.OvnerRole,
                                                                                 PermissionsHelper.ClaimValues.WriterRole);
                 });
 
@@ -92,6 +100,7 @@ namespace Kros.Authorization.Api.Extensions
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
                     policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.OvnerRole,
                                                                                 PermissionsHelper.ClaimValues.WriterRole,
                                                                                 PermissionsHelper.ClaimValues.ReaderRole);
                 });

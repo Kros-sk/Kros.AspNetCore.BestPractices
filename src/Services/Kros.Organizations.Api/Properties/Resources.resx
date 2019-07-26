@@ -121,4 +121,8 @@
     <value>User with id '{0}' tried access for '{1}' with id '{2}'.</value>
     <comment>User with id '{0}' tried access for '{1}' with id '{2}'.</comment>
   </data>
+  <data name="StringNotNullOrEmpty" xml:space="preserve">
+    <value>The value cannot be null, neither empty string.</value>
+    <comment>The value cannot be null, neither empty string.</comment>
+  </data>
 </root>

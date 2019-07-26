@@ -6,6 +6,11 @@
     public static class PoliciesHelper
     {
         /// <summary>
+        /// Authentication company Ovner policy name.
+        /// </summary>
+        public const string OvnerAuthPolicyName = "Ovner";
+
+        /// <summary>
         /// Authentication company admin policy name.
         /// </summary>
         public const string AdminAuthPolicyName = "Admin";

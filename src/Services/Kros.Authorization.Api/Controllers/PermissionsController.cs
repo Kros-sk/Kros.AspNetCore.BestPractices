@@ -1,4 +1,5 @@
 ﻿using Kros.AspNetCore.Authorization;
+using Kros.Authorization.Api.Application.Commands.CreatePermissions;
 using Kros.Authorization.Api.Application.Commands.UpdatePermissions;
 using Kros.Authorization.Api.Application.Services;
 using Kros.Authorization.Api.Infrastructure;
@@ -66,5 +67,27 @@ namespace Kros.Authorization.Api.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Creates or updates user role in company.
+        /// </summary>
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [Authorize(PoliciesHelper.AdminAuthPolicyName)]
+        public async Task<ActionResult> CreateOrUpdateUserRole(CreatePermissionsCommand command)
+            => await this.SendCreateCommand(command);
+
+        /// <summary>
+        /// Set user role in company to Ovner.
+        /// </summary>
+        [HttpPost("Ovner")]
+        [ProducesResponseType(201)]
+        public async Task<ActionResult> CreateUserRoleOvner(CreatePermissionsCommand command)
+        {
+            command.Key = PermissionsHelper.Claims.UserRole;
+            command.Value = PermissionsHelper.ClaimValues.OvnerRole;
+            return await this.SendCreateCommand(command);
+        }
+
     }
 }
