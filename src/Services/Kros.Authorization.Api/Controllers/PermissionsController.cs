@@ -1,5 +1,6 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Kros.Authorization.Api.Application.Commands.CreatePermissions;
+using Kros.Authorization.Api.Application.Commands.DeletePermissions;
 using Kros.Authorization.Api.Application.Commands.UpdatePermissions;
 using Kros.Authorization.Api.Application.Services;
 using Kros.Authorization.Api.Infrastructure;
@@ -78,15 +79,41 @@ namespace Kros.Authorization.Api.Controllers
             => await this.SendCreateCommand(command);
 
         /// <summary>
-        /// Set user role in company to Ovner.
+        /// Set user role in company to Owner.
         /// </summary>
-        [HttpPost("Ovner")]
+        [HttpPost("Owner")]
         [ProducesResponseType(201)]
-        public async Task<ActionResult> CreateUserRoleOvner(CreatePermissionsCommand command)
+        public async Task<ActionResult> CreateUserRoleOwner(CreatePermissionsCommand command)
         {
             command.Key = PermissionsHelper.Claims.UserRole;
-            command.Value = PermissionsHelper.ClaimValues.OvnerRole;
+            command.Value = PermissionsHelper.ClaimValues.OwnerRole;
             return await this.SendCreateCommand(command);
+        }
+
+        /// <summary>
+        /// Deletes user role by company id.
+        /// </summary>
+        [HttpDelete("{companyId}")]
+        [ProducesResponseType(204)]
+        [Authorize(PoliciesHelper.OwnerAuthPolicyName)]
+        public async Task<ActionResult> DeleteAllUsersRoleByCompany(long companyId)
+        {
+            await this.SendRequest(new DeleteAllPermissionsByCompanyCommand(companyId));
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes user role by company id and user id.
+        /// </summary>
+        [HttpDelete("{companyId}/user/{userId}")]
+        [ProducesResponseType(204)]
+        [Authorize(PoliciesHelper.AdminAuthPolicyName)]
+        public async Task<ActionResult> DeleteUserRoleByCompany(long companyId, long userID)
+        {
+            await this.SendRequest(new DeleteUserPermissionsByCompanyCommand(companyId, userID));
+
+            return NoContent();
         }
 
     }
