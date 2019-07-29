@@ -28,23 +28,23 @@ namespace Kros.Authorization.Api.Application.Services
         }
 
         /// <inheritdoc />
-        public bool IsOvnerFromClaims(ClaimsPrincipal claims)
-            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OvnerRole);
+        public bool IsOwnerFromClaims(ClaimsPrincipal claims)
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole);
 
         /// <inheritdoc />
         public bool IsAdminFromClaims(ClaimsPrincipal claims)
-            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OvnerRole,
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole,
                                       PermissionsHelper.ClaimValues.AdminRole);
 
         /// <inheritdoc />
         public bool IsWriterFromClaims(ClaimsPrincipal claims)
-            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OvnerRole,
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole,
                                       PermissionsHelper.ClaimValues.AdminRole,
                                       PermissionsHelper.ClaimValues.WriterRole);
 
         /// <inheritdoc />
         public bool IsReaderFromClaims(ClaimsPrincipal claims)
-            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OvnerRole,
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole,
                                       PermissionsHelper.ClaimValues.AdminRole,
                                       PermissionsHelper.ClaimValues.WriterRole,
                                       PermissionsHelper.ClaimValues.ReaderRole);

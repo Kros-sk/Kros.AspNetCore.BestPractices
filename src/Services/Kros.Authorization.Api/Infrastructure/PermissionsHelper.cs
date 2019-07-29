@@ -37,9 +37,9 @@
         public static class ClaimValues
         {
             /// <summary>
-            /// User role value for company admin.
+            /// User role value for company Owner.
             /// </summary>
-            public const string OvnerRole = "Ovner";
+            public const string OwnerRole = "Owner";
             /// <summary>
             /// User role value for company admin.
             /// </summary>

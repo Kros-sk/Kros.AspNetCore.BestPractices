@@ -6,9 +6,9 @@
     public static class PoliciesHelper
     {
         /// <summary>
-        /// Authentication company Ovner policy name.
+        /// Authentication company Owner policy name.
         /// </summary>
-        public const string OvnerAuthPolicyName = "Ovner";
+        public const string OwnerAuthPolicyName = "Owner";
 
         /// <summary>
         /// Authentication company admin policy name.

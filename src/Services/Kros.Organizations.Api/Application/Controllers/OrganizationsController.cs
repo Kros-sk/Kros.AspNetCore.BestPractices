@@ -90,6 +90,7 @@ namespace Kros.Organizations.Api.Application.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
+        [Authorize(PoliciesHelper.OwnerAuthPolicyName)]
         public async Task<ActionResult> DeleteOrganization(int id)
         {
             await this.SendRequest(new DeleteOrganizationCommand(id, User.GetUserId()));

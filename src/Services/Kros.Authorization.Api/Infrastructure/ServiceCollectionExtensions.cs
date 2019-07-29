@@ -75,24 +75,24 @@ namespace Kros.Authorization.Api.Extensions
         {
             return services.AddAuthorization(options =>
             {
-                options.AddPolicy(PoliciesHelper.OvnerAuthPolicyName, policyAdmin =>
+                options.AddPolicy(PoliciesHelper.OwnerAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
-                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.OvnerRole);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.OwnerRole);
                 });
 
                 options.AddPolicy(PoliciesHelper.AdminAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
                     policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
-                                                                                PermissionsHelper.ClaimValues.OvnerRole);
+                                                                                PermissionsHelper.ClaimValues.OwnerRole);
                 });
 
                 options.AddPolicy(PoliciesHelper.WriterAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
                     policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
-                                                                                PermissionsHelper.ClaimValues.OvnerRole,
+                                                                                PermissionsHelper.ClaimValues.OwnerRole,
                                                                                 PermissionsHelper.ClaimValues.WriterRole);
                 });
 
@@ -100,7 +100,7 @@ namespace Kros.Authorization.Api.Extensions
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
                     policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
-                                                                                PermissionsHelper.ClaimValues.OvnerRole,
+                                                                                PermissionsHelper.ClaimValues.OwnerRole,
                                                                                 PermissionsHelper.ClaimValues.WriterRole,
                                                                                 PermissionsHelper.ClaimValues.ReaderRole);
                 });
