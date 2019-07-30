@@ -1,13 +1,13 @@
-﻿using Kros.Authorization.Api.Application.Commands;
+﻿using Kros.AspNetCore.Authorization;
+using Kros.Authorization.Api.Application.Commands;
 using Kros.Authorization.Api.Application.Model;
 using Kros.Authorization.Api.Application.Queries;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Security.Claims;
-using Kros.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace Kros.Authorization.Api.Application.Services
 {
@@ -36,7 +36,7 @@ namespace Kros.Authorization.Api.Application.Services
         public async Task<GetUserByEmailQuery.User> TryCreateDefaultUserAsync(IEnumerable<Claim> userClaims)
         {
             var userEmailClaim = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.Email);
-            
+
             if (userEmailClaim != null)
             {
                 var userEmail = userEmailClaim.Value;
@@ -47,15 +47,13 @@ namespace Kros.Authorization.Api.Application.Services
                     user = new GetUserByEmailQuery.User()
                     {
                         Email = userEmail,
-                        IsAdmin = false
                     };
 
                     user.Id = await CreateNewUserAsync(new CreateUserCommand()
                     {
                         Email = user.Email,
                         FirstName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.GivenName)?.Value,
-                        LastName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.FamilyName)?.Value,
-                        IsAdmin = false
+                        LastName = userClaims.FirstOrDefault(x => x.Type == UserClaimTypes.FamilyName)?.Value
                     });
                 }
 

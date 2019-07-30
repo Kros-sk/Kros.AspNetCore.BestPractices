@@ -39,10 +39,6 @@ namespace Kros.Authorization.Api.Application.Queries
             /// </summary>
             public string Email { get; set; }
 
-            /// <summary>
-            /// Is user admin?
-            /// </summary>
-            public bool IsAdmin { get; set; }
-        }
+         }
     }
 }

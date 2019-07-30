@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 
-namespace Kros.ToDos.Api.Application
+namespace Kros.ToDos.Base.Extensions
 {
     /// <summary>
     /// Claims principal extensions for System.Security.Claims.ClaimsPrincipal.
