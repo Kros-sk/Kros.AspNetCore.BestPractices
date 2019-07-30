@@ -12,9 +12,13 @@
   <ItemGroup>
     <None Remove="Infrastructure\SqlScripts\20190418001_AddIsAdminColumn.sql" />
     <None Remove="Infrastructure\SqlScripts\20190703001_AddPermissionsTable.sql" />
+    <None Remove="Infrastructure\SqlScripts\20190729001_RemoveAdminColumn.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Infrastructure\SqlScripts\20190729001_RemoveAdminColumn.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Infrastructure\SqlScripts\20190703001_AddPermissionsTable.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -39,6 +43,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Scrutor" Version="3.0.2" />
     <PackageReference Include="Kros.Identity.Extensions" Version="0.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
   </ItemGroup>
 
 </Project>
