@@ -1,8 +1,8 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Kros.ToDos.Api.Application.Commands;
 using Kros.ToDos.Api.Application.Queries;
-using Kros.ToDos.Api.Infrastructure;
 using Kros.ToDos.Base.Extensions;
+using Kros.ToDos.Base.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;

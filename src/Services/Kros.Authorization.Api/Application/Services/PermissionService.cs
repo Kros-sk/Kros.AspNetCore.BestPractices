@@ -2,7 +2,7 @@
 using Kros.Authorization.Api.Application.Commands.UpdatePermissions;
 using Kros.Authorization.Api.Application.Model;
 using Kros.Authorization.Api.Application.Queries.Permission;
-using Kros.Authorization.Api.Infrastructure;
+using Kros.ToDos.Base.Infrastructure;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;

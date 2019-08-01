@@ -1,4 +1,4 @@
-﻿namespace Kros.ToDos.Api.Infrastructure
+﻿namespace Kros.ToDos.Base.Infrastructure
 {
     /// <summary>
     /// Helper for authorization.
