@@ -52,7 +52,6 @@ namespace Kros.Authorization.Api.Application.Queries
             /// <summary>
             /// User permissions.
             /// </summary>
-            [Alias("Permissions")]
             public string Permissions { get; set; }
         }
     }

@@ -5,7 +5,7 @@ using Kros.Swagger.Extensions;
 using Kros.ToDos.Api.Application;
 using Kros.ToDos.Api.Application.Commands.PipeLines;
 using Kros.ToDos.Api.Application.Queries.PipeLines;
-using Kros.ToDos.Api.Infrastructure;
+using Kros.ToDos.Base.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;

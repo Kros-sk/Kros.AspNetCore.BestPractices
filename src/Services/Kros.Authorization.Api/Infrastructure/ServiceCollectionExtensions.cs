@@ -1,8 +1,7 @@
 ﻿using Kros.AspNetCore.Authorization;
-using Kros.Authorization.Api.Infrastructure;
 using Kros.KORM.Extensions.Asp;
 using Kros.Swagger.Extensions;
-using Kros.ToDos.Api.Infrastructure;
+using Kros.ToDos.Base.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
