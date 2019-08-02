@@ -10,7 +10,7 @@ namespace Kros.ToDos.Api.Application.Commands
     /// <summary>
     /// Delete ToDo Command Handler.
     /// </summary>
-    public class DeleteToDoCommandHandler: IRequestHandler<DeleteToDoCommand, Unit>
+    public class DeleteToDoCommandHandler : IRequestHandler<DeleteToDoCommand, Unit>
     {
         private readonly IToDoRepository _repository;
         private readonly IMediator _mediator;
@@ -30,7 +30,7 @@ namespace Kros.ToDos.Api.Application.Commands
         public async Task<Unit> Handle(DeleteToDoCommand request, CancellationToken cancellationToken)
         {
             await _repository.DeleteToDoAsync(request.Id);
-            await _mediator.Publish(new ToDoUpdated(request.Id, request.UserId));
+            await _mediator.Publish(new ToDoUpdated(request.Id, request.UserId, request.OrganizationId));
 
             return Unit.Value;
         }

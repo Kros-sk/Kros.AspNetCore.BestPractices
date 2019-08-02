@@ -337,3 +337,6 @@ Kros.ToDos.Api.xml
 
 #Add launchSetings.json - ports are important for localhost
 !**/Properties/launchSettings.json
+/Kros.BestPractices.postman_collection.json
+/postman localhost.bat
+/token settings.txt

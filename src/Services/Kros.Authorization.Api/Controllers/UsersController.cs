@@ -2,7 +2,8 @@
 using Kros.Authorization.Api.Application.Commands;
 using Kros.Authorization.Api.Application.Queries;
 using Kros.Authorization.Api.Application.Services;
-using Kros.ToDos.Api.Infrastructure;
+using Kros.ToDos.Base.Extensions;
+using Kros.ToDos.Base.Infrastructure;
 using Kros.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace Kros.Authorization.Api.Controllers
     /// <summary>
     /// Users controller.
     /// </summary>
-    [Route("api/organizationId/{organizationId}/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtAuthorizationHelper.JwtSchemeName)]
     public class UsersController : ControllerBase
@@ -82,7 +83,7 @@ namespace Kros.Authorization.Api.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllUsersQuery.User>))]
         [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<IEnumerable<GetAllUsersQuery.User>> GetAllUsers()
-            => await this.SendRequest(new GetAllUsersQuery());
+            => await this.SendRequest(new GetAllUsersQuery(User.GetOrganizationId()));
 
         /// <summary>
         /// Update user.

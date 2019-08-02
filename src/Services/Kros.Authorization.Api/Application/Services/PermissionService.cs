@@ -2,7 +2,7 @@
 using Kros.Authorization.Api.Application.Commands.UpdatePermissions;
 using Kros.Authorization.Api.Application.Model;
 using Kros.Authorization.Api.Application.Queries.Permission;
-using Kros.Authorization.Api.Infrastructure;
+using Kros.ToDos.Base.Infrastructure;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,17 +28,24 @@ namespace Kros.Authorization.Api.Application.Services
         }
 
         /// <inheritdoc />
+        public bool IsOwnerFromClaims(ClaimsPrincipal claims)
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole);
+
+        /// <inheritdoc />
         public bool IsAdminFromClaims(ClaimsPrincipal claims)
-            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.AdminRole);
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole,
+                                      PermissionsHelper.ClaimValues.AdminRole);
 
         /// <inheritdoc />
         public bool IsWriterFromClaims(ClaimsPrincipal claims)
-            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.AdminRole,
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole,
+                                      PermissionsHelper.ClaimValues.AdminRole,
                                       PermissionsHelper.ClaimValues.WriterRole);
 
         /// <inheritdoc />
         public bool IsReaderFromClaims(ClaimsPrincipal claims)
-            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.AdminRole,
+            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole,
+                                      PermissionsHelper.ClaimValues.AdminRole,
                                       PermissionsHelper.ClaimValues.WriterRole,
                                       PermissionsHelper.ClaimValues.ReaderRole);
 

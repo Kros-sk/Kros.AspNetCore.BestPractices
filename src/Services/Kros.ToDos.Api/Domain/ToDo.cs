@@ -32,6 +32,11 @@ namespace Kros.ToDos.Api.Domain
         public int UserId { get; set; }
 
         /// <summary>
+        /// Organization id.
+        /// </summary>
+        public int OrganizationId { get; set; }
+
+        /// <summary>
         /// Created.
         /// </summary>
         public DateTimeOffset Created { get; set; }

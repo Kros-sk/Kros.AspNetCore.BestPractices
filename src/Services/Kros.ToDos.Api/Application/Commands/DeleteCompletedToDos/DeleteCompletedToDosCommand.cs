@@ -12,9 +12,11 @@ namespace Kros.ToDos.Api.Application.Commands
         /// Ctor.
         /// </summary>
         /// <param name="userId">User id.</param>
-        public DeleteCompletedToDosCommand(int userId)
+        /// <param name="organizationId">Organization id.</param>
+        public DeleteCompletedToDosCommand(int userId, int organizationId)
         {
             UserId = userId;
+            OrganizationId = organizationId;
         }
 
         /// <summary>
@@ -22,5 +24,11 @@ namespace Kros.ToDos.Api.Application.Commands
         /// </summary>
         [JsonIgnore]
         public int UserId { get; set; }
+
+        /// <summary>
+        /// Organization id.
+        /// </summary>
+        [JsonIgnore]
+        public int OrganizationId { get; set; }
     }
 }

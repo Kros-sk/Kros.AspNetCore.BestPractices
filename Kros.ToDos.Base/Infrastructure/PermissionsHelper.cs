@@ -1,4 +1,4 @@
-﻿namespace Kros.Authorization.Api.Infrastructure
+﻿namespace Kros.ToDos.Base.Infrastructure
 {
     /// <summary>
     /// Helper for permissions.
@@ -36,6 +36,10 @@
         /// </summary>
         public static class ClaimValues
         {
+            /// <summary>
+            /// User role value for company Owner.
+            /// </summary>
+            public const string OwnerRole = "Owner";
             /// <summary>
             /// User role value for company admin.
             /// </summary>

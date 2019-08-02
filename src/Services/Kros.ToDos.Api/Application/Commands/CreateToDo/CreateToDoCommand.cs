@@ -23,5 +23,11 @@ namespace Kros.ToDos.Api.Application.Commands
         /// </summary>
         [JsonIgnore]
         public int UserId { get; set; }
+
+        /// <summary>
+        /// Organization id.
+        /// </summary>
+        [JsonIgnore]
+        public int OrganizationId { get; set; }
     }
 }

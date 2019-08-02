@@ -1,7 +1,6 @@
 ﻿using Kros.ToDos.Api.Application.Notifications;
 using Kros.ToDos.Api.Domain;
 using Kros.Utils;
-using Mapster;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,7 +30,7 @@ namespace Kros.ToDos.Api.Application.Commands
         public async Task<Unit> Handle(ChangeIsDoneStateCommand request, CancellationToken cancellationToken)
         {
             await _repository.ChangeIsDoneState(request.Id, request.IsDone);
-            await _mediator.Publish(new ToDoUpdated(request.Id, request.UserId));
+            await _mediator.Publish(new ToDoUpdated(request.Id, request.UserId, request.OrganizationId));
 
             return Unit.Value;
         }

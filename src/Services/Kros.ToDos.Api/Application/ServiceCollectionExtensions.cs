@@ -5,6 +5,7 @@ using Kros.Swagger.Extensions;
 using Kros.ToDos.Api.Application;
 using Kros.ToDos.Api.Application.Commands.PipeLines;
 using Kros.ToDos.Api.Application.Queries.PipeLines;
+using Kros.ToDos.Base.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
@@ -86,6 +87,41 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             return services;
+        }
+
+        /// <summary>
+        /// Configure api authorization.
+        /// </summary>
+        /// <param name="services">Collection of app services.</param>
+        /// <param name="scheme">Scheme name for authentication.</param>
+        /// <returns></returns>
+        public static IServiceCollection AddApiJwtAuthorization(
+            this IServiceCollection services,
+            string scheme)
+        {
+            return services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PoliciesHelper.AdminAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole);
+                });
+
+                options.AddPolicy(PoliciesHelper.WriterAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.WriterRole);
+                });
+
+                options.AddPolicy(PoliciesHelper.ReaderAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                                                                                PermissionsHelper.ClaimValues.WriterRole,
+                                                                                PermissionsHelper.ClaimValues.ReaderRole);
+                });
+            });
         }
     }
 }

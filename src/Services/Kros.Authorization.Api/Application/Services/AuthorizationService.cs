@@ -1,7 +1,7 @@
 ﻿using IdentityModel.Client;
 using Kros.AspNetCore.Authorization;
 using Kros.Authorization.Api.Application.Queries;
-using Kros.Authorization.Api.Infrastructure;
+using Kros.ToDos.Base.Infrastructure;
 using Kros.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;

@@ -1,6 +1,8 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Kros.ToDos.Api.Application.Commands;
 using Kros.ToDos.Api.Application.Queries;
+using Kros.ToDos.Base.Extensions;
+using Kros.ToDos.Base.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -22,8 +24,9 @@ namespace Kros.ToDos.Api.Application.Controllers
         /// </summary>
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>))]
+        [Authorize(PoliciesHelper.ReaderAuthPolicyName)]
         public async Task<IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>> Get()
-            => await this.SendRequest(new GetAllToDoHeadersQuery(User.GetUserId()));
+            => await this.SendRequest(new GetAllToDoHeadersQuery(User.GetUserId(), User.GetOrganizationId()));
 
         /// <summary>
         /// Get ToDo by id.
@@ -35,22 +38,23 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(200, Type = typeof(GetToDoQuery.ToDo))]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
+        [Authorize(PoliciesHelper.ReaderAuthPolicyName)]
         public async Task<GetToDoQuery.ToDo> GetToDo(int id)
-            => await this.SendRequest(new GetToDoQuery(id, User.GetUserId()));
+            => await this.SendRequest(new GetToDoQuery(id, User.GetUserId(), User.GetOrganizationId()));
 
         /// <summary>
         /// Create new ToDo.
         /// </summary>
         /// <param name="command">Data for creating todo.</param>
         /// <response code="201">Created. ToDo id in body.</response>
-        /// <returns>
-        /// ToDo id.
-        /// </returns>
+        /// <returns>ToDo id.</returns>
         [HttpPost]
         [ProducesResponseType(201)]
+        [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> CreateToDo(CreateToDoCommand command)
         {
             command.UserId = User.GetUserId();
+            command.OrganizationId = User.GetOrganizationId();
 
             return await this.SendCreateCommand(command, nameof(GetToDo));
         }
@@ -66,9 +70,11 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
+        [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> UpdateToDo(int id, UpdateToDoCommand command)
         {
             command.UserId = User.GetUserId();
+            command.OrganizationId = User.GetOrganizationId();
             command.Id = id;
 
             await this.SendRequest(command);
@@ -86,9 +92,10 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
+        [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> DeleteToDo(int id)
         {
-            await this.SendRequest(new DeleteToDoCommand(id, User.GetUserId()));
+            await this.SendRequest(new DeleteToDoCommand(id, User.GetUserId(), User.GetOrganizationId()));
 
             return Ok();
         }
@@ -100,9 +107,10 @@ namespace Kros.ToDos.Api.Application.Controllers
         [HttpDelete("deleteCompleted")]
         [ProducesResponseType(200)]
         [ProducesResponseType(403)]
+        [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> DeleteCompletedToDos()
         {
-            await this.SendRequest(new DeleteCompletedToDosCommand(User.GetUserId()));
+            await this.SendRequest(new DeleteCompletedToDosCommand(User.GetUserId(), User.GetOrganizationId()));
 
             return Ok();
         }
@@ -118,9 +126,11 @@ namespace Kros.ToDos.Api.Application.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
+        [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> ChangeIsDoneState(int id, ChangeIsDoneStateCommand command)
         {
             command.UserId = User.GetUserId();
+            command.OrganizationId = User.GetOrganizationId();
             command.Id = id;
 
             await this.SendRequest(command);

@@ -17,6 +17,8 @@
     <None Remove="SqlScripts\20190411001_ChangeDateTimeToDateTimeOffset.sql" />
     <None Remove="SqlScripts\20190411002_AddLastChangeColumn.sql" />
     <None Remove="SqlScripts\20190424001_AddIsDoneColumn.sql" />
+    <None Remove="SqlScripts\20190710001_AddOrganizationIdColumn.sql" />
+    <None Remove="SqlScripts\20190710002_InsertDummyToDos.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +37,10 @@
     <EmbeddedResource Include="SqlScripts\20190411002_AddLastChangeColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="SqlScripts\20190403002_InserDummyToDos.sql">
+    <EmbeddedResource Include="SqlScripts\20190710001_AddOrganizationIdColumn.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlScripts\20190710002_InsertDummyToDos.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -63,6 +68,10 @@
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
     <PackageReference Include="Scrutor" Version="3.0.2" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
   </ItemGroup>
 
   <ItemGroup>

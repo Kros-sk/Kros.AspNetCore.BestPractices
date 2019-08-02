@@ -13,15 +13,22 @@ namespace Kros.ToDos.Api.Application.Queries
         /// Ctor.
         /// </summary>
         /// <param name="userId">User id.</param>
-        public GetAllToDoHeadersQuery(int userId)
+        /// <param name="organizationId">Organization id.</param>
+        public GetAllToDoHeadersQuery(int userId, int organizationId)
         {
             UserId = userId;
+            OrganizationId = organizationId;
         }
 
         /// <summary>
         /// User Id.
         /// </summary>
         public int UserId { get; }
+
+        /// <summary>
+        /// Organization id.
+        /// </summary>
+        public int OrganizationId { get; }
 
         /// <summary>
         /// ToDo Header
