@@ -126,7 +126,7 @@ Aplikácia je nasadená na AZURE a apigateway je dostupný na adrese [https://de
 
 ### Klientská Aplikácia
 
-K tomuto projektu existuje aj Angular klientská aplikácia. Nachádza sa na [https://github.com/Kros-sk/Kros.Angular.BestPractices]([https://link](https://github.com/Kros-sk/Kros.Angular.BestPractices))
+K tomuto projektu existuje aj Angular klientská aplikácia. Nachádza sa na [https://github.com/Kros-sk/Kros.Angular.BestPractices](https://github.com/Kros-sk/Kros.Angular.BestPractices)
 Demo aplikácia je dostupná na adrese [https://demo.todos.kros.wtf](https://demo.todos.kros.wtf)
 
 ## Overview
