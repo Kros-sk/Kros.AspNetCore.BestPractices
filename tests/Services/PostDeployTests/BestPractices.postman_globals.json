@@ -1,0 +1,19 @@
+{
+	"id": "3c7030f1-d25d-4c79-821d-638562e6f3a2",
+	"values": [
+		{
+			"key": "NewTodoId",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "AccessToken",
+			"value": "",
+			"enabled": true
+		}
+	],
+	"name": "Kros.AspNetCore.BestPractices - Demo app Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2019-09-17T07:28:43.478Z",
+	"_postman_exported_using": "Postman/7.6.0"
+}
