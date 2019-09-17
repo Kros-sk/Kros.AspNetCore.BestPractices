@@ -1,0 +1,1838 @@
+{
+	"info": {
+		"_postman_id": "07446918-6d31-4078-b4d5-a95d09be217a",
+		"name": "Workshop: Kros.AspNetCore.BestPractices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Seed",
+			"item": [
+				{
+					"name": "Generate token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4970b992-6ae2-4037-8154-8f86e03b9d6b",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.variables.set(\"AccessToken\",jsonData.access_token)",
+									"",
+									"pm.test(\"Token should be not empty\", function () {",
+									"    pm.expect(pm.variables.get(\"AccessToken\").length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "39c8aaa5-35d2-4f23-87f5-ca83d9d462b0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "Demo.BestPractices.Postman",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{OAuthUsername}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{OAuthPassword}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{OAuthUrl}}",
+							"host": [
+								"{{OAuthUrl}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hello",
+			"item": [
+				{
+					"name": "Hello",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://www.mocky.io/v2/5d5a53a72f0000520036f4b9",
+							"protocol": "http",
+							"host": [
+								"www",
+								"mocky",
+								"io"
+							],
+							"path": [
+								"v2",
+								"5d5a53a72f0000520036f4b9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users Api",
+			"item": [
+				{
+					"name": "Is Admin (Start)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "642b7445-7956-473c-a820-7943266588a7",
+								"exec": [
+									"pm.test(\"Is admin should be True\", function () {",
+									"    pm.expect(pm.response.text()).to.eql(\"true\");",
+									"});",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://demo.todos.gateway.api.kros.wtf/users/IsAdmin",
+							"protocol": "https",
+							"host": [
+								"demo",
+								"todos",
+								"gateway",
+								"api",
+								"kros",
+								"wtf"
+							],
+							"path": [
+								"users",
+								"IsAdmin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Users/IsAdmin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Users",
+										"IsAdmin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "\"<boolean>\""
+						}
+					]
+				},
+				{
+					"name": "Get All Users (Start)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "665460d4-5762-4a2a-9670-d4d570302383",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Users should be loaded\", function () {",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UsersApiBaseUrl}}",
+							"host": [
+								"{{UsersApiBaseUrl}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Authorization/jwt-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Authorization",
+										"jwt-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "\"<string>\""
+						}
+					]
+				},
+				{
+					"name": "Is Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "642b7445-7956-473c-a820-7943266588a7",
+								"exec": [
+									"pm.test(\"Is admin should be True\", function () {",
+									"    pm.expect(pm.response.text()).to.eql(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UsersApiBaseUrl}}/IsAdmin",
+							"host": [
+								"{{UsersApiBaseUrl}}"
+							],
+							"path": [
+								"IsAdmin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Users/IsAdmin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Users",
+										"IsAdmin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "\"<boolean>\""
+						}
+					]
+				},
+				{
+					"name": "Get All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "665460d4-5762-4a2a-9670-d4d570302383",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Users should be loaded\", function () {",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UsersApiBaseUrl}}",
+							"host": [
+								"{{UsersApiBaseUrl}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Authorization/jwt-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Authorization",
+										"jwt-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "\"<string>\""
+						}
+					]
+				},
+				{
+					"name": "Get User by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "81906080-143e-4b07-a4f0-a73c8038d50f",
+								"exec": [
+									"pm.test(\"Get user by id returns user's value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(parseInt(pm.variables.get(\"UserId\")));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UsersApiBaseUrl}}/{{UserId}}",
+							"host": [
+								"{{UsersApiBaseUrl}}"
+							],
+							"path": [
+								"{{UserId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Users/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Users",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"id\": \"<integer>\",\n \"firstName\": \"<string>\",\n \"lastName\": \"<string>\",\n \"email\": \"<string>\",\n \"isAdmin\": \"<boolean>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1e352d81-fe19-43a1-b204-972047d1c12a",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b80cff83-422f-4fa2-b057-0f90d1da6a62",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Save user values to variables",
+									"var user = JSON.parse(pm.request.body.raw);",
+									"pm.variables.set(\"FirstName\", user.firstName);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"integrationtests@kros.sk\",\r\n    \"isAdmin\": true\r\n}"
+						},
+						"url": {
+							"raw": "{{UsersApiBaseUrl}}/{{UserId}}",
+							"host": [
+								"{{UsersApiBaseUrl}}"
+							],
+							"path": [
+								"{{UserId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<string>\",\n    \"isAdmin\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/Users/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Users",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Check updated value",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "81906080-143e-4b07-a4f0-a73c8038d50f",
+								"exec": [
+									"pm.test(\"Check updated value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.firstName).to.eql(pm.variables.get(\"FirstName\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{UsersApiBaseUrl}}/{{UserId}}",
+							"host": [
+								"{{UsersApiBaseUrl}}"
+							],
+							"path": [
+								"{{UserId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Users/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Users",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"id\": \"<integer>\",\n \"firstName\": \"<string>\",\n \"lastName\": \"<string>\",\n \"email\": \"<string>\",\n \"isAdmin\": \"<boolean>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Todos Api",
+			"item": [
+				{
+					"name": "Get All Todos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "12d8c426-d1ab-4f9f-8e59-0f9a10fcce5d",
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Getting all todos should return status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Getting all todos should return at least one todo\", function () {",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"isDone\": \"<boolean>\"\n },\n {\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"isDone\": \"<boolean>\"\n }\n]"
+						}
+					]
+				},
+				{
+					"name": "Create Todo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "599b8f06-923b-4aa0-a9e0-04215a7cd834",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"Toto ma skon\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Creating todo should return valid JSON object with id.\", function () {",
+									"    pm.expect(response).to.have.property('id');",
+									"});",
+									"",
+									"pm.globals.set(\"NewTodoId\", response.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomLoremWords}}\",\n    \"description\": \"{{$randomLoremSentence}}\"\n}"
+						},
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Change Is Done State",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9c822159-74ab-4f81-9539-5feea8b08fd1",
+								"exec": [
+									"pm.test(\"Updating todo state should return status code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isDone\": \"true\"\n}"
+						},
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}/changeIsDoneState/{{NewTodoId}}",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							],
+							"path": [
+								"changeIsDoneState",
+								"{{NewTodoId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isDone\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/changeIsDoneState/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"changeIsDoneState",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isDone\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/changeIsDoneState/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"changeIsDoneState",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isDone\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/changeIsDoneState/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"changeIsDoneState",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Check Todo state",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2bab0910-e2c1-479d-b9b8-06fd8d4ba5a9",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"Getting todo should return status code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Getting todo should return valid JSON object with correct id.\", function () {",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response.id).to.eql(pm.globals.get(\"NewTodoId\"));",
+									"});",
+									"",
+									"pm.test(\"Updated toto state should be true.\", function () {",
+									"    pm.expect(response.isDone).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}/{{NewTodoId}}",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							],
+							"path": [
+								"{{NewTodoId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"id\": \"<integer>\",\n \"name\": \"<string>\",\n \"description\": \"<string>\",\n \"created\": \"<dateTime>\",\n \"lastChange\": \"<dateTime>\",\n \"userId\": \"<integer>\",\n \"isDone\": \"<boolean>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Todo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c14a8f96-b76e-4eff-becf-ced5b35a5dc1",
+								"exec": [
+									"pm.test(\"Updating todo values should return status code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"NewValueName\",\n    \"description\": \"NewValueDescription\",\n    \"isDone\": \"true\"\n}"
+						},
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}/{{NewTodoId}}",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							],
+							"path": [
+								"{{NewTodoId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"isDone\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"isDone\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"isDone\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Check Todo updated values",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2bab0910-e2c1-479d-b9b8-06fd8d4ba5a9",
+								"exec": [
+									"var response = pm.response.json();",
+									"",
+									"pm.test(\"Getting todo should return status code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Getting todo should return valid JSON object with correct id.\", function () {",
+									"    pm.expect(response).to.have.property('id');",
+									"    pm.expect(response.id).to.eql(pm.globals.get(\"NewTodoId\"));",
+									"});",
+									"",
+									"pm.test(\"Updated toto state should be true.\", function () {",
+									"    pm.expect(response.isDone).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}/{{NewTodoId}}",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							],
+							"path": [
+								"{{NewTodoId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"id\": \"<integer>\",\n \"name\": \"<string>\",\n \"description\": \"<string>\",\n \"created\": \"<dateTime>\",\n \"lastChange\": \"<dateTime>\",\n \"userId\": \"<integer>\",\n \"isDone\": \"<boolean>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Todo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4d618c9c-34db-4ac4-bf09-52f7abdc2b73",
+								"exec": [
+									"pm.test(\"Deleting todo should return status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}/{{NewTodoId}}",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							],
+							"path": [
+								"{{NewTodoId}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete doesn't exist Todo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4d618c9c-34db-4ac4-bf09-52f7abdc2b73",
+								"exec": [
+									"pm.test(\"Deleting doesn't exist todo should return status code 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}/123456",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							],
+							"path": [
+								"123456"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "Delete Completed Todos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ecad2ead-44f0-4eab-a554-22727e7ae09b",
+								"exec": [
+									"pm.test(\"Deleting completed todos should return status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{TodosApiBaseUrl}}/deleteCompleted",
+							"host": [
+								"{{TodosApiBaseUrl}}"
+							],
+							"path": [
+								"deleteCompleted"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/deleteCompleted",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"deleteCompleted"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/deleteCompleted",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"deleteCompleted"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Authorization Api",
+			"item": [
+				{
+					"name": "Get Jwt Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "665460d4-5762-4a2a-9670-d4d570302383",
+								"exec": [
+									"var token = pm.response.text();",
+									"",
+									"pm.test(\"JWT token should be not empty\", function () {",
+									"    pm.expect(token.length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AuthorizationApiBaseUrl}}/api/Authorization/jwt-token",
+							"host": [
+								"{{AuthorizationApiBaseUrl}}"
+							],
+							"path": [
+								"api",
+								"Authorization",
+								"jwt-token"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Authorization/jwt-token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Authorization",
+										"jwt-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "\"<string>\""
+						}
+					]
+				},
+				{
+					"name": "Unauthorized - wrong token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "60f2af5c-9dca-4049-bfd3-8cef71c6c232",
+								"exec": [
+									"pm.test(\"Authorization with wrong token should return status code 401.\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE1NjA0MTY1MDAsImV4cCI6MTU2MDQyNjUwMCwiaXNzIjoiaHR0cHM6Ly9kZXYubG9naW4ua3Jvcy53dGYiLCJhdWQiOlsiaHR0cHM6Ly9kZXYubG9naW4ua3Jvcy53dGYvcmVzb3VyY2VzIiwiRXN3Lkludm9pY2luZyJdLCJjbGllbnRfaWQiOiJJbnZvaWNpbmdQb3N0bWFuIiwic3ViIjoiMyIsImF1dGhfdGltZSI6MTU2MDQxNjUwMCwiaWRwIjoibG9jYWwiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJ0ZXN0QGtyb3Muc2siLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIzIiwic2NvcGUiOlsiZW1haWwiLCJvcGVuaWQiLCJwcm9maWxlIiwiRXN3Lkludm9pY2luZyIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJwd2QiXX0.d6IkWD70zjyK0JbP0LTfjURShZRLgEIp0xzNx4tlZYI"
+							}
+						],
+						"url": {
+							"raw": "{{AuthorizationApiBaseUrl}}/api/Authorization/jwt-token",
+							"host": [
+								"{{AuthorizationApiBaseUrl}}"
+							],
+							"path": [
+								"api",
+								"Authorization",
+								"jwt-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unauthorized - no token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "60f2af5c-9dca-4049-bfd3-8cef71c6c232",
+								"exec": [
+									"pm.test(\"Authorization without token should return status code 401.\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{AuthorizationApiBaseUrl}}/api/Authorization/jwt-token",
+							"host": [
+								"{{AuthorizationApiBaseUrl}}"
+							],
+							"path": [
+								"api",
+								"Authorization",
+								"jwt-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "accessToken",
+				"value": "{{AccessToken}}",
+				"type": "string"
+			},
+			{
+				"key": "tokenType",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9e463ed3-7194-4aa5-a7a8-352cf3026097",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9a7c9bab-8a82-486b-be9c-b4646fe8856c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
