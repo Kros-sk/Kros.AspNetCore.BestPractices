@@ -109,13 +109,14 @@ Na adrese [http://localhost:9000/swagger](http://localhost:9000/swagger) je dost
 
 ### Získanie OAuth 2.0 tokenu
 
-Projekt využíva na autentifikáciu identity server 4. A konkrétne na demo účel je napojený na ich demo inštanciu [https://demo.identityserver.io](https://demo.identityserver.io).
+Projekt využíva na autentifikáciu identity server 4. A konkrétne je napojený na server [https://login.kros.wtf](https://login.kros.wtf).
 
 Údaje na získanie tokenu:
-**Grant type** - Authorization Code
-**Callback URL** - v princípe akákoľvek adresa. Napr.: `http://localhost:4200/something`
-**Client ID** - spa
-**Scope** - `openapi email profile api`
+**Grant type** - Password Credentials
+**Access Token URL** - `https://login.kros.sk/connect/token`
+**Client ID** - Demo.BestPractices.Postman
+**Username** - e-mail užívateľa
+**Password** - heslo užívateľa
 
 V Postmenovi je možné použiť buť `prerequest script`, alebo priamo okno na získanie tokenu:
 ![request token](files/PostmanSettings.png)
