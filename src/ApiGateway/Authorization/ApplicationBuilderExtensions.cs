@@ -17,14 +17,14 @@ namespace ApiGateway.Authorization
         /// <param name="configuration">Configuration from which the options are loaded.
         /// Configuration must contains GatewayJwtAuthorization section.</param>
         /// <exception cref="InvalidOperationException">
-        /// When `GatewayJwtAuthorization` section is missing in configuration.
+        /// When <see cref="GatewayJwtAuthorizationOptions" /> section is missing in configuration.
         /// </exception>
         public static IApplicationBuilder UseGatewayJwtAuthorization_Custom(
             this IApplicationBuilder app,
             IConfiguration configuration)
         {
             GatewayJwtAuthorizationOptions option = configuration.GetSection<GatewayJwtAuthorizationOptions>();
-
+            
             if (option is null)
             {
                 throw new InvalidOperationException(

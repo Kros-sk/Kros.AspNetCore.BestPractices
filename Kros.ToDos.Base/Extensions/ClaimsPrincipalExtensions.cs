@@ -4,7 +4,7 @@ using System.Security.Claims;
 namespace Kros.ToDos.Base.Extensions
 {
     /// <summary>
-    /// Claims principal extensions for System.Security.Claims.ClaimsPrincipal.
+    /// Claims principal extensions for <see cref="System.Security.Claims.ClaimsPrincipal" />.
     /// </summary>
     public static class ClaimsPrincipalExtensions
     {

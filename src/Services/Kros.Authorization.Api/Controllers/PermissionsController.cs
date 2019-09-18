@@ -42,7 +42,7 @@ namespace Kros.Authorization.Api.Controllers
         [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<ActionResult> UpdateUserPermissions(UpdatePermissionsCommand command)
         {
-            command.OrganizationId = User.GetCompanyId();
+            command.OrganizationId = User.GetOrganizationId();
 
             await _permissionsService.UpdateUserPermissionsAsync(command);
 
@@ -60,7 +60,7 @@ namespace Kros.Authorization.Api.Controllers
         [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<ActionResult> UpdateUserRole(UpdatePermissionsCommand command)
         {
-            command.OrganizationId = User.GetCompanyId();
+            command.OrganizationId = User.GetOrganizationId();
             command.Key = PermissionsHelper.Claims.UserRole;
 
             await _permissionsService.UpdateUserPermissionsAsync(command);
@@ -69,7 +69,7 @@ namespace Kros.Authorization.Api.Controllers
         }
 
         /// <summary>
-        /// Creates or updates user role in company.
+        /// Creates or updates user role in organization.
         /// </summary>
         [HttpPost]
         [ProducesResponseType(201)]
@@ -78,7 +78,7 @@ namespace Kros.Authorization.Api.Controllers
             => await this.SendCreateCommand(command);
 
         /// <summary>
-        /// Set user role in company to Owner.
+        /// Set user role in organization to Owner.
         /// </summary>
         [HttpPost("Owner")]
         [ProducesResponseType(201)]
@@ -90,27 +90,27 @@ namespace Kros.Authorization.Api.Controllers
         }
 
         /// <summary>
-        /// Deletes user role by company id.
+        /// Deletes user role by organization id.
         /// </summary>
-        [HttpDelete("{companyId}")]
+        [HttpDelete("{organizationId}")]
         [ProducesResponseType(204)]
         [Authorize(PoliciesHelper.OwnerAuthPolicyName)]
-        public async Task<ActionResult> DeleteAllUsersRoleByCompany(long companyId)
+        public async Task<ActionResult> DeleteAllUsersRoleByOrganization(long organizationId)
         {
-            await this.SendRequest(new DeleteAllPermissionsByCompanyCommand(companyId));
+            await this.SendRequest(new DeleteAllPermissionsByOrganizationCommand(organizationId));
 
             return NoContent();
         }
 
         /// <summary>
-        /// Deletes user role by company id and user id.
+        /// Deletes user role by organization id and user id.
         /// </summary>
-        [HttpDelete("{companyId}/user/{userId}")]
+        [HttpDelete("{organizationId}/user/{userId}")]
         [ProducesResponseType(204)]
         [Authorize(PoliciesHelper.AdminAuthPolicyName)]
-        public async Task<ActionResult> DeleteUserRoleByCompany(long companyId, long userID)
+        public async Task<ActionResult> DeleteUserRoleByOrganization(long organizationId, long userID)
         {
-            await this.SendRequest(new DeleteUserPermissionsByCompanyCommand(companyId, userID));
+            await this.SendRequest(new DeleteUserPermissionsByOrganizationCommand(organizationId, userID));
 
             return NoContent();
         }

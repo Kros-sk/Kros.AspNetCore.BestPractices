@@ -38,7 +38,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <summary>
         /// Is user admin?
         /// </summary>
-        /// <returns>Returns <see langword="true"/>, if user has admin privileges for company.</returns>
+        /// <returns>Returns <see langword="true"/>, if user has admin privileges for organization.</returns>
         [HttpGet(nameof(IsAdmin))]
         [ProducesResponseType(200, Type = typeof(bool))]
         public bool IsAdmin()
@@ -47,7 +47,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <summary>
         /// Is user writer?
         /// </summary>
-        /// <returns>Returns <see langword="true"/>, if user has writer privileges for company.</returns>
+        /// <returns>Returns <see langword="true"/>, if user has writer privileges for organization.</returns>
         [HttpGet(nameof(IsWriter))]
         [ProducesResponseType(200, Type = typeof(bool))]
         public bool IsWriter()
@@ -56,7 +56,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <summary>
         /// Is user reader?
         /// </summary>
-        /// <returns>Returns <see langword="true"/>, if user has reader privileges for company.</returns>
+        /// <returns>Returns <see langword="true"/>, if user has reader privileges for organization.</returns>
         [HttpGet(nameof(IsReader))]
         [ProducesResponseType(200, Type = typeof(bool))]
         public bool IsReader()

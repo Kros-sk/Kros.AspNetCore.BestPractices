@@ -3,25 +3,25 @@
 namespace Kros.Authorization.Api.Application.Commands.DeletePermissions
 {
     /// <summary>
-    /// MediatR command to delete user role by company.
+    /// MediatR command to delete user role by organization.
     /// </summary>
-    public class DeleteUserPermissionsByCompanyCommand : IRequest<Unit>
+    public class DeleteUserPermissionsByOrganizationCommand : IRequest<Unit>
     {
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="companyId">Company id.</param>
+        /// <param name="organizationId">Organization id.</param>
         /// <param name="userId">User id.</param>
-        public DeleteUserPermissionsByCompanyCommand(long companyId, long userId)
+        public DeleteUserPermissionsByOrganizationCommand(long organizationId, long userId)
         {
-            CompanyId = companyId;
+            OrganizationId = organizationId;
             UserId = userId;
         }
 
         /// <summary>
-        /// Company id.
+        /// Organization id.
         /// </summary>
-        public long CompanyId { get; }
+        public long OrganizationId { get; }
 
         /// <summary>
         /// User id.

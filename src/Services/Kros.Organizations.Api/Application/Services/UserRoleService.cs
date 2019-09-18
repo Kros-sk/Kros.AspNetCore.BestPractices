@@ -42,7 +42,7 @@ namespace Kros.Organizations.Api.Application.Services
         }
 
         /// <inheritdoc />
-        public async Task CreateOwnerRoleAsync(long userId, long companyId)
+        public async Task CreateOwnerRoleAsync(long userId, long organizationId)
         {
             // temporary solution, will be replaced with Service Bus
             string accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
@@ -52,7 +52,7 @@ namespace Kros.Organizations.Api.Application.Services
                 using (HttpClient client = _httpClientFactory.CreateClient())
                 {
                     var userRoleControllerUrl = new Uri(_userRoleOptions.AuthServiceUrl);
-                    var userRole = new { UserId = userId, OrganizationId = companyId };
+                    var userRole = new { UserId = userId, OrganizationId = organizationId };
 
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
                     await client.PostAsJsonAsync($"{userRoleControllerUrl}/Owner", userRole);
@@ -61,7 +61,7 @@ namespace Kros.Organizations.Api.Application.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteUserRoles(long companyId)
+        public async Task DeleteUserRolesAsync(long organizationId)
         {
             string accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
 
@@ -72,13 +72,9 @@ namespace Kros.Organizations.Api.Application.Services
                     var userRoleControllerUrl = new Uri(_userRoleOptions.AuthServiceUrl);
 
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                    HttpResponseMessage response = await client.DeleteAsync($"{userRoleControllerUrl}/{companyId}");
+                    HttpResponseMessage response = await client.DeleteAsync($"{userRoleControllerUrl}/{organizationId}");
                 }
             }
         }
-
-
-
     }
-
 }

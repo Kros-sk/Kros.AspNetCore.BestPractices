@@ -13,7 +13,7 @@ namespace Kros.Authorization.Api.Application.Commands.CreatePermissions
         public long UserId { get; set; }
 
         /// <summary>
-        /// Company id.
+        /// Organization id.
         /// </summary>
         public long OrganizationId { get; set; }
 

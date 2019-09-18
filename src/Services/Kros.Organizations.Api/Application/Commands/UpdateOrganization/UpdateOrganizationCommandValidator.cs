@@ -12,7 +12,7 @@ namespace Kros.Organizations.Api.Application.Commands
         /// </summary>
         public UpdateOrganizationCommandValidator()
         {
-            RuleFor(o => o.CompanyName).OrganizationName();
+            RuleFor(o => o.OrganizationName).OrganizationName();
             RuleFor(o => o.BusinessId).OrganizationBusinessId();
         }
     }

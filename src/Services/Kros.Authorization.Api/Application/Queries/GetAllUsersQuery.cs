@@ -12,16 +12,16 @@ namespace Kros.Authorization.Api.Application.Queries
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="companyId">Company id.</param>
-        public GetAllUsersQuery(long companyId)
+        /// <param name="organizationId">Organization id.</param>
+        public GetAllUsersQuery(long organizationId)
         {
-            CompanyId = companyId;
+            OrganizationId = organizationId;
         }
 
         /// <summary>
-        /// User email.
+        /// Organization id.
         /// </summary>
-        public long CompanyId { get; }
+        public long OrganizationId { get; }
 
         /// <summary>
         /// User Header

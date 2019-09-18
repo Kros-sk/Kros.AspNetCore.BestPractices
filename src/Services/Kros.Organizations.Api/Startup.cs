@@ -32,6 +32,7 @@ namespace Kros.Organizations.Api
             base.ConfigureServices(services);
 
             services.Configure<UserRoleOptions>(Configuration.GetSection("UserRole"));
+            services.ConfigureOptions<UserRoleOptions>(Configuration);
 
             services.AddWebApi()
                 .AddFluentValidation();
