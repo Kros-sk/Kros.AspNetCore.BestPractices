@@ -21,9 +21,9 @@ namespace Kros.Organizations.Api.Domain
         public int UserId { get; set; }
 
         /// <summary>
-        /// Company name
+        /// Organization name
         /// </summary>
-        public string CompanyName { get; set; }
+        public string OrganizationName { get; set; }
 
         /// <summary>
         /// Business Id
@@ -49,6 +49,5 @@ namespace Kros.Organizations.Api.Domain
         /// Address - Zip Code
         /// </summary>
         public string ZipCode { get; set; }
-
     }
 }

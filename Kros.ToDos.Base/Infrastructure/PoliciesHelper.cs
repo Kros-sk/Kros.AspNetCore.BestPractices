@@ -6,22 +6,22 @@
     public static class PoliciesHelper
     {
         /// <summary>
-        /// Authentication company Owner policy name.
+        /// Authentication organization Owner policy name.
         /// </summary>
         public const string OwnerAuthPolicyName = "Owner";
 
         /// <summary>
-        /// Authentication company admin policy name.
+        /// Authentication organization admin policy name.
         /// </summary>
         public const string AdminAuthPolicyName = "Admin";
 
         /// <summary>
-        /// Authentication company writer policy name.
+        /// Authentication organization writer policy name.
         /// </summary>
         public const string WriterAuthPolicyName = "Write";
 
         /// <summary>
-        /// Authentication company reader policy name.
+        /// Authentication organization reader policy name.
         /// </summary>
         public const string ReaderAuthPolicyName = "Read";
     }

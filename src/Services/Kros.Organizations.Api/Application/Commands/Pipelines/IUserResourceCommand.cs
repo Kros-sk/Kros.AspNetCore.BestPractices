@@ -10,7 +10,6 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
     /// </summary>
     public interface IUserResourceCommand
     {
-
         /// <summary>
         /// Resource Id
         /// </summary>
@@ -20,6 +19,5 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
         /// User Id
         /// </summary>
         int UserId { get; }
-
     }
 }

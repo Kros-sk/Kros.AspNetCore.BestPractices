@@ -14,16 +14,16 @@ namespace Kros.Authorization.Api.Application.Model
         Task TryUpdatePermissionAsync(Permission permission);
 
         /// <summary>
-        /// Deletes all user roles by <paramref name="companyId"/>.
+        /// Deletes all user roles by <paramref name="organizationId"/>.
         /// </summary>
-        /// <param name="companyId"></param>
-        Task DeleteAllUserRolesInCompanyAsync(long companyId);
+        /// <param name="organizationId"></param>
+        Task DeleteAllUserRolesInOrganizationAsync(long organizationId);
 
         /// <summary>
-        /// Deletes all user roles by <paramref name="companyId"/> and <paramref name="userId"/>.
+        /// Deletes all user roles by <paramref name="organizationId"/> and <paramref name="userId"/>.
         /// </summary>
-        /// <param name="companyId"></param>
+        /// <param name="organizationId"></param>
         /// <param name="userId"></param>
-        Task DeleteUserRolesInCompanyAsync(long companyId, long userId);
+        Task DeleteUserRolesInOrganizationAsync(long organizationId, long userId);
     }
 }

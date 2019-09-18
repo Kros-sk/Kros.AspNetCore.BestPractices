@@ -26,9 +26,9 @@ namespace Kros.Authorization.Api.Application.Commands.DeletePermissions
         }
 
         /// <inheritdoc />
-        public async Task<Unit> Handle(DeleteUserPermissionsByCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteUserPermissionsByOrganizationCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteUserRolesInCompanyAsync(request.CompanyId, request.UserId);
+            await _repository.DeleteUserRolesInOrganizationAsync(request.OrganizationId, request.UserId);
 
             return Unit.Value;
         }

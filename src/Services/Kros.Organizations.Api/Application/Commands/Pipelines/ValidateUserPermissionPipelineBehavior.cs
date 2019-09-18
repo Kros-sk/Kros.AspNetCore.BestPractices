@@ -56,7 +56,6 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
         [Alias("Organizations")]
         private class Organization
         {
-
             /// <summary>
             /// Organization Id
             /// </summary>

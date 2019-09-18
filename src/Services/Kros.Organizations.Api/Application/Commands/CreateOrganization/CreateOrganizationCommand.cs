@@ -15,9 +15,9 @@ namespace Kros.Organizations.Api.Application.Commands
         public int UserId { get; set; }
 
         /// <summary>
-        /// Company name
+        /// Organization name
         /// </summary>
-        public string CompanyName { get; set; }
+        public string OrganizationName { get; set; }
 
         /// <summary>
         /// Business Id

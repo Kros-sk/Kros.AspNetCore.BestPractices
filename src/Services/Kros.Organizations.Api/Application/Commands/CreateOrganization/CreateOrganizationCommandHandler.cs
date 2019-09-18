@@ -32,12 +32,12 @@ namespace Kros.Organizations.Api.Application.Commands
         /// <inheritdoc />
         public async Task<int> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
         {
-            var company = request.Adapt<Organization>();
+            var organization = request.Adapt<Organization>();
 
-            await _organizationRepository.CreateOrganizationAsync(company);
-            await _userRoleService.CreateOwnerRoleAsync(company.UserId, company.Id);
+            await _organizationRepository.CreateOrganizationAsync(organization);
+            await _userRoleService.CreateOwnerRoleAsync(organization.UserId, organization.Id);
 
-            return company.Id;
+            return organization.Id;
         }
     }
 }

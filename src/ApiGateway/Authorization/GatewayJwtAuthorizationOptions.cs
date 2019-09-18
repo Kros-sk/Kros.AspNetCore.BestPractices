@@ -5,8 +5,6 @@
     /// </summary>
     public class GatewayJwtAuthorizationOptions
     {
-        public GatewayJwtAuthorizationOptions() { }
-
         /// <summary>
         /// Authorization service url.
         /// </summary>

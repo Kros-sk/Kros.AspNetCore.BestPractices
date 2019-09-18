@@ -7,7 +7,7 @@ GO
 CREATE TABLE [dbo].[Organizations](
 	[Id] [int] NOT NULL,
 	[UserId] [int] NOT NULL,
-	[CompanyName] nvarchar(50),
+	[OrganizationName] nvarchar(50),
 	[BusinessId] nvarchar(15),
 	[Street] nvarchar(30),
 	[StreetNumber] nvarchar(20),

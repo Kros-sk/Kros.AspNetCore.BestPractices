@@ -47,7 +47,7 @@ namespace Kros.Organizations.Api.Infrastructure
         {
             var dbSet = _database.Query<Organization>().AsDbSet();
             dbSet.Delete(new Organization() { Id = id});
-
+            
             await dbSet.CommitChangesAsync();
         }
     }
