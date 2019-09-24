@@ -43,17 +43,13 @@ namespace Kros.Authorization.Api.Application.Model
         ///<inheritdoc />
         public async Task DeleteAllUserRolesInOrganizationAsync(long organizationId)
         {
-            IDbSet<Permission> dbSet = _database.Query<Permission>().AsDbSet();
-            dbSet.Delete(dbSet.Where(ur => ur.OrganizationId == organizationId));
-            await dbSet.CommitChangesAsync();
+            await _database.DeleteAsync<Permission>(ur => ur.OrganizationId == organizationId);
         }
 
         ///<inheritdoc />
         public async Task DeleteUserRolesInOrganizationAsync(long organizationId, long userId)
         {
-            IDbSet<Permission> dbSet = _database.Query<Permission>().AsDbSet();
-            dbSet.Delete(dbSet.Where(ur => ur.OrganizationId == organizationId && ur.UserId == userId));
-            await dbSet.CommitChangesAsync();
+            await _database.DeleteAsync<Permission>(ur => ur.OrganizationId == organizationId && ur.UserId == userId);
         }
     }
 }
