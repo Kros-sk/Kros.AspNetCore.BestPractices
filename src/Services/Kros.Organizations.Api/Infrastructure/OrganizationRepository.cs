@@ -45,10 +45,7 @@ namespace Kros.Organizations.Api.Infrastructure
         /// <inheritdoc />
         public async Task DeleteOrganizationAsync(int id)
         {
-            var dbSet = _database.Query<Organization>().AsDbSet();
-            dbSet.Delete(new Organization() { Id = id});
-            
-            await dbSet.CommitChangesAsync();
+            await _database.DeleteAsync<Organization>(or => or.Id == id);
         }
     }
 }
