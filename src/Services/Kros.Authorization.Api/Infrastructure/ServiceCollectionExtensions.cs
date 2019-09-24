@@ -24,7 +24,7 @@ namespace Kros.Authorization.Api.Extensions
         public static void AddKormDatabase(this IServiceCollection services, IConfiguration configuration)
             => services.AddKorm(configuration)
                 .InitDatabaseForIdGenerator()
-                .AddKormMigrations(configuration, o =>
+                .AddKormMigrations(o =>
                 {
                     o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Authorization.Api.Infrastructure.SqlScripts");
                 })
