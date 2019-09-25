@@ -45,7 +45,7 @@ namespace Kros.Authorization.Api.Application.Queries
             => Task.FromResult(_database.Query<GetAllUsersQuery.User>()
                         .Select("Users.id", "Users.FirstName", "Users.LastName", "Users.Email", "permissions.value as Permissions")
                         .From("Permissions INNER JOIN Users ON (Permissions.UserId = Users.Id) ")
-                        .Where($"Permissions.organizationId = {request.CompanyId} AND Permissions.PermissionKey = {PermissionsHelper.Claims.UserRole} ")
+                        .Where($"Permissions.organizationId = {request.OrganizationId} AND Permissions.PermissionKey = {PermissionsHelper.Claims.UserRole} ")
                         .AsEnumerable());
     }
 }

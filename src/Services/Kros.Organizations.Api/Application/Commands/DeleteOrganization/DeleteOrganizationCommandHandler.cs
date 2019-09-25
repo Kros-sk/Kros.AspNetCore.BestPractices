@@ -32,7 +32,7 @@ namespace Kros.Organizations.Api.Application.Commands
         public async Task<Unit> Handle(DeleteOrganizationCommand request, CancellationToken cancellationToken)
         {
             await _organizationRepository.DeleteOrganizationAsync(request.Id);
-            await _userRoleService.DeleteUserRoles(request.Id);
+            await _userRoleService.DeleteUserRolesAsync(request.Id);
 
             return Unit.Value;
         }

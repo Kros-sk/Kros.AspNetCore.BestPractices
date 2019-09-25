@@ -5,7 +5,6 @@
     /// </summary>
     public class UrlToHeaderTemplate
     {
-
         /// <summary>
         /// Part of url to get data from.
         /// </summary>
@@ -14,6 +13,5 @@
         /// Key of header to put data into.
         /// </summary>
         public string HeaderKey { get; set; }
-
     }
 }

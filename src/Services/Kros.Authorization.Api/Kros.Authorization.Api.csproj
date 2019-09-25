@@ -31,18 +31,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kros.AspNetCore" Version="1.1.2" />
+    <PackageReference Include="Kros.AspNetCore" Version="1.3.0" />
     <PackageReference Include="Flurl" Version="2.8.1" />
-    <PackageReference Include="Kros.KORM" Version="3.9.0" />
-    <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.0.0" />
+    <PackageReference Include="Kros.KORM" Version="4.0.0-alpha.11" />
+    <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.1.0-alpha.4" />
     <PackageReference Include="Kros.MediatR.Extensions" Version="1.0.2" />
     <PackageReference Include="Kros.Swagger.Extensions" Version="1.0.0" />
+    <PackageReference Include="Kros.Utils" Version="1.10.0" />
     <PackageReference Include="Mapster" Version="3.3.2" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Scrutor" Version="3.0.2" />
     <PackageReference Include="Kros.Identity.Extensions" Version="0.4.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.6.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>

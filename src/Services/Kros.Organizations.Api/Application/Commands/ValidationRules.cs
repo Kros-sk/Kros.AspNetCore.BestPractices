@@ -7,7 +7,6 @@ namespace Kros.Organizations.Api.Application.Commands
     /// </summary>
     public static class ValidationRules
     {
-
         /// <summary>
         /// Base validation rules for Organization Dtos name
         /// </summary>
@@ -27,6 +26,5 @@ namespace Kros.Organizations.Api.Application.Commands
         /// <returns></returns>
         public static IRuleBuilder<T, string> OrganizationBusinessId<T>(this IRuleBuilder<T, string> rule) =>
             rule.MaximumLength(15);
-
     }
 }

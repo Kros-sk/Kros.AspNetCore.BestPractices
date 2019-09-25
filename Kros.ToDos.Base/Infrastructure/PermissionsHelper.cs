@@ -26,7 +26,7 @@
             /// </summary>
             public const string OrganizationId = "organization_id";
             /// <summary>
-            /// Whether user is company admin.
+            /// Whether user is organization admin.
             /// </summary>
             public const string UserRole = "user_role";
         }
@@ -37,19 +37,19 @@
         public static class ClaimValues
         {
             /// <summary>
-            /// User role value for company Owner.
+            /// User role value for organization Owner.
             /// </summary>
             public const string OwnerRole = "Owner";
             /// <summary>
-            /// User role value for company admin.
+            /// User role value for organization admin.
             /// </summary>
             public const string AdminRole = "Admin";
             /// <summary>
-            /// User role value for company writer.
+            /// User role value for organization writer.
             /// </summary>
             public const string WriterRole = "Write";
             /// <summary>
-            /// User role value for company reader.
+            /// User role value for organization reader.
             /// </summary>
             public const string ReaderRole = "Read";
         }

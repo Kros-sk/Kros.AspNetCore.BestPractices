@@ -10,7 +10,7 @@ namespace Kros.Authorization.Api.Application.Commands.DeletePermissions
     /// <summary>
     /// Delete all user permissions command handler.
     /// </summary>
-    public class DeleteAllPermissionsCommandHandler : IRequestHandler<DeleteAllPermissionsByCompanyCommand, Unit>
+    public class DeleteAllPermissionsCommandHandler : IRequestHandler<DeleteAllPermissionsByOrganizationCommand, Unit>
     {
         /// <summary>
         /// MediatR command handler for command to delete user role.
@@ -27,9 +27,9 @@ namespace Kros.Authorization.Api.Application.Commands.DeletePermissions
         }
 
         /// <inheritdoc />
-        public async Task<Unit> Handle(DeleteAllPermissionsByCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteAllPermissionsByOrganizationCommand request, CancellationToken cancellationToken)
         {
-            await _repository.DeleteAllUserRolesInCompanyAsync(request.CompanyId);
+            await _repository.DeleteAllUserRolesInOrganizationAsync(request.OrganizationId);
 
             return Unit.Value;
         }
