@@ -72,7 +72,7 @@ namespace Kros.Organizations.Api.Application.Services
                     var userRoleControllerUrl = new Uri(_userRoleOptions.AuthServiceUrl);
 
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                    HttpResponseMessage response = await client.DeleteAsync($"{userRoleControllerUrl}/{organizationId}");
+                    await client.DeleteAsync($"{userRoleControllerUrl}/{organizationId}");
                 }
             }
         }
