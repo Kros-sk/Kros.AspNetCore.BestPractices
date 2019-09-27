@@ -40,7 +40,7 @@ Na základne tohto dema by mal človek pochopiť architektúru našich služieb 
 
 ### Vytvoriť potrebné databázy
 
-Tento príklad využíva ako úložisko dát `MS SQL` databázy. Na vašom servri je potrebné vytvoriť dve prázdne databázy. `<ToDos>`, `<Users>` a `<Organization>`.
+Tento príklad využíva ako úložisko dát `MS SQL` databázy. Na vašom servri je potrebné vytvoriť tri prázdne databázy. `<ToDos>`, `<Users>` a `<Organization>`.
 `<ToDos>` databáza - bude ju používať služba `Kros.Todos.Api`.
 `<Users>` databáza - bude ju používať služba `Kros.Authorization.Api`.
 `<Organization>` databáza - bude ju používať služba `Kros.Organization.Api`.
