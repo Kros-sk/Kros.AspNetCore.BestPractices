@@ -33,6 +33,5 @@ namespace Kros.Authorization.Api.Application.Commands.DeletePermissions
 
             return Unit.Value;
         }
-
     }
 }

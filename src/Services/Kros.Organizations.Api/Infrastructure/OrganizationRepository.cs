@@ -24,10 +24,7 @@ namespace Kros.Organizations.Api.Infrastructure
         /// <inheritdoc />
         public async Task CreateOrganizationAsync(Organization item)
         {
-            var dbSet = _database.Query<Organization>().AsDbSet();
-            dbSet.Add(item);
-
-            await dbSet.CommitChangesAsync();
+            await _database.AddAsync(item);
         }
 
         /// <inheritdoc />
