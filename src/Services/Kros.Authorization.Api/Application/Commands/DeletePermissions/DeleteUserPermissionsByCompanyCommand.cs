@@ -27,7 +27,6 @@ namespace Kros.Authorization.Api.Application.Commands.DeletePermissions
         /// User id.
         /// </summary>
         public long UserId { get; }
-
     }
 }
 
