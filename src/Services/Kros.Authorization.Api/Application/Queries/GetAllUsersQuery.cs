@@ -10,6 +10,20 @@ namespace Kros.Authorization.Api.Application.Queries
     public class GetAllUsersQuery : IRequest<IEnumerable<GetAllUsersQuery.User>>
     {
         /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="organizationId">Organization id.</param>
+        public GetAllUsersQuery(long organizationId)
+        {
+            OrganizationId = organizationId;
+        }
+
+        /// <summary>
+        /// Organization id.
+        /// </summary>
+        public long OrganizationId { get; }
+
+        /// <summary>
         /// User Header
         /// </summary>
         [Alias("Users")]
@@ -36,9 +50,9 @@ namespace Kros.Authorization.Api.Application.Queries
             public string Email { get; set; }
 
             /// <summary>
-            /// Is user admin?
+            /// User permissions.
             /// </summary>
-            public bool IsAdmin { get; set; }
+            public string Permissions { get; set; }
         }
     }
 }

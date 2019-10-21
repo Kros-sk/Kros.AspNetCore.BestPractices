@@ -1,4 +1,4 @@
-# Kros.AspNetCore.BestPractices
+﻿# Kros.AspNetCore.BestPractices
 
 Toto repo **bude** obsahovať demo príklad, ktorý bude ukazovať architektúru našich služieb.
 
@@ -18,6 +18,7 @@ Na základne tohto dema by mal človek pochopiť architektúru našich služieb 
     - [Nastaviť connection stringy k databázam](#Nastavi%C5%A5-connection-stringy-k-datab%C3%A1zam)
       - [Služba `Kros.Todos.Api`](#Slu%C5%BEba-KrosTodosApi)
       - [Služba `Kros.Authorization.Api`](#Slu%C5%BEba-KrosAuthorizationApi)
+      - [Služba `Kros.Organization.Api`](#Slu%C5%BEba-KrosOrganizationApi)
     - [Nastavenie kešovania](#Nastavenie-ke%C5%A1ovania)
     - [Nastavenie spúšťania projektov](#Nastavenie-sp%C3%BA%C5%A1%C5%A5ania-projektov)
     - [Spustiť projekt](#Spusti%C5%A5-projekt)
@@ -39,9 +40,10 @@ Na základne tohto dema by mal človek pochopiť architektúru našich služieb 
 
 ### Vytvoriť potrebné databázy
 
-Tento príklad využíva ako úložisko dát `MS SQL` databázy. Na vašom servri je potrebné vytvoriť dve prázdne databázy. `<ToDos>` a `<Users>`.
+Tento príklad využíva ako úložisko dát `MS SQL` databázy. Na vašom servri je potrebné vytvoriť tri prázdne databázy. `<ToDos>`, `<Users>` a `<Organization>`.
 `<ToDos>` databáza - bude ju používať služba `Kros.Todos.Api`.
 `<Users>` databáza - bude ju používať služba `Kros.Authorization.Api`.
+`<Organization>` databáza - bude ju používať služba `Kros.Organization.Api`.
 
 ### Nastaviť connection stringy k databázam
 
@@ -50,32 +52,43 @@ Tento príklad využíva ako úložisko dát `MS SQL` databázy. Na vašom servr
 #### Služba `Kros.Todos.Api`
 
 ```json
-  "ConnectionString": {
-    "ProviderName": "System.Data.SqlClient",
-    "ConnectionString": "Server=server;Initial Catalog=<ToDos>;Persist Security Info=False;Integrated Security=True;"
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=servername\\instancename;Initial Catalog=Users;Persist Security Info=False;Integrated Security=True;"
   },
-  "KormMigrations": {
-    "ConnectionString": {
-      "ProviderName": "System.Data.SqlClient",
-      "ConnectionString": "Server=server;Initial Catalog=<ToDos>;Persist Security Info=False;Integrated Security=True;"
-    },
-    "AutoMigrate": "True"
-  }
+
+  "KormSettings": {
+    "DefaultConnection": {
+      "AutoMigrate": true
+    }
+  },
 ```
 
 #### Služba `Kros.Authorization.Api`
 
 ```json
-  "ConnectionString": {
-    "ProviderName": "System.Data.SqlClient",
-    "ConnectionString": "Server=server;Initial Catalog=<Users>;Persist Security Info=False;Integrated Security=True;"
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=servername\\instancename;Initial Catalog=Users;Persist Security Info=False;Integrated Security=True;"
   },
-  "KormMigrations": {
-    "ConnectionString": {
-      "ProviderName": "System.Data.SqlClient",
-      "ConnectionString": "Server=server;Initial Catalog=<Users>;Persist Security Info=False;Integrated Security=True;"
-    },
-    "AutoMigrate": "True"
+
+   "KormSettings": {
+    "DefaultConnection": {
+      "AutoMigrate": true
+    }
+  },
+```
+
+#### Služba `Kros.Organization.Api`
+
+```json
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=servername\\instancename;Initial Catalog=Organization;Persist Security Info=False;Integrated Security=True;"
+  },
+
+    "KormSettings": {
+    "DefaultConnection": {
+      "AutoMigrate": true
+    }
+  },
   }
 ```
 

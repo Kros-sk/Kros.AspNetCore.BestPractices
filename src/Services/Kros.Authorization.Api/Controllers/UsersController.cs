@@ -2,7 +2,9 @@
 using Kros.Authorization.Api.Application.Commands;
 using Kros.Authorization.Api.Application.Queries;
 using Kros.Authorization.Api.Application.Services;
-using Kros.ToDos.Api.Infrastructure;
+using Kros.ToDos.Base.Extensions;
+using Kros.ToDos.Base.Infrastructure;
+using Kros.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -15,28 +17,50 @@ namespace Kros.Authorization.Api.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtAuthorizationHelper.JwtSchemeName) ]
+    [Authorize(AuthenticationSchemes = JwtAuthorizationHelper.JwtSchemeName)]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+
+        private readonly IPermissionService _permissionsService;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="userService">User service.</param>
-        public UsersController(IUserService userService)
-            => _userService = userService;
+        /// <param name="permissionService">Permission service.</param>
+        public UsersController(IUserService userService, IPermissionService permissionService)
+        {
+            _userService = Check.NotNull(userService, nameof(userService));
+            _permissionsService = Check.NotNull(permissionService, nameof(permissionService));
+        }
 
         /// <summary>
         /// Is user admin?
         /// </summary>
-        /// <returns>Return <see langword="true"/>, if user is admin.</returns>
+        /// <returns>Returns <see langword="true"/>, if user has admin privileges for organization.</returns>
         [HttpGet(nameof(IsAdmin))]
         [ProducesResponseType(200, Type = typeof(bool))]
         public bool IsAdmin()
-        {
-            return _userService.IsAdminFromClaims(User);
-        }
+            => _permissionsService.IsAdminFromClaims(User);
+
+        /// <summary>
+        /// Is user writer?
+        /// </summary>
+        /// <returns>Returns <see langword="true"/>, if user has writer privileges for organization.</returns>
+        [HttpGet(nameof(IsWriter))]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        public bool IsWriter()
+            => _permissionsService.IsWriterFromClaims(User);
+
+        /// <summary>
+        /// Is user reader?
+        /// </summary>
+        /// <returns>Returns <see langword="true"/>, if user has reader privileges for organization.</returns>
+        [HttpGet(nameof(IsReader))]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        public bool IsReader()
+            => _permissionsService.IsReaderFromClaims(User);
 
         /// <summary>
         /// Get user by id.
@@ -46,7 +70,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <returns>User.</returns>
         [HttpGet("{userId}")]
         [ProducesResponseType(200, Type = typeof(GetUserQuery.User))]
-        [Authorize(AuthorizationHelper.AdminAuthPolicyName)]
+        [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<GetUserQuery.User> GetUser(int userId)
             => await this.SendRequest(new GetUserQuery(userId));
 
@@ -57,9 +81,9 @@ namespace Kros.Authorization.Api.Controllers
         /// <returns>All application users.</returns>
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllUsersQuery.User>))]
-        [Authorize(AuthorizationHelper.AdminAuthPolicyName)]
+        [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<IEnumerable<GetAllUsersQuery.User>> GetAllUsers()
-            => await this.SendRequest(new GetAllUsersQuery());
+            => await this.SendRequest(new GetAllUsersQuery(User.GetOrganizationId()));
 
         /// <summary>
         /// Update user.
@@ -70,7 +94,7 @@ namespace Kros.Authorization.Api.Controllers
         /// <returns>Return Ok, if update is success.</returns>
         [HttpPut("{userId}")]
         [ProducesResponseType(200)]
-        [Authorize(AuthorizationHelper.AdminAuthPolicyName)]
+        [Authorize(PoliciesHelper.AdminAuthPolicyName)]
         public async Task<ActionResult> UpdateUser(
             int userId,
             UpdateUserCommand command)

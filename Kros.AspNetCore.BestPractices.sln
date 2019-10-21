@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.28721.148
+VisualStudioVersion = 16.0.28714.193
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{15B43234-BFBA-41E1-A8C9-206689B00097}"
 EndProject
@@ -16,6 +16,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "src\ApiGateway\ApiGateway.csproj", "{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Authorization.Api", "src\Services\Kros.Authorization.Api\Kros.Authorization.Api.csproj", "{0BE6394E-9FA8-4C53-BF4A-1523FC7E37CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Organizations.Api", "src\Services\Kros.Organizations.Api\Kros.Organizations.Api.csproj", "{57E9ADA1-1EEF-41A7-84EB-F2821CC37CC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{1FB87585-551C-4480-B696-CFE24EA1C703}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.ToDos.Base", "Kros.ToDos.Base\Kros.ToDos.Base.csproj", "{70EE3961-B459-44B6-8CA2-8F039AF4995A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,14 @@ Global
 		{0BE6394E-9FA8-4C53-BF4A-1523FC7E37CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BE6394E-9FA8-4C53-BF4A-1523FC7E37CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BE6394E-9FA8-4C53-BF4A-1523FC7E37CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57E9ADA1-1EEF-41A7-84EB-F2821CC37CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57E9ADA1-1EEF-41A7-84EB-F2821CC37CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57E9ADA1-1EEF-41A7-84EB-F2821CC37CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57E9ADA1-1EEF-41A7-84EB-F2821CC37CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70EE3961-B459-44B6-8CA2-8F039AF4995A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70EE3961-B459-44B6-8CA2-8F039AF4995A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70EE3961-B459-44B6-8CA2-8F039AF4995A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70EE3961-B459-44B6-8CA2-8F039AF4995A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,8 +64,11 @@ Global
 		{8A585086-3616-4358-80E9-DEB4816EE5CA} = {8CB018F4-EB2D-409A-8C2C-A1520690E766}
 		{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB} = {DF9CF3D3-3396-46E5-9C3C-624ACD743852}
 		{0BE6394E-9FA8-4C53-BF4A-1523FC7E37CC} = {8CB018F4-EB2D-409A-8C2C-A1520690E766}
+		{57E9ADA1-1EEF-41A7-84EB-F2821CC37CC5} = {8CB018F4-EB2D-409A-8C2C-A1520690E766}
+		{1FB87585-551C-4480-B696-CFE24EA1C703} = {15B43234-BFBA-41E1-A8C9-206689B00097}
+		{70EE3961-B459-44B6-8CA2-8F039AF4995A} = {1FB87585-551C-4480-B696-CFE24EA1C703}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A422DEAD-1297-4F92-934F-6EC9BB5C7953}
+		SolutionGuid = {62686C83-FD22-48A7-B4B2-F4981D81D79E}
 	EndGlobalSection
 EndGlobal

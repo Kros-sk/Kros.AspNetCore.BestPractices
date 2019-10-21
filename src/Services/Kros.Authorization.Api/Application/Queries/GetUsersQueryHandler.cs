@@ -1,8 +1,9 @@
 ﻿using Kros.KORM;
+using Kros.ToDos.Base.Infrastructure;
 using Kros.Utils;
 using MediatR;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace Kros.Authorization.Api.Application.Queries
     /// <summary>
     /// Query handler for User queries.
     /// </summary>
-    public class GetUsersQueryHandler : 
+    public class GetUsersQueryHandler :
         IRequestHandler<GetUserQuery, GetUserQuery.User>,
         IRequestHandler<GetUserByEmailQuery, GetUserByEmailQuery.User>,
         IRequestHandler<GetAllUsersQuery, IEnumerable<GetAllUsersQuery.User>>
@@ -41,6 +42,10 @@ namespace Kros.Authorization.Api.Application.Queries
         public Task<IEnumerable<GetAllUsersQuery.User>> Handle(
             GetAllUsersQuery request,
             CancellationToken cancellationToken)
-            => Task.FromResult(_database.Query<GetAllUsersQuery.User>().AsEnumerable());
+            => Task.FromResult(_database.Query<GetAllUsersQuery.User>()
+                        .Select("Users.id", "Users.FirstName", "Users.LastName", "Users.Email", "permissions.value as Permissions")
+                        .From("Permissions INNER JOIN Users ON (Permissions.UserId = Users.Id) ")
+                        .Where($"Permissions.organizationId = {request.OrganizationId} AND Permissions.PermissionKey = {PermissionsHelper.Claims.UserRole} ")
+                        .AsEnumerable());
     }
 }

@@ -63,7 +63,7 @@ namespace Kros.ToDos.Api.Infrastructure
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId)
+        public async Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId, int organizationId)
         {
             using (var transaction = _database.BeginTransaction())
             {
@@ -71,9 +71,12 @@ namespace Kros.ToDos.Api.Infrastructure
                 {
                     var todoIds = _database
                         .Query<int>()
-                        .Sql($"SELECT Id FROM ToDos WHERE (UserId = {userId}) AND (IsDone = 1)")
+                        .Sql($"SELECT Id FROM ToDos " +
+                             $"WHERE (UserId = {userId} AND OrganizationId = {organizationId}) AND (IsDone = 1)")
                         .ToList();
-                    await _database.ExecuteNonQueryAsync($"DELETE FROM ToDos WHERE (UserId = {userId}) AND (IsDone = 1)");
+                    await _database.ExecuteNonQueryAsync($"DELETE FROM ToDos " +
+                                                         $"WHERE (UserId = {userId} AND OrganizationId = {organizationId}) " +
+                                                          "AND (IsDone = 1)");
 
                     transaction.Commit();
 
