@@ -38,7 +38,6 @@ namespace Kros.Authorization.Api.Application.Queries
             /// User's email.
             /// </summary>
             public string Email { get; set; }
-
          }
     }
 }

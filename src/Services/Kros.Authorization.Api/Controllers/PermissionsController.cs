@@ -114,6 +114,5 @@ namespace Kros.Authorization.Api.Controllers
 
             return NoContent();
         }
-
     }
 }

@@ -4,7 +4,6 @@ using Kros.KORM.Metadata.Attribute;
 using Kros.Utils;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +17,6 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
     public class ValidateUserPermissionPipelineBehavior<TRequest> : IPipelineBehavior<TRequest, Unit>
         where TRequest : IUserResourceCommand
     {
-
         private readonly IDatabase _database;
 
         /// <summary>

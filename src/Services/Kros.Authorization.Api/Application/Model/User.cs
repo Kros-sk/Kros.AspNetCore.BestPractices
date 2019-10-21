@@ -29,6 +29,5 @@ namespace Kros.Authorization.Api.Application.Model
         /// User's email.
         /// </summary>
         public string Email { get; set; }
-
     }
 }

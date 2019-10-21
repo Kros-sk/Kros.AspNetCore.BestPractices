@@ -1,5 +1,4 @@
-﻿
-using Kros.Authorization.Api.Application.Model;
+﻿using Kros.Authorization.Api.Application.Model;
 using Kros.Utils;
 using MediatR;
 using System.Threading;

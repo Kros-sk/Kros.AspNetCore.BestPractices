@@ -1,11 +1,6 @@
 ﻿using Kros.AspNetCore.Exceptions;
-using Kros.KORM;
-using Kros.KORM.Metadata.Attribute;
-using Kros.Utils;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +15,6 @@ namespace Kros.Organizations.Api.Application.Queries.PipeLines
         where TRequest : IUserResourceQuery
         where TResponse : IUserResourceQueryResult
     {
-
         /// <inheritdoc />
         public async Task<TResponse> Handle(
             TRequest request,
