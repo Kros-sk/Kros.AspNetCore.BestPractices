@@ -1,5 +1,6 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -23,12 +24,23 @@ namespace Kros.Authorization.Api.Controllers
             => _authorizationService = authorizationService;
 
         /// <summary>
-        /// 
+        /// Get Jwt token with user claims.
         /// </summary>
+        /// <response code="200">Ok.</response>
         /// <returns></returns>
-        [HttpGet("jwt-token")]
-        [ProducesResponseType(200, Type = typeof(string))]
-        public async Task<string> GetJwtToken()
-         => await _authorizationService.CreateJwtTokenAsync();
+        [HttpGet("jwt-token/organizations/{organizationId?}/{*other}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        public async Task<string> GetJwtToken(long organizationId, string other)
+         => await _authorizationService.CreateJwtTokenAsync(organizationId);
+
+        /// <summary>
+        /// Get Jwt token with user claims.
+        /// </summary>
+        /// <response code="200">Ok.</response>
+        /// <returns></returns>
+        [HttpGet("jwt-token/{*other}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        public async Task<string> GetJwtTokenOther(string other)
+         => await _authorizationService.CreateJwtTokenAsync(default);
     }
 }

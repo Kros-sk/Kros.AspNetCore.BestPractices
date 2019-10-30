@@ -87,7 +87,7 @@ namespace Kros.Organizations.Api.Application.Controllers
         /// <response code="403">Forbidden when user don't have permission for Organization with <paramref name="id"/>.</response>
         /// <response code="404">If Organization with id <paramref name="id"/> doesn't exist.</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(204)]
         [ProducesResponseType(403)]
         [ProducesResponseType(404)]
         [Authorize(PoliciesHelper.OwnerAuthPolicyName)]
@@ -95,7 +95,7 @@ namespace Kros.Organizations.Api.Application.Controllers
         {
             await this.SendRequest(new DeleteOrganizationCommand(id, User.GetUserId()));
 
-            return Ok();
+            return NoContent();
         }
     }
 }

@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "07446918-6d31-4078-b4d5-a95d09be217a",
-		"name": "Workshop: Kros.AspNetCore.BestPractices",
+		"_postman_id": "f532d7b7-33a2-4c6e-89aa-e3cfce61521d",
+		"name": "Kros.AspNetCore.BestPractices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -17,10 +17,10 @@
 								"id": "4970b992-6ae2-4037-8154-8f86e03b9d6b",
 								"exec": [
 									"var jsonData = pm.response.json();",
-									"pm.variables.set(\"AccessToken\",jsonData.access_token)",
+									"pm.environment.set(\"Temp.AccessToken\",jsonData.access_token)",
 									"",
 									"pm.test(\"Token should be not empty\", function () {",
-									"    pm.expect(pm.variables.get(\"AccessToken\").length).to.be.above(0);",
+									"    pm.expect(pm.environment.get(\"Temp.AccessToken\").length).to.be.above(0);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -84,7 +84,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Hello",
@@ -110,25 +111,102 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Users Api",
+			"name": "Organizations Api",
 			"item": [
 				{
-					"name": "Is Admin (Start)",
+					"name": "New organization",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "642b7445-7956-473c-a820-7943266588a7",
+								"id": "c9fd0b41-c394-456e-b51c-4343f3673d68",
 								"exec": [
-									"pm.test(\"Is admin should be True\", function () {",
-									"    pm.expect(pm.response.text()).to.eql(\"true\");",
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"Temp.OrganizationId\", jsonData.id)",
+									"",
+									"pm.test(\"Organization should be created with code 201.\", function () {",
+									"    pm.response.to.have.status(201);",
 									"});",
 									"",
-									"pm.test(\"Status code is 200\", function () {",
+									"// Save organization values to variables",
+									"var organization = JSON.parse(pm.request.body.raw);",
+									"pm.environment.set(\"Temp.OrganizationName\", organization.organizationName);",
+									"pm.environment.set(\"Temp.BusinessId\", organization.businessId);",
+									"pm.environment.set(\"Temp.Street\", organization.street);",
+									"pm.environment.set(\"Temp.StreetNumber\", organization.streetNumber);",
+									"pm.environment.set(\"Temp.City\", organization.city);",
+									"pm.environment.set(\"Temp.ZipCode\", organization.zipCode);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"organizationName\": \"KROS a.s.\",\n\t\"businessId\": \"31635903\",\n\t\"street\": \"A. Rudnaya\",\n\t\"streetNumber\": \"21\",\n\t\"city\": \"Žilina\",\n\t\"zipCode\": \"010 01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5304ea8f-842c-46b7-ad58-8c3ee96e1fa2",
+								"exec": [
+									"var organization = pm.response.json();",
+									"pm.environment.set(\"Temp.UserId\", organization.userId);",
+									"",
+									"pm.test(\"Organization info should be returned with code 200.\", function () {",
 									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Organization info should be object and not array.\", function () {",
+									"    pm.expect(organization).to.be.an('object').but.not.an('array');",
+									"});",
+									"",
+									"pm.test(\"Organization info should be in correct data format.\", function () {",
+									"    pm.expect(tv4.validate(organization, pm.environment.get(\"Temp.OrganizationSchema\"))).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Organization info should be correct.\", function () {",
+									"    pm.expect(organization.id).to.eql(pm.environment.get(\"Temp.OrganizationId\"));",
+									"    pm.expect(organization.organizationName).to.eql(pm.environment.get(\"Temp.OrganizationName\"));",
+									"    pm.expect(organization.businessId).to.eql(pm.environment.get(\"Temp.BusinessId\"));",
+									"    pm.expect(organization.street).to.eql(pm.environment.get(\"Temp.Street\"));",
+									"    pm.expect(organization.streetNumber).to.eql(pm.environment.get(\"Temp.StreetNumber\"));",
+									"    pm.expect(organization.city).to.eql(pm.environment.get(\"Temp.City\"));",
+									"    pm.expect(organization.zipCode).to.eql(pm.environment.get(\"Temp.ZipCode\"));",
 									"});"
 								],
 								"type": "text/javascript"
@@ -139,17 +217,197 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://demo.todos.gateway.api.kros.wtf/users/IsAdmin",
-							"protocol": "https",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}",
 							"host": [
-								"demo",
-								"todos",
-								"gateway",
-								"api",
-								"kros",
-								"wtf"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "69062199-d5c1-4b78-ad29-3072ac1cd127",
+								"exec": [
+									"pm.test(\"Organization info should be updated with code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Save organization values to variables",
+									"var organization = JSON.parse(pm.request.body.raw);",
+									"pm.environment.set(\"Temp.OrganizationName\", organization.organizationName);",
+									"pm.environment.set(\"Temp.BusinessId\", organization.businessId);",
+									"pm.environment.set(\"Temp.Street\", organization.street);",
+									"pm.environment.set(\"Temp.StreetNumber\", organization.streetNumber);",
+									"pm.environment.set(\"Temp.City\", organization.city);",
+									"pm.environment.set(\"Temp.ZipCode\", organization.zipCode);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"organizationName\": \"STORMWARE s.r.o.\",\n\t\"businessId\": \"36244791\",\n\t\"street\": \"Matúšova\",\n\t\"streetNumber\": \"48\",\n\t\"city\": \"Bratislava\",\n\t\"zipCode\": \"811 04\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check updated info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec3e12c2-e8de-4600-afb8-5aee4208db75",
+								"exec": [
+									"var organization = pm.response.json();",
+									"",
+									"pm.test(\"Organization info should be returned with code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Organization info should be object and not array.\", function () {",
+									"    pm.expect(organization).to.be.an('object').but.not.an('array');",
+									"});",
+									"",
+									"pm.test(\"Organization info should be in correct data format.\", function () {",
+									"    pm.expect(tv4.validate(organization, pm.environment.get(\"Temp.OrganizationSchema\"))).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Organization info should be correct.\", function () {",
+									"    pm.expect(organization.id).to.eql(pm.environment.get(\"Temp.OrganizationId\"));",
+									"    pm.expect(organization.organizationName).to.eql(pm.environment.get(\"Temp.OrganizationName\"));",
+									"    pm.expect(organization.businessId).to.eql(pm.environment.get(\"Temp.BusinessId\"));",
+									"    pm.expect(organization.street).to.eql(pm.environment.get(\"Temp.Street\"));",
+									"    pm.expect(organization.streetNumber).to.eql(pm.environment.get(\"Temp.StreetNumber\"));",
+									"    pm.expect(organization.city).to.eql(pm.environment.get(\"Temp.City\"));",
+									"    pm.expect(organization.zipCode).to.eql(pm.environment.get(\"Temp.ZipCode\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "38f9643b-00bd-4bc5-8512-c035868c82cd",
+						"type": "text/javascript",
+						"exec": [
+							"const organizationSchema = {",
+							"    \"required\": [\"id\", \"userId\", \"organizationName\", \"businessId\", \"street\",",
+							"                 \"streetNumber\", \"city\", \"zipCode\"],",
+							"    \"properties\": {",
+							"        \"id\": {\"type\": \"integer\"},",
+							"        \"userId\": {\"type\": \"integer\"},",
+							"        \"organizationName\": {\"type\": \"string\"},",
+							"        \"businessId\": {\"type\": \"string\"},",
+							"        \"street\": {\"type\": \"string\"},",
+							"        \"streetNumber\": {\"type\": \"string\"},",
+							"        \"city\": {\"type\": \"string\"},",
+							"        \"zipCode\": {\"type\": \"string\"}",
+							"    }",
+							"};",
+							"",
+							"pm.environment.set(\"Temp.OrganizationSchema\", organizationSchema);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "21db2ddc-93fa-46e2-b59c-4185330fa92c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users Api",
+			"item": [
+				{
+					"name": "Is Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "642b7445-7956-473c-a820-7943266588a7",
+								"exec": [
+									"pm.test(\"Is admin should be True\", function () {",
+									"    pm.expect(pm.response.text()).to.eql(\"true\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/users/IsAdmin",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
 								"users",
 								"IsAdmin"
 							]
@@ -188,74 +446,14 @@
 					]
 				},
 				{
-					"name": "Get All Users (Start)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "665460d4-5762-4a2a-9670-d4d570302383",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"",
-									"pm.test(\"Users should be loaded\", function () {",
-									"    pm.expect(jsonData.length).to.be.above(0);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{UsersApiBaseUrl}}",
-							"host": [
-								"{{UsersApiBaseUrl}}"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/api/Authorization/jwt-token",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"Authorization",
-										"jwt-token"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "\"<string>\""
-						}
-					]
-				},
-				{
-					"name": "Is Admin",
+					"name": "Is Writer",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"id": "642b7445-7956-473c-a820-7943266588a7",
 								"exec": [
-									"pm.test(\"Is admin should be True\", function () {",
+									"pm.test(\"Is writer should be True\", function () {",
 									"    pm.expect(pm.response.text()).to.eql(\"true\");",
 									"});"
 								],
@@ -267,12 +465,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{UsersApiBaseUrl}}/IsAdmin",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/users/IsWriter",
 							"host": [
-								"{{UsersApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
-								"IsAdmin"
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"users",
+								"IsWriter"
 							]
 						}
 					},
@@ -309,17 +510,15 @@
 					]
 				},
 				{
-					"name": "Get All Users",
+					"name": "Is Reader",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "665460d4-5762-4a2a-9670-d4d570302383",
+								"id": "642b7445-7956-473c-a820-7943266588a7",
 								"exec": [
-									"var jsonData = pm.response.json();",
-									"",
-									"pm.test(\"Users should be loaded\", function () {",
-									"    pm.expect(jsonData.length).to.be.above(0);",
+									"pm.test(\"Is reader should be True\", function () {",
+									"    pm.expect(pm.response.text()).to.eql(\"true\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -330,9 +529,106 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{UsersApiBaseUrl}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/users/IsReader",
 							"host": [
-								"{{UsersApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"users",
+								"IsReader"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/Users/IsAdmin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"Users",
+										"IsAdmin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "\"<boolean>\""
+						}
+					]
+				},
+				{
+					"name": "All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "665460d4-5762-4a2a-9670-d4d570302383",
+								"exec": [
+									"var users = pm.response.json();",
+									"",
+									"pm.test(\"Retrieving list of users should return status code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Retrieving list of users should return an array but not an object.\", function () {",
+									"    pm.expect(users).to.be.an('array').but.not.an('object');",
+									"});",
+									"",
+									"pm.test(\"Users should be loaded\", function () {",
+									"    pm.expect(users.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Retrieving list of users should return correct data format in each item.\", function () {",
+									"    users.forEach(function(user) {",
+									"         pm.expect(tv4.validate(user, pm.environment.get(\"Temp.UserSchema\"))).to.be.true;",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Retrieving list of users should return seeded item.\", function () {",
+									"    var found = false;",
+									"    ",
+									"    users.forEach(function(user) {",
+									"        if (user.id == pm.environment.get(\"Temp.UserId\")) {",
+									"            found = true;",
+									"        }",
+									"    });",
+									"    ",
+									"    pm.expect(found).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/users",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"users"
 							]
 						}
 					},
@@ -369,16 +665,29 @@
 					]
 				},
 				{
-					"name": "Get User by Id",
+					"name": "User by Id",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"id": "81906080-143e-4b07-a4f0-a73c8038d50f",
 								"exec": [
+									"var user = pm.response.json();",
+									"",
+									"pm.test(\"Retrieving a single user should return status code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Retrieving a single user should return an object.\", function () {",
+									"    pm.expect(user).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Retrieving a single user should return correct data format.\", function () {",
+									"    pm.expect(tv4.validate(user, pm.environment.get(\"Temp.UserSchema\"))).to.be.true;",
+									"});",
+									"",
 									"pm.test(\"Get user by id returns user's value\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.id).to.eql(parseInt(pm.variables.get(\"UserId\")));",
+									"    pm.expect(user.id).to.eql(parseInt(pm.environment.get(\"Temp.UserId\")));",
 									"});",
 									""
 								],
@@ -390,12 +699,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{UsersApiBaseUrl}}/{{UserId}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/users/{{Temp.UserId}}",
 							"host": [
-								"{{UsersApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
-								"{{UserId}}"
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"users",
+								"{{Temp.UserId}}"
 							]
 						}
 					},
@@ -455,7 +767,8 @@
 									"",
 									"// Save user values to variables",
 									"var user = JSON.parse(pm.request.body.raw);",
-									"pm.variables.set(\"FirstName\", user.firstName);"
+									"pm.environment.set(\"Temp.FirstName\", user.firstName);",
+									"pm.environment.set(\"Temp.LastName\", user.lastName);"
 								],
 								"type": "text/javascript"
 							}
@@ -471,15 +784,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"integrationtests@kros.sk\",\r\n    \"isAdmin\": true\r\n}"
+							"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"email\": \"{{OAuthUsername}}\"\r\n}"
 						},
 						"url": {
-							"raw": "{{UsersApiBaseUrl}}/{{UserId}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/users/{{Temp.UserId}}",
 							"host": [
-								"{{UsersApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
-								"{{UserId}}"
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"users",
+								"{{Temp.UserId}}"
 							]
 						}
 					},
@@ -532,9 +848,25 @@
 							"script": {
 								"id": "81906080-143e-4b07-a4f0-a73c8038d50f",
 								"exec": [
-									"pm.test(\"Check updated value\", function () {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.firstName).to.eql(pm.variables.get(\"FirstName\"));",
+									"var user = pm.response.json();",
+									"",
+									"pm.test(\"User info should be returned with code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"User info should be object and not array.\", function () {",
+									"    pm.expect(user).to.be.an('object').but.not.an('array');",
+									"});",
+									"",
+									"pm.test(\"User info should be in correct data format.\", function () {",
+									"    pm.expect(tv4.validate(user, pm.environment.get(\"Temp.UserSchema\"))).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"User info should be correct.\", function () {",
+									"    pm.expect(user.id).to.eql(pm.environment.get(\"Temp.UserId\"));",
+									"    pm.expect(user.firstName).to.eql(pm.environment.get(\"Temp.FirstName\"));",
+									"    pm.expect(user.lastName).to.eql(pm.environment.get(\"Temp.LastName\"));",
+									"    pm.expect(user.street).to.eql(pm.environment.get(\"{{OAuthUsername}}\"));",
 									"});"
 								],
 								"type": "text/javascript"
@@ -545,12 +877,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{UsersApiBaseUrl}}/{{UserId}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/users/{{Temp.UserId}}",
 							"host": [
-								"{{UsersApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
-								"{{UserId}}"
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"users",
+								"{{Temp.UserId}}"
 							]
 						}
 					},
@@ -586,74 +921,44 @@
 						}
 					]
 				}
-			]
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const userSchema = {",
+							"    \"required\": [\"id\", \"firstName\", \"lastName\", \"email\"],",
+							"    \"properties\": {",
+							"        \"id\": {\"type\": \"integer\"},",
+							"        \"firstName\": {\"type\": [\"null\", \"string\"]},",
+							"        \"lastName\": {\"type\": [\"null\", \"string\"]},",
+							"        \"email\": {\"type\": \"string\"}",
+							"    }",
+							"};",
+							"",
+							"pm.environment.set(\"Temp.UserSchema\", userSchema);"
+						],
+						"id": "0894b3cb-40c3-40b2-ba06-d208bb782c8d",
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"id": "b32b4138-6f82-4cdb-bb55-f64d6fa67c46",
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Todos Api",
 			"item": [
-				{
-					"name": "Get All Todos",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "12d8c426-d1ab-4f9f-8e59-0f9a10fcce5d",
-								"exec": [
-									"var jsonData = pm.response.json();",
-									"",
-									"pm.test(\"Getting all todos should return status code 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Getting all todos should return at least one todo\", function () {",
-									"    pm.expect(jsonData.length).to.be.above(0);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{TodosApiBaseUrl}}",
-							"host": [
-								"{{TodosApiBaseUrl}}"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/api/ToDos",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"ToDos"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "[\n {\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"isDone\": \"<boolean>\"\n },\n {\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"isDone\": \"<boolean>\"\n }\n]"
-						}
-					]
-				},
 				{
 					"name": "Create Todo",
 					"event": [
@@ -663,16 +968,20 @@
 								"id": "599b8f06-923b-4aa0-a9e0-04215a7cd834",
 								"exec": [
 									"var response = pm.response.json();",
+									"pm.environment.set(\"Temp.ToDoId\", response.id);",
 									"",
-									"pm.test(\"Toto ma skon\", function () {",
+									"pm.test(\"ToDo should be created with code 201.\", function () {",
 									"    pm.response.to.have.status(201);",
 									"});",
 									"",
-									"pm.test(\"Creating todo should return valid JSON object with id.\", function () {",
+									"pm.test(\"Creating ToDo should return valid JSON object with id.\", function () {",
 									"    pm.expect(response).to.have.property('id');",
 									"});",
 									"",
-									"pm.globals.set(\"NewTodoId\", response.id);"
+									"// Save todo values to variables",
+									"var todo = JSON.parse(pm.request.body.raw);",
+									"pm.environment.set(\"Temp.ToDoName\", todo.name);",
+									"pm.environment.set(\"Temp.ToDoDescription\", todo.description);"
 								],
 								"type": "text/javascript"
 							}
@@ -691,9 +1000,14 @@
 							"raw": "{\n    \"name\": \"{{$randomLoremWords}}\",\n    \"description\": \"{{$randomLoremSentence}}\"\n}"
 						},
 						"url": {
-							"raw": "{{TodosApiBaseUrl}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos",
 							"host": [
-								"{{TodosApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos"
 							]
 						}
 					},
@@ -738,6 +1052,96 @@
 					]
 				},
 				{
+					"name": "Get All Todos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "12d8c426-d1ab-4f9f-8e59-0f9a10fcce5d",
+								"exec": [
+									"var todos = pm.response.json();",
+									"",
+									"pm.test(\"Retrieving list of ToDos should return status code 200.\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Retrieving list of ToDos should return an array but not an object.\", function () {",
+									"    pm.expect(todos).to.be.an('array').but.not.an('object');",
+									"});",
+									"",
+									"pm.test(\"At least one ToDo should exist.\", function () {",
+									"    pm.expect(todos.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Retrieving list of ToDos should return correct data format in each item.\", function () {",
+									"    todos.forEach(function(todo) {",
+									"         pm.expect(tv4.validate(todo, pm.environment.get(\"Temp.ToDoHeaderSchema\"))).to.be.true;",
+									"    });",
+									"});",
+									"",
+									"pm.test(\"Retrieving list of ToDos should return seeded item.\", function () {",
+									"    var found = false;",
+									"    ",
+									"    todos.forEach(function(todo) {",
+									"        if (todo.id == pm.environment.get(\"Temp.ToDoId\")) {",
+									"            found = true;",
+									"        }",
+									"    });",
+									"    ",
+									"    pm.expect(found).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n {\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"isDone\": \"<boolean>\"\n },\n {\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"isDone\": \"<boolean>\"\n }\n]"
+						}
+					]
+				},
+				{
 					"name": "Change Is Done State",
 					"event": [
 						{
@@ -745,7 +1149,7 @@
 							"script": {
 								"id": "9c822159-74ab-4f81-9539-5feea8b08fd1",
 								"exec": [
-									"pm.test(\"Updating todo state should return status code 200.\", function () {",
+									"pm.test(\"Updating ToDo state should return status code 200.\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});"
 								],
@@ -766,56 +1170,20 @@
 							"raw": "{\n    \"isDone\": \"true\"\n}"
 						},
 						"url": {
-							"raw": "{{TodosApiBaseUrl}}/changeIsDoneState/{{NewTodoId}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/changeIsDoneState/{{Temp.ToDoId}}",
 							"host": [
-								"{{TodosApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos",
 								"changeIsDoneState",
-								"{{NewTodoId}}"
+								"{{Temp.ToDoId}}"
 							]
 						}
 					},
 					"response": [
-						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"isDone\": \"<boolean>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/api/ToDos/changeIsDoneState/<integer>",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"ToDos",
-										"changeIsDoneState",
-										"<integer>"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
-						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -893,6 +1261,45 @@
 							],
 							"cookie": [],
 							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isDone\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/changeIsDoneState/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"changeIsDoneState",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
 						}
 					]
 				},
@@ -906,16 +1313,16 @@
 								"exec": [
 									"var response = pm.response.json();",
 									"",
-									"pm.test(\"Getting todo should return status code 200.\", function () {",
+									"pm.test(\"Getting ToDo should return status code 200.\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"pm.test(\"Getting todo should return valid JSON object with correct id.\", function () {",
-									"    pm.expect(response).to.have.property('id');",
-									"    pm.expect(response.id).to.eql(pm.globals.get(\"NewTodoId\"));",
+									"pm.test(\"Getting ToDo should return valid JSON object with correct id.\", function () {",
+									"    pm.expect(tv4.validate(response, pm.environment.get(\"Temp.ToDoSchema\"))).to.be.true;",
+									"    pm.expect(response.id).to.eql(pm.environment.get(\"Temp.ToDoId\"));",
 									"});",
 									"",
-									"pm.test(\"Updated toto state should be true.\", function () {",
+									"pm.test(\"Updated ToDo state should be true.\", function () {",
 									"    pm.expect(response.isDone).to.eql(true);",
 									"});",
 									""
@@ -928,18 +1335,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{TodosApiBaseUrl}}/{{NewTodoId}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/{{Temp.ToDoId}}",
 							"host": [
-								"{{TodosApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
-								"{{NewTodoId}}"
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos",
+								"{{Temp.ToDoId}}"
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "Forbidden",
+							"name": "Success",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -955,8 +1365,8 @@
 									]
 								}
 							},
-							"status": "Forbidden",
-							"code": 403,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -965,7 +1375,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+							"body": "{\n \"id\": \"<integer>\",\n \"name\": \"<string>\",\n \"description\": \"<string>\",\n \"created\": \"<dateTime>\",\n \"lastChange\": \"<dateTime>\",\n \"userId\": \"<integer>\",\n \"isDone\": \"<boolean>\"\n}"
 						},
 						{
 							"name": "Not Found",
@@ -997,7 +1407,7 @@
 							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
 						},
 						{
-							"name": "Success",
+							"name": "Forbidden",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
@@ -1013,8 +1423,8 @@
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Forbidden",
+							"code": 403,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -1023,7 +1433,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n \"id\": \"<integer>\",\n \"name\": \"<string>\",\n \"description\": \"<string>\",\n \"created\": \"<dateTime>\",\n \"lastChange\": \"<dateTime>\",\n \"userId\": \"<integer>\",\n \"isDone\": \"<boolean>\"\n}"
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
 						}
 					]
 				},
@@ -1056,16 +1466,57 @@
 							"raw": "{\n    \"name\": \"NewValueName\",\n    \"description\": \"NewValueDescription\",\n    \"isDone\": \"true\"\n}"
 						},
 						"url": {
-							"raw": "{{TodosApiBaseUrl}}/{{NewTodoId}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/{{Temp.ToDoId}}",
 							"host": [
-								"{{TodosApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
-								"{{NewTodoId}}"
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos",
+								"{{Temp.ToDoId}}"
 							]
 						}
 					},
 					"response": [
+						{
+							"name": "Forbidden",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"isDone\": \"<boolean>\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
 						{
 							"name": "Success",
 							"originalRequest": {
@@ -1141,44 +1592,6 @@
 							],
 							"cookie": [],
 							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
-						},
-						{
-							"name": "Forbidden",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"isDone\": \"<boolean>\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/api/ToDos/<integer>",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"ToDos",
-										"<integer>"
-									]
-								}
-							},
-							"status": "Forbidden",
-							"code": 403,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
 						}
 					]
 				},
@@ -1192,16 +1605,16 @@
 								"exec": [
 									"var response = pm.response.json();",
 									"",
-									"pm.test(\"Getting todo should return status code 200.\", function () {",
+									"pm.test(\"Getting ToDo should return status code 200.\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"pm.test(\"Getting todo should return valid JSON object with correct id.\", function () {",
-									"    pm.expect(response).to.have.property('id');",
-									"    pm.expect(response.id).to.eql(pm.globals.get(\"NewTodoId\"));",
+									"pm.test(\"Getting ToDo should return valid JSON object with correct id.\", function () {",
+									"    pm.expect(tv4.validate(response, pm.environment.get(\"Temp.ToDoSchema\"))).to.be.true;",
+									"    pm.expect(response.id).to.eql(pm.environment.get(\"Temp.ToDoId\"));",
 									"});",
 									"",
-									"pm.test(\"Updated toto state should be true.\", function () {",
+									"pm.test(\"Updated ToDo state should be true.\", function () {",
 									"    pm.expect(response.isDone).to.eql(true);",
 									"});",
 									""
@@ -1214,12 +1627,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{TodosApiBaseUrl}}/{{NewTodoId}}",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/{{Temp.ToDoId}}",
 							"host": [
-								"{{TodosApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
-								"{{NewTodoId}}"
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos",
+								"{{Temp.ToDoId}}"
 							]
 						}
 					},
@@ -1243,35 +1659,6 @@
 							},
 							"status": "Not Found",
 							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
-						},
-						{
-							"name": "Forbidden",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/api/ToDos/<integer>",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"ToDos",
-										"<integer>"
-									]
-								}
-							},
-							"status": "Forbidden",
-							"code": 403,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -1310,43 +1697,11 @@
 							],
 							"cookie": [],
 							"body": "{\n \"id\": \"<integer>\",\n \"name\": \"<string>\",\n \"description\": \"<string>\",\n \"created\": \"<dateTime>\",\n \"lastChange\": \"<dateTime>\",\n \"userId\": \"<integer>\",\n \"isDone\": \"<boolean>\"\n}"
-						}
-					]
-				},
-				{
-					"name": "Delete Todo",
-					"event": [
+						},
 						{
-							"listen": "test",
-							"script": {
-								"id": "4d618c9c-34db-4ac4-bf09-52f7abdc2b73",
-								"exec": [
-									"pm.test(\"Deleting todo should return status code 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{TodosApiBaseUrl}}/{{NewTodoId}}",
-							"host": [
-								"{{TodosApiBaseUrl}}"
-							],
-							"path": [
-								"{{NewTodoId}}"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "Success",
+							"name": "Forbidden",
 							"originalRequest": {
-								"method": "DELETE",
+								"method": "GET",
 								"header": [],
 								"url": {
 									"raw": "{{baseUrl}}/api/ToDos/<integer>",
@@ -1360,18 +1715,53 @@
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "text",
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
 							"header": [
 								{
 									"key": "Content-Type",
-									"value": "text/plain"
+									"value": "application/json"
 								}
 							],
 							"cookie": [],
-							"body": ""
-						},
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Todo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4d618c9c-34db-4ac4-bf09-52f7abdc2b73",
+								"exec": [
+									"pm.test(\"Deleting ToDo should return status code 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/{{Temp.ToDoId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos",
+								"{{Temp.ToDoId}}"
+							]
+						}
+					},
+					"response": [
 						{
 							"name": "Not Found",
 							"originalRequest": {
@@ -1429,18 +1819,47 @@
 							],
 							"cookie": [],
 							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "text",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain"
+								}
+							],
+							"cookie": [],
+							"body": ""
 						}
 					]
 				},
 				{
-					"name": "Delete doesn't exist Todo",
+					"name": "Delete non-existing ToDo",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"id": "4d618c9c-34db-4ac4-bf09-52f7abdc2b73",
 								"exec": [
-									"pm.test(\"Deleting doesn't exist todo should return status code 404\", function () {",
+									"pm.test(\"Deleting non-existing ToDo should return status code 404\", function () {",
 									"    pm.response.to.have.status(404);",
 									"});"
 								],
@@ -1452,11 +1871,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{TodosApiBaseUrl}}/123456",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/123456",
 							"host": [
-								"{{TodosApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos",
 								"123456"
 							]
 						}
@@ -1492,35 +1914,6 @@
 							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
 						},
 						{
-							"name": "Not Found",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/api/ToDos/<integer>",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"api",
-										"ToDos",
-										"<integer>"
-									]
-								}
-							},
-							"status": "Not Found",
-							"code": 404,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
-						},
-						{
 							"name": "Success",
 							"originalRequest": {
 								"method": "DELETE",
@@ -1548,6 +1941,35 @@
 							],
 							"cookie": [],
 							"body": ""
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/ToDos/<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"ToDos",
+										"<integer>"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"type\": \"<string>\",\n \"title\": \"<string>\",\n \"status\": \"<integer>\",\n \"detail\": \"<string>\",\n \"instance\": \"<string>\"\n}"
 						}
 					]
 				},
@@ -1559,7 +1981,7 @@
 							"script": {
 								"id": "ecad2ead-44f0-4eab-a554-22727e7ae09b",
 								"exec": [
-									"pm.test(\"Deleting completed todos should return status code 200\", function () {",
+									"pm.test(\"Deleting completed ToDos should return status code 200\", function () {",
 									"    pm.response.to.have.status(200);",
 									"});"
 								],
@@ -1571,11 +1993,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{TodosApiBaseUrl}}/deleteCompleted",
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/deleteCompleted",
 							"host": [
-								"{{TodosApiBaseUrl}}"
+								"{{ApiBaseGatewayUri}}"
 							],
 							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}",
+								"todos",
 								"deleteCompleted"
 							]
 						}
@@ -1641,7 +2066,55 @@
 						}
 					]
 				}
-			]
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "77ca1903-1707-4179-abbc-a6582b335623",
+						"type": "text/javascript",
+						"exec": [
+							"const toDoHeaderSchema = {",
+							"    \"required\": [\"id\", \"name\", \"isDone\"],",
+							"    \"properties\": {",
+							"        \"id\": {\"type\": \"integer\"},",
+							"        \"name\": {\"type\": \"string\"},",
+							"        \"isDone\": {\"type\": \"boolean\"}",
+							"    }",
+							"};",
+							"",
+							"const toDoSchema = {",
+							"    \"required\": [\"id\", \"name\", \"description\", \"created\", \"lastChange\", \"userId\",",
+							"                 \"organizationId\", \"isDone\"],",
+							"    \"properties\": {",
+							"        \"id\": {\"type\": \"integer\"},",
+							"        \"name\": {\"type\": \"string\"},",
+							"        \"description\": {\"type\": \"string\"},",
+							"        \"created\": {\"type\": \"string\"},",
+							"        \"lastChange\": {\"type\": \"string\"},",
+							"        \"userId\": {\"type\": \"integer\"},",
+							"        \"organizationId\": {\"type\": \"integer\"},",
+							"        \"isDone\": {\"type\": \"boolean\"}",
+							"    }",
+							"};",
+							"",
+							"pm.environment.set(\"Temp.ToDoHeaderSchema\", toDoHeaderSchema);",
+							"pm.environment.set(\"Temp.ToDoSchema\", toDoSchema);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "206a52e1-2b19-401e-ab52-0641db4bce38",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Authorization Api",
@@ -1790,7 +2263,99 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Cleanup",
+			"item": [
+				{
+					"name": "Delete seeded organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c105cc91-6823-4d50-84eb-850a25358ee0",
+								"exec": [
+									"pm.test (\"Deleting seeded organization should return status code 204.\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.OrganizationId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cleanup",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "00b48309-3b97-4543-a4a2-59fd4f1b347a",
+								"exec": [
+									"function cleanup() {\r",
+									"    const clean = _.keys(pm.environment.toObject())\r",
+									"    _.each(clean, (arrItem) => {\r",
+									"        if (arrItem.startsWith(\"Temp.\")) {\r",
+									"            pm.environment.unset(arrItem)\r",
+									"        }\r",
+									"    })\r",
+									"}\r",
+									"\r",
+									"cleanup();"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "4a10bc50-9867-4b9f-b9fc-c8e670864d23",
+								"exec": [
+									"pm.test(\"Cleanup should return status code 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "CLEANUP",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/cleanup",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"cleanup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"auth": {
@@ -1798,7 +2363,7 @@
 		"oauth2": [
 			{
 				"key": "accessToken",
-				"value": "{{AccessToken}}",
+				"value": "{{Temp.AccessToken}}",
 				"type": "string"
 			},
 			{
@@ -1834,5 +2399,6 @@
 				]
 			}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
