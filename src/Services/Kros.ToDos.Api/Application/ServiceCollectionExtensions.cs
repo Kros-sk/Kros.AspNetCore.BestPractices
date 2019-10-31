@@ -101,23 +101,32 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             return services.AddAuthorization(options =>
             {
+                options.AddPolicy(PoliciesHelper.OwnerAuthPolicyName, policyAdmin =>
+                {
+                    policyAdmin.AuthenticationSchemes.Add(scheme);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.OwnerRole);
+                });
+
                 options.AddPolicy(PoliciesHelper.AdminAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
-                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole);
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.OwnerRole,
+                                                                                PermissionsHelper.ClaimValues.AdminRole);
                 });
 
                 options.AddPolicy(PoliciesHelper.WriterAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
-                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.OwnerRole,
+                                                                                PermissionsHelper.ClaimValues.AdminRole,
                                                                                 PermissionsHelper.ClaimValues.WriterRole);
                 });
 
                 options.AddPolicy(PoliciesHelper.ReaderAuthPolicyName, policyAdmin =>
                 {
                     policyAdmin.AuthenticationSchemes.Add(scheme);
-                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.AdminRole,
+                    policyAdmin.RequireClaim(PermissionsHelper.Claims.UserRole, PermissionsHelper.ClaimValues.OwnerRole,
+                                                                                PermissionsHelper.ClaimValues.AdminRole,
                                                                                 PermissionsHelper.ClaimValues.WriterRole,
                                                                                 PermissionsHelper.ClaimValues.ReaderRole);
                 });

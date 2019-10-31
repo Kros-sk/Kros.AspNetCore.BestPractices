@@ -1,4 +1,4 @@
-﻿using ApiGateway.Authorization;
+﻿using Kros.AspNetCore.Authorization;
 using Kros.AspNetCore.Extensions;
 using Kros.Utils;
 using Microsoft.AspNetCore.Builder;
@@ -44,7 +44,7 @@ namespace ApiGateway
         /// <param name="services">Service.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGatewayJwtAuthorization_Custom();
+            services.AddGatewayJwtAuthorization();
             services.AddWebApi();
             services.AddOcelot();
             services.AddSwaggerForOcelot(Configuration);
@@ -71,7 +71,7 @@ namespace ApiGateway
 
             app.UseErrorHandling();
             app.UseAllowAllOriginsCors();
-            app.UseGatewayJwtAuthorization_Custom(Configuration);
+            app.UseGatewayJwtAuthorization(Configuration);
             app.UseMvc();
 
             app.UseSwaggerForOcelotUI(Configuration);

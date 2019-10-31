@@ -54,7 +54,7 @@ namespace Kros.Authorization.Api.Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<string> CreateJwtTokenAsync()
+        public async Task<string> CreateJwtTokenAsync(long organizationId)
         {
             var oidcClaims = await GetOidcUserClaimsAsync();
             var user = await _userService.TryCreateDefaultUserAsync(oidcClaims);
@@ -64,8 +64,17 @@ namespace Kros.Authorization.Api.Application.Services
                 var allUserClaims = new List<Claim>();
                 allUserClaims.AddRange(oidcClaims);
                 allUserClaims.AddRange(GetUserAuthorizationClaims(user));
-                allUserClaims.AddRange(GetOrganizationClaims(_httpContextAccessor.HttpContext.Request.Headers));
-                allUserClaims.AddRange(await GetPermissionsClaimsAsync(allUserClaims));
+
+                if (organizationId != 0)
+                {
+                    allUserClaims.AddRange(GetOrganizationClaims(organizationId));
+                    allUserClaims.AddRange(await GetPermissionsClaimsAsync(allUserClaims));
+
+                    if (!allUserClaims.Any(claim => claim.Type == PermissionsHelper.Claims.UserRole))
+                    {
+                        throw new UnauthorizedAccessException();
+                    }
+                }
 
                 return JwtAuthorizationHelper.CreateJwtTokenFromClaims(allUserClaims, _apiJwtAuthorizationOptions.JwtSecret);
             }
@@ -77,7 +86,6 @@ namespace Kros.Authorization.Api.Application.Services
         {
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(UserClaimTypes.UserId, user.Id.ToString()));
-            //claims.Add(new Claim(UserClaimTypes.IsAdmin, user.IsAdmin.ToString()));
 
             return claims;
         }
@@ -110,17 +118,13 @@ namespace Kros.Authorization.Api.Application.Services
         /// <summary>
         /// Gets organization-related claims.
         /// </summary>
-        /// <param name="headers">HTTP request headers.</param>
+        /// <param name="organizationId">Organization ID.</param>
         /// <returns>Organization-related claims.</returns>
-        private IEnumerable<Claim> GetOrganizationClaims(IHeaderDictionary headers)
+        private IEnumerable<Claim> GetOrganizationClaims(long organizationId)
         {
-            if (headers != null && headers.ContainsKey(PermissionsHelper.Headers.OrganizationId))
+            if (organizationId != 0)
             {
-                return new Claim[] { new Claim(PermissionsHelper.Claims.OrganizationId, headers[PermissionsHelper.Headers.OrganizationId]) };
-            }
-            else
-            {
-                return new Claim[] { };
+                yield return new Claim(PermissionsHelper.Claims.OrganizationId, organizationId.ToString());
             }
         }
 
