@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using System;
+using System.Net;
+using System.Net.Http;
 
 namespace ApiGateway
 {
@@ -22,7 +26,7 @@ namespace ApiGateway
         /// </summary>
         /// <param name="env">Enviromnent variables.</param>
         /// <param name="configuration">App configuration.</param>
-        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
             Environment = Check.NotNull(env, nameof(env));
             Configuration = Check.NotNull(configuration, nameof(configuration));
@@ -36,7 +40,7 @@ namespace ApiGateway
         /// <summary>
         /// Environment.
         /// </summary>
-        public IHostingEnvironment Environment { get; }
+        public IWebHostEnvironment Environment { get; }
 
         /// <summary>
         /// Configure IoC container.
@@ -44,11 +48,14 @@ namespace ApiGateway
         /// <param name="services">Service.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            HttpClient.DefaultProxy = new WebProxy(new Uri("http://192.168.1.3:3128"), true);
+
             services.AddGatewayJwtAuthorization();
-            services.AddWebApi();
+            services.AddControllers();
             services.AddOcelot();
             services.AddSwaggerForOcelot(Configuration);
             services.AddAllowAnyOriginCors();
+            services.AddApplicationInsightsTelemetry();
         }
 
         /// <summary>
@@ -69,10 +76,15 @@ namespace ApiGateway
                 app.UseHttpsRedirection();
             }
 
+            app.UseRouting();
             app.UseErrorHandling();
             app.UseAllowAllOriginsCors();
             app.UseGatewayJwtAuthorization(Configuration);
-            app.UseMvc();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.UseSwaggerForOcelotUI(Configuration);
             await app.UseOcelot();
