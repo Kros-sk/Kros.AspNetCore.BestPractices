@@ -1167,7 +1167,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"isDone\": \"true\"\n}"
+							"raw": "{\n    \"isDone\": true\n}"
 						},
 						"url": {
 							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/changeIsDoneState/{{Temp.ToDoId}}",
@@ -1463,7 +1463,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"NewValueName\",\n    \"description\": \"NewValueDescription\",\n    \"isDone\": \"true\"\n}"
+							"raw": "{\n    \"name\": \"NewValueName\",\n    \"description\": \"NewValueDescription\",\n    \"isDone\": true\n}"
 						},
 						"url": {
 							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.OrganizationId}}/todos/{{Temp.ToDoId}}",
