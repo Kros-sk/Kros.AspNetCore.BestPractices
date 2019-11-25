@@ -77,6 +77,7 @@ namespace Kros.Authorization.Api
             app.UseRouting();
             app.UseErrorHandling();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseKormMigrations();
 
             app.UseEndpoints(endpoints =>
