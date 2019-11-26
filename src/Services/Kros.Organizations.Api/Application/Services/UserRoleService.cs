@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Kros.Organizations.Api.Application.Services
@@ -54,8 +56,9 @@ namespace Kros.Organizations.Api.Application.Services
                     var userRoleControllerUrl = new Uri(_userRoleOptions.AuthServiceUrl);
                     var userRole = new { UserId = userId, OrganizationId = organizationId };
 
+                    var httpContent = new StringContent(JsonSerializer.Serialize(userRole), Encoding.UTF8, "application/json");
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
-                    await client.PostAsJsonAsync($"{userRoleControllerUrl}/Owner", userRole);
+                    await client.PostAsync($"{userRoleControllerUrl}/Owner", httpContent);
                 }
             }
         }

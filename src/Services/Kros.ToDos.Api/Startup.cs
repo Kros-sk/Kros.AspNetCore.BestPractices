@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Kros.ToDos.Api
@@ -19,7 +20,7 @@ namespace Kros.ToDos.Api
         /// Ctor.
         /// </summary>
         /// <param name="env">Environment.</param>
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
             : base(env)
         { }
 
@@ -32,7 +33,7 @@ namespace Kros.ToDos.Api
             base.ConfigureServices(services);
 
             services
-                .AddWebApi()
+                .AddControllers()
                 .AddFluentValidation();
 
             services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
@@ -70,10 +71,17 @@ namespace Kros.ToDos.Api
                 app.UseHttpsRedirection();
             }
 
+            app.UseRouting();
             app.UseErrorHandling();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseKormMigrations();
-            app.UseMvc();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
             app.UseSwaggerDocumentation(Configuration);
         }
     }

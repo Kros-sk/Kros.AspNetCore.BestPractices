@@ -3,7 +3,7 @@ using Kros.Authorization.Api.Application.Commands.CreatePermissions;
 using Kros.Authorization.Api.Application.Commands.DeletePermissions;
 using Kros.Authorization.Api.Application.Commands.UpdatePermissions;
 using Kros.Authorization.Api.Application.Services;
-using Kros.ToDos.Api.Application;
+using Kros.ToDos.Base.Extensions;
 using Kros.ToDos.Base.Infrastructure;
 using Kros.Utils;
 using Microsoft.AspNetCore.Authorization;

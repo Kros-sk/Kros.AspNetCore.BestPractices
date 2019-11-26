@@ -1,14 +1,14 @@
-﻿using Kros.AspNetCore;
+﻿using FluentValidation.AspNetCore;
+using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
-using Kros.Authorization.Api.Extensions;
 using Kros.Identity.Extensions;
 using Kros.Swagger.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Logging;
 
 namespace Kros.Authorization.Api
 {
@@ -21,7 +21,7 @@ namespace Kros.Authorization.Api
         /// Ctor.
         /// </summary>
         /// <param name="env">Environment.</param>
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
             : base(env)
         { }
 
@@ -33,15 +33,21 @@ namespace Kros.Authorization.Api
         {
             base.ConfigureServices(services);
 
+            services.SetProxy(Configuration);
+
             services.AddIdentityServerAuthentication(Configuration);
             services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
             services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
 
-            services.AddWebApi();
+            services.AddControllers()
+                .AddFluentValidation();
+
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
             services.AddApplicationServices(Configuration);
+
             services.AddSwagger(Configuration);
+            services.AddApplicationInsightsTelemetry();
         }
 
         /// <summary>
@@ -56,7 +62,6 @@ namespace Kros.Authorization.Api
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                IdentityModelEventSource.ShowPII = true;
             }
             else
             {
@@ -65,10 +70,17 @@ namespace Kros.Authorization.Api
                 app.UseHttpsRedirection();
             }
 
+            app.UseRouting();
             app.UseErrorHandling();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseKormMigrations();
-            app.UseMvc();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
             app.UseSwaggerDocumentation(Configuration);
         }
     }

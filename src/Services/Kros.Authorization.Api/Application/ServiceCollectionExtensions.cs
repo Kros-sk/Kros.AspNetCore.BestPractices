@@ -1,4 +1,5 @@
-﻿using Kros.AspNetCore.Authorization;
+﻿using FluentValidation.AspNetCore;
+using Kros.AspNetCore.Authorization;
 using Kros.KORM.Extensions.Asp;
 using Kros.Swagger.Extensions;
 using Kros.ToDos.Base.Infrastructure;
@@ -6,16 +7,27 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using System.Linq;
 using System.Reflection;
 
-namespace Kros.Authorization.Api.Extensions
+namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// Extensions for registering services for this project to the DI container.
     /// </summary>
     public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Register fluent validation.
+        /// </summary>
+        /// <param name="builder">MVC builder.</param>
+        /// <returns>MVC builder.</returns>
+        public static IMvcCoreBuilder AddFluentValidation(this IMvcCoreBuilder builder)
+            => builder.AddFluentValidation(o =>
+            {
+                o.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+                o.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+            });
+
         /// <summary>
         /// Add KORM database.
         /// </summary>

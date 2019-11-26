@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Kros.Organizations.Api
@@ -19,7 +20,7 @@ namespace Kros.Organizations.Api
         /// Ctor.
         /// </summary>
         /// <param name="env">Environment.</param>
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
             : base(env)
         { }
 
@@ -31,9 +32,11 @@ namespace Kros.Organizations.Api
         {
             base.ConfigureServices(services);
 
+            services.SetProxy(Configuration);
+
             services.ConfigureOptions<UserRoleOptions>(Configuration);
 
-            services.AddWebApi()
+            services.AddControllers()
                 .AddFluentValidation();
 
             services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
@@ -50,6 +53,7 @@ namespace Kros.Organizations.Api
                 .AsMatchingInterface());
 
             services.AddSwagger(Configuration);
+            services.AddApplicationInsightsTelemetry();
         }
 
         /// <summary>
@@ -71,9 +75,15 @@ namespace Kros.Organizations.Api
                 app.UseHttpsRedirection();
             }
 
+            app.UseRouting();
             app.UseErrorHandling();
             app.UseKormMigrations();
-            app.UseMvc();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
