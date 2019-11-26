@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Organizations.Api", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{1FB87585-551C-4480-B696-CFE24EA1C703}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.ToDos.Base", "Kros.ToDos.Base\Kros.ToDos.Base.csproj", "{70EE3961-B459-44B6-8CA2-8F039AF4995A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.ToDos.Base", "Kros.ToDos.Base\Kros.ToDos.Base.csproj", "{70EE3961-B459-44B6-8CA2-8F039AF4995A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,9 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using System;
-using System.Net;
-using System.Net.Http;
 
 namespace ApiGateway
 {
@@ -48,7 +45,7 @@ namespace ApiGateway
         /// <param name="services">Service.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            HttpClient.DefaultProxy = new WebProxy(new Uri("http://192.168.1.3:3128"), true);
+            services.SetProxy(Configuration);
 
             services.AddGatewayJwtAuthorization();
             services.AddControllers();

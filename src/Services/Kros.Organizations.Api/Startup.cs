@@ -8,9 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Net;
-using System.Net.Http;
 
 namespace Kros.Organizations.Api
 {
@@ -35,7 +32,7 @@ namespace Kros.Organizations.Api
         {
             base.ConfigureServices(services);
 
-            HttpClient.DefaultProxy = new WebProxy(new Uri("http://192.168.1.3:3128"), true);
+            services.SetProxy(Configuration);
 
             services.ConfigureOptions<UserRoleOptions>(Configuration);
 
