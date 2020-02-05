@@ -1,0 +1,44 @@
+parameters:
+  buildConfiguration: 'Release'
+  buildVerbosity: 'minimal'
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: publish
+      projects: '**/*.csproj'
+      arguments: '--configuration ${{ parameters.buildConfiguration }} --verbosity ${{ parameters.buildVerbosity }} --output "$(Build.ArtifactStagingDirectory)"'
+      publishWebProjects: false
+      modifyOutputPath: true
+      zipAfterPublish: true
+
+  - task: CopyFiles@2
+    displayName: 'Copy tests from /tests/PostDeployTests to Artifacts'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/tests/Services/PostDeployTests'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/PostDeployTests'
+      OverWrite: true
+
+  - task: CopyFiles@2
+    displayName: 'Copy infrastructure definition from /infrastructure to artifact infrastructure'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/infrastructure'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/infrastructure'
+      OverWrite: true
+
+  - task: CopyFiles@2
+    displayName: 'Copy templates definition from /pipelines to artifact pipelines'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/pipelines'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/pipelines'
+      OverWrite: true
+
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using static Kros.ToDos.Base.Infrastructure.PermissionsHelper;
 
 namespace Kros.ToDos.Base.Extensions
 {
@@ -15,7 +16,7 @@ namespace Kros.ToDos.Base.Extensions
         /// <returns>Organization id.</returns>
         public static int GetOrganizationId(this ClaimsPrincipal claimsPrincipal)
         {
-            if (int.TryParse(GetValueFromUserClaims(claimsPrincipal, "organization_id"), out int result))
+            if (int.TryParse(GetValueFromUserClaims(claimsPrincipal, Claims.OrganizationId), out int result))
             {
                 return result;
             }

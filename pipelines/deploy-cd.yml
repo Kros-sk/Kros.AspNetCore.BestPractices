@@ -1,0 +1,45 @@
+trigger: none
+
+resources:
+  pipelines:
+  - pipeline: ToDosDemoServices
+    source: Build - CI
+    # trigger: true
+  - pipeline: ToDosDemoClient
+    source: Build - Angular - CI
+    # trigger: true
+
+variables:
+  azureSubscriptionName: 'Miňo MPM Subscription'
+  ConnectionStrings.DefaultConnection: ''
+  Stage: empty
+
+stages:
+- stage: Development
+  displayName: 'Deploy to development'
+  variables:
+    - template: variables-development.yml
+  jobs:
+  - deployment: Services
+    pool: Default
+    environment: development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: ToDosDemoServices
+            artifact: drop
+            displayName: 'Download services artifacts'
+
+          - template: deploy-services.yml
+
+  - deployment: Client
+    pool: Default
+    environment: development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: deploy-client.yml
+            parameters:
+              storageAccount: 'demomeetupdevstorage'

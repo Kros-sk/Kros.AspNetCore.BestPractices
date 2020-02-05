@@ -1,0 +1,22 @@
+parameters:
+  storageAccount: string
+
+steps:
+  - download: ToDosDemoClient
+    artifact: app
+    displayName: 'Download client app artifacts'
+
+  - task: AzureCLI@1
+    displayName: 'Delete files from storage'
+    inputs:
+      azureSubscription: '$(azureSubscriptionName)'
+      scriptLocation: inlineScript
+      inlineScript: 'az storage blob delete-batch -s $web --account-name ${{parameters.storageAccount}} --pattern /*'
+
+  - task: AzureCLI@1
+    displayName: 'Upload files to storage'
+    inputs:
+      azureSubscription: '$(azureSubscriptionName)'
+      scriptLocation: inlineScript
+      inlineScript: |
+        az storage blob upload-batch -d $web --account-name ${{parameters.storageAccount}} -s $(Pipeline.Workspace)/ToDosDemoClient/app/Kros.Angular.BestPractices

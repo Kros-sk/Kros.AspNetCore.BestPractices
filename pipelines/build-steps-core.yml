@@ -1,0 +1,17 @@
+parameters:
+  buildConfiguration: 'Release'
+  buildVerbosity: 'minimal'
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: '**/*.csproj'
+      arguments: '--configuration ${{ parameters.buildConfiguration }} --verbosity ${{ parameters.buildVerbosity }}'
+
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    inputs:
+      command: 'test'
+      projects: '**/*.csproj'
+      arguments: '--configuration ${{ parameters.buildConfiguration }} --verbosity ${{ parameters.buildVerbosity }}'

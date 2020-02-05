@@ -1,0 +1,9 @@
+trigger: none
+
+pool: Default
+
+workspace:
+  clean: outputs
+
+steps:
+  - template: build-steps-core.yml

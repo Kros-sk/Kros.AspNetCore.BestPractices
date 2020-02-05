@@ -1,0 +1,13 @@
+trigger:
+  batch: true
+  branches:
+    include: [ 'master' ]
+
+pool: Default
+
+workspace:
+  clean: outputs
+
+steps:
+  - template: build-steps-core.yml
+  - template: build-steps-publish.yml

@@ -1,0 +1,26 @@
+steps:
+  - task: Npm@1
+    displayName: 'Install Newman'
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'install newman -g --unsafe-perm=true --allow-root'
+
+  - task: carlowahlstedt.NewmanPostman.NewmanPostman.NewmanPostman@4
+    displayName: 'Post Deploy Tests'
+    inputs:
+      collectionFileSource: '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/BestPracticesPostmanTests.json'
+      environment: '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/Testing.postman_environment.json'
+      ignoreRedirect: false
+      bail: false
+      sslInsecure: false
+      reporters: 'cli,junit'
+      htmlExtraDarkTheme: false
+      htmlExtraLogs: false
+      htmlExtraTestPaging: false
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    condition: always()
+    inputs:
+      testResultsFiles: 'newman/newman-*.xml'
