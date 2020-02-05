@@ -22,14 +22,6 @@ steps:
       OverWrite: true
 
   - task: CopyFiles@2
-    displayName: 'Copy infrastructure definition from /infrastructure to artifact infrastructure'
-    inputs:
-      SourceFolder: '$(Build.SourcesDirectory)/infrastructure'
-      Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/infrastructure'
-      OverWrite: true
-
-  - task: CopyFiles@2
     displayName: 'Copy templates definition from /pipelines to artifact pipelines'
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)/pipelines'
