@@ -31,9 +31,7 @@ stages:
             artifact: drop
             displayName: 'Download services artifacts'
 
-          - template: deploy-microservice.yml
-            parameters:
-              microservices: ['ToDos', 'Authorization', 'Organizations', 'ApiGateway']
+          - template: deploy-services.yml
 
   - deployment: Client
     pool: Default
