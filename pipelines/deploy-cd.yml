@@ -3,14 +3,14 @@ trigger: none
 resources:
   pipelines:
   - pipeline: ToDosDemoServices
-    source: Build - CI
+    source: Kros.AspNetCore.BestPractices - CI
     # trigger: true
   - pipeline: ToDosDemoClient
-    source: Build - Angular - CI
+    source: Kros.Angular.BestPractices - CI
     # trigger: true
 
 variables:
-  azureSubscriptionName: 'Miňo MPM Subscription'
+  azureSubscriptionName: 'KROS DEVEL SUBSCRIPTION'
   ConnectionStrings.DefaultConnection: ''
   Stage: empty
 
