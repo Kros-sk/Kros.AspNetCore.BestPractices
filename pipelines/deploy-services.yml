@@ -1,8 +1,0 @@
-steps:
-  - template: deploy-microservice.yml
-    parameters:
-      microservices: ['ToDos', 'Authorization', 'Organizations']
-
-  - template: deploy-apigateway.yml
-    parameters:
-      apiGatewayName: 'ApiGateway'
