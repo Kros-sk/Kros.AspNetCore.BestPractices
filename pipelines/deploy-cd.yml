@@ -42,4 +42,4 @@ stages:
           steps:
           - template: deploy-client.yml
             parameters:
-              storageAccount: 'demomeetupdevstorage'
+              storageAccount: 'krosdemostorage'

@@ -10,7 +10,7 @@ steps:
     displayName: 'Post Deploy Tests'
     inputs:
       collectionFileSource: '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/BestPracticesPostmanTests.json'
-      environment: '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/Testing.postman_environment.json'
+      environment: '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/Development.postman_environment.json'
       ignoreRedirect: false
       bail: false
       sslInsecure: false
