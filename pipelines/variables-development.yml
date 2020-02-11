@@ -1,2 +1,4 @@
 variables:
   - group: 'Demo-Development'
+  - name: IdentityServerHandlers.0.Proxy.Address
+    value: ''

@@ -104,7 +104,7 @@
               {
                 "Name": "Users API",
                 "Version": "v1",
-                "Url": "kros-demo-authorization-api.azurewebsites.net/swagger/v1/swagger.json"
+                "Url": "https://kros-demo-authorization-api.azurewebsites.net/swagger/v1/swagger.json"
               }
             ]
         },
@@ -114,7 +114,7 @@
               {
                 "Name": "Permissions API",
                 "Version": "v1",
-                "Url": "kros-demo-authorization-api.azurewebsites.net/swagger/v1/swagger.json"
+                "Url": "https://kros-demo-authorization-api.azurewebsites.net/swagger/v1/swagger.json"
               }
             ]
         },
@@ -124,7 +124,7 @@
               {
                 "Name": "Todos API",
                 "Version": "v1",
-                "Url": "kros-demo-todos-api.azurewebsites.net/swagger/v1/swagger.json"
+                "Url": "https://kros-demo-todos-api.azurewebsites.net/swagger/v1/swagger.json"
               }
             ]
         },
@@ -134,7 +134,7 @@
               {
                 "Name": "Organizations API",
                 "Version": "v1",
-                "Url": "kros-demo-organizations-api.azurewebsites.net/swagger/v1/swagger.json"
+                "Url": "https://kros-demo-organizations-api.azurewebsites.net/swagger/v1/swagger.json"
               }
             ]
         }
