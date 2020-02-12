@@ -1,18 +1,4 @@
 steps:
-  # - task: Npm@1
-  #   displayName: 'Install Newman'
-  #   inputs:
-  #     command: custom
-  #     verbose: false
-  #     customCommand: 'install newman -g --unsafe-perm=true --allow-root'
-
-  # - task: PowerShell@2
-  #   inputs:
-  #     targetType: 'inline'
-  #     script: |
-  #       # Write your PowerShell commands here.
-  #       c:\newman\newman.cmd run '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/BestPracticesPostmanTests.json' -e '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/Development.postman_environment.json'
-
   - task: carlowahlstedt.NewmanPostman.NewmanPostman.NewmanPostman@4
     displayName: 'Post Deploy Tests'
     inputs:
