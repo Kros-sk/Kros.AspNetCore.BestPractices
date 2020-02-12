@@ -18,7 +18,7 @@ steps:
     inputs:
       collectionFileSource: '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/BestPracticesPostmanTests.json'
       environment: '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/Development.postman_environment.json'
-      pathToNewman: 'c:\newman'
+      pathToNewman: 'c:\newman\newman.cmd'
       ignoreRedirect: false
       bail: false
       sslInsecure: false
