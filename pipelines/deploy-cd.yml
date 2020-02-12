@@ -35,13 +35,13 @@ stages:
 
           - template: postman-tests.yml
 
-  - deployment: Client
-    pool: Default
-    environment: development
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - template: deploy-client.yml
-            parameters:
-              storageAccount: 'krosdemostorage'
+  # - deployment: Client
+  #   pool: Default
+  #   environment: development
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #         - template: deploy-client.yml
+  #           parameters:
+  #             storageAccount: 'krosdemostorage'
