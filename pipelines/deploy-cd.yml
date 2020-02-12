@@ -31,7 +31,7 @@ stages:
             artifact: drop
             displayName: 'Download services artifacts'
 
-          - template: deploy-services.yml
+          # - template: deploy-services.yml
 
           - template: postman-tests.yml
 
