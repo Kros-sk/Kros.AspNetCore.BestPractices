@@ -11,7 +11,7 @@ steps:
       targetType: 'inline'
       script: |
         # Write your PowerShell commands here.
-        newman run '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/BestPracticesPostmanTests.json' -e '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/Development.postman_environment.json'
+        "c:\Users\krosaci.WINKROS\AppData\Roaming\npm\newman.cmd" run '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/BestPracticesPostmanTests.json' -e '$(Pipeline.Workspace)/ToDosDemoServices/drop/PostDeployTests/Development.postman_environment.json'
 
   # - task: carlowahlstedt.NewmanPostman.NewmanPostman.NewmanPostman@4
   #   displayName: 'Post Deploy Tests'
