@@ -33,6 +33,8 @@ stages:
 
           - template: deploy-services.yml
 
+          - template: postman-tests.yml
+
   - deployment: Client
     pool: Default
     environment: development
