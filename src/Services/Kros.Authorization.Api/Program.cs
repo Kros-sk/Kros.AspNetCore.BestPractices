@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Azure.Identity;
+using Microsoft.Extensions.Configuration;
+using System;
+using Kros.ToDos.Base.Extensions;
+using Kros.AspNetCore.Extensions;
 
 namespace Kros.Authorization.Api
 {
@@ -23,6 +28,12 @@ namespace Kros.Authorization.Api
         /// <param name="args">Arguments.</param>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                 .ConfigureAppConfiguration((hostingContext, config) =>
+                 {
+                     config
+                     .AddAzureAppConfiguration(hostingContext, "Authorization")
+                     .AddLocalConfiguration();
+                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

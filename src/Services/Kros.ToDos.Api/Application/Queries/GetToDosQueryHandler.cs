@@ -79,7 +79,7 @@ namespace Kros.ToDos.Api.Application.Queries
             return Task.CompletedTask;
         }
 
-        private string GetKey<T>(params int[] ids)
+        private string GetKey<T>(params long[] ids)
             => $"{typeof(T).Name}:{string.Join(",", ids.Select(id => id.ToString()))}";
     }
 }

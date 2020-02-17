@@ -13,19 +13,19 @@ namespace Kros.ToDos.Api.Application.Commands
         /// Id.
         /// </summary>
         [JsonIgnore]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// User Id.
         /// </summary>
         [JsonIgnore]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Organization Id.
         /// </summary>
         [JsonIgnore]
-        public int OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
 
         /// <summary>
         /// Is todo marked as done?

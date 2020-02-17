@@ -5,7 +5,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[ToDos](
-	[Id] [int] NOT NULL,
+	[Id] bigint IDENTITY(1,1) NOT NULL,
 	[Description] [nvarchar](255) NULL,
 	[Name] [nvarchar](50) NULL,
 	[Created] [datetime2](7) NULL,

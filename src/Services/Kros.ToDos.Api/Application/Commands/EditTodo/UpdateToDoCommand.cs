@@ -13,7 +13,7 @@ namespace Kros.ToDos.Api.Application.Commands
         /// Id.
         /// </summary>
         [JsonIgnore]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// ToDo Name.
@@ -29,13 +29,13 @@ namespace Kros.ToDos.Api.Application.Commands
         /// User Id.
         /// </summary>
         [JsonIgnore]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Organization id.
         /// </summary>
         [JsonIgnore]
-        public int OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
 
         /// <summary>
         /// Is todo marked as done?

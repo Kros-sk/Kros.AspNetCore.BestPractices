@@ -3,6 +3,7 @@ using Kros.KORM.Extensions.Asp;
 using Kros.MediatR.Extensions;
 using Kros.Organizations.Api.Application.Commands.Pipelines;
 using Kros.Organizations.Api.Application.Queries.PipeLines;
+using Kros.Organizations.Api.Infrastructure;
 using Kros.Swagger.Extensions;
 using Kros.ToDos.Base.Infrastructure;
 using MediatR;
@@ -36,11 +37,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">Configuration.</param>
         public static void AddKormDatabase(this IServiceCollection services, IConfiguration configuration)
             => services.AddKorm(configuration)
-                .InitDatabaseForIdGenerator()
                 .AddKormMigrations(o =>
                 {
                     o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Organizations.Api.SqlScripts");
                 })
+                .UseDatabaseConfiguration<DatabaseConfiguration>()
                 .Migrate();
 
         /// <summary>

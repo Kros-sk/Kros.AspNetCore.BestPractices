@@ -14,7 +14,7 @@ namespace Kros.ToDos.Api.Application.Notifications
         /// <param name="ids">Deleted ToDo ids.</param>
         /// <param name="userId">User id.</param>
         /// <param name="organizationId">Organization id.</param>
-        public ToDosDeleted(IEnumerable<int> ids, int userId, int organizationId)
+        public ToDosDeleted(IEnumerable<long> ids, long userId, long organizationId)
         {
             Ids = ids;
             UserId = userId;
@@ -24,16 +24,16 @@ namespace Kros.ToDos.Api.Application.Notifications
         /// <summary>
         /// Deleted ToDo ids.
         /// </summary>
-        public IEnumerable<int> Ids { get; }
+        public IEnumerable<long> Ids { get; }
 
         /// <summary>
         /// User id.
         /// </summary>
-        public int UserId { get; }
+        public long UserId { get; }
 
         /// <summary>
         /// Organization id.
         /// </summary>
-        public int OrganizationId { get; }
+        public long OrganizationId { get; }
     }
 }

@@ -5,6 +5,7 @@ using Kros.Swagger.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,9 +20,10 @@ namespace Kros.ToDos.Api
         /// <summary>
         /// Ctor.
         /// </summary>
+        /// <param name="configuration">Application configuration.</param>
         /// <param name="env">Environment.</param>
-        public Startup(IWebHostEnvironment env)
-            : base(env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+            : base(configuration, env)
         { }
 
         /// <summary>

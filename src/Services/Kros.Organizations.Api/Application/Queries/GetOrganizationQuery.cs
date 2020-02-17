@@ -14,7 +14,7 @@ namespace Kros.Organizations.Api.Application.Queries
         /// </summary>
         /// <param name="organizationId">Organization id.</param>
         /// <param name="userId">User id.</param>
-        public GetOrganizationQuery(int organizationId, int userId)
+        public GetOrganizationQuery(long organizationId, long userId)
         {
             OrganizationId = organizationId;
             UserId = userId;
@@ -23,12 +23,12 @@ namespace Kros.Organizations.Api.Application.Queries
         /// <summary>
         /// Organization id.
         /// </summary>
-        public int OrganizationId { get; }
+        public long OrganizationId { get; }
 
         /// <summary>
         /// UserId
         /// </summary>
-        public int UserId { get; }
+        public long UserId { get; }
 
         /// <summary>
         /// Organization
@@ -39,12 +39,12 @@ namespace Kros.Organizations.Api.Application.Queries
             /// <summary>
             /// Organization Id.
             /// </summary>
-            public int Id { get; set; }
+            public long Id { get; set; }
 
             /// <summary>
             /// User Id.
             /// </summary>
-            public int UserId { get; set; }
+            public long UserId { get; set; }
 
             /// <summary>
             /// Organization name

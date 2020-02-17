@@ -5,20 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kros.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="MMLib.SwaggerForOcelot" Version="1.9.0" />
-    <PackageReference Include="Ocelot" Version="13.8.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
+    <Compile Remove="Infrastructure\**" />
+    <Content Remove="Infrastructure\**" />
+    <EmbeddedResource Remove="Infrastructure\**" />
+    <None Remove="Infrastructure\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
+    <PackageReference Include="MMLib.SwaggerForOcelot" Version="1.10.5" />
+    <PackageReference Include="Ocelot" Version="13.8.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

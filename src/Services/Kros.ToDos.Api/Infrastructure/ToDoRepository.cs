@@ -54,7 +54,7 @@ namespace Kros.ToDos.Api.Infrastructure
         }
 
         /// <inheritdoc />
-        public async Task DeleteToDoAsync(int id)
+        public async Task DeleteToDoAsync(long id)
         {
             var todos = _database.Query<ToDo>().AsDbSet();
             todos.Delete(new ToDo() { Id = id });
@@ -63,14 +63,14 @@ namespace Kros.ToDos.Api.Infrastructure
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId, int organizationId)
+        public async Task<IEnumerable<long>> DeleteCompletedToDosAsync(long userId, long organizationId)
         {
             using (var transaction = _database.BeginTransaction())
             {
                 try
                 {
                     var todoIds = _database
-                        .Query<int>()
+                        .Query<long>()
                         .Sql($"SELECT Id FROM ToDos " +
                              $"WHERE (UserId = {userId} AND OrganizationId = {organizationId}) AND (IsDone = 1)")
                         .ToList();
@@ -91,7 +91,7 @@ namespace Kros.ToDos.Api.Infrastructure
         }
 
         /// <inheritdoc />
-        public async Task ChangeIsDoneState(int id, bool isDone)
+        public async Task ChangeIsDoneState(long id, bool isDone)
         {
             var todos = _database.Query<ToDoIsDoneEdit>().AsDbSet();
             todos.Edit(new ToDoIsDoneEdit() { Id = id, IsDone = isDone });
@@ -112,7 +112,7 @@ namespace Kros.ToDos.Api.Infrastructure
         private class ToDoIsDoneEdit
         {
             [Key]
-            public int Id { get; set; }
+            public long Id { get; set; }
 
             public bool IsDone { get; set; }
         }

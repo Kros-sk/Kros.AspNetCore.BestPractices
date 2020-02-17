@@ -12,11 +12,11 @@ namespace Kros.ToDos.Api.Application.Queries
     {
         /// <summary>
         /// Ctor.
-        /// </summary>        
+        /// </summary>
         /// <param name="todoId">ToDo id.</param>
         /// <param name="userId">User id.</param>
         /// <param name="organizationId">Organization id.</param>
-        public GetToDoQuery(int todoId, int userId, int organizationId)
+        public GetToDoQuery(long todoId, long userId, long organizationId)
         {
             ToDoId = todoId;
             UserId = userId;
@@ -26,17 +26,17 @@ namespace Kros.ToDos.Api.Application.Queries
         /// <summary>
         /// ToDo id.
         /// </summary>
-        public int ToDoId { get; set; }
+        public long ToDoId { get; set; }
 
         /// <summary>
         /// User Id.
         /// </summary>
-        public int UserId { get; }
+        public long UserId { get; }
 
         /// <summary>
         /// Organization id.
         /// </summary>
-        public int OrganizationId { get; }
+        public long OrganizationId { get; }
 
         /// <summary>
         /// ToDo Header
@@ -47,7 +47,7 @@ namespace Kros.ToDos.Api.Application.Queries
             /// <summary>
             /// ToDo Id.
             /// </summary>
-            public int Id { get; set; }
+            public long Id { get; set; }
 
             /// <summary>
             /// ToDo Name.
@@ -72,12 +72,12 @@ namespace Kros.ToDos.Api.Application.Queries
             /// <summary>
             /// User Id.
             /// </summary>
-            public int UserId { get; set; }
+            public long UserId { get; set; }
 
             /// <summary>
             /// Organization id.
             /// </summary>
-            public int OrganizationId { get; set; }
+            public long OrganizationId { get; set; }
 
             /// <summary>
             /// Is todo marked as done?

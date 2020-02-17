@@ -6,7 +6,7 @@ namespace Kros.ToDos.Api.Application.Commands
     /// <summary>
     /// Create ToDo command.
     /// </summary>
-    public class CreateToDoCommand : IRequest<int>
+    public class CreateToDoCommand : IRequest<long>
     {
         /// <summary>
         /// ToDo Name.
@@ -22,12 +22,12 @@ namespace Kros.ToDos.Api.Application.Commands
         /// User Id.
         /// </summary>
         [JsonIgnore]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Organization id.
         /// </summary>
         [JsonIgnore]
-        public int OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
     }
 }

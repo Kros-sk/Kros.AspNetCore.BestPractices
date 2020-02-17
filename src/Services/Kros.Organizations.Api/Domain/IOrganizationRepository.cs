@@ -23,6 +23,6 @@ namespace Kros.Organizations.Api.Domain
         /// Delete item by <paramref name="id"/>.
         /// </summary>
         /// <param name="id">Item id.</param>
-        Task DeleteOrganizationAsync(int id);
+        Task DeleteOrganizationAsync(long id);
     }
 }

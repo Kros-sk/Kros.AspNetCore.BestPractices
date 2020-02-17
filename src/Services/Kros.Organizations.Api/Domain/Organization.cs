@@ -1,24 +1,19 @@
-﻿using Kros.KORM.Metadata;
-using Kros.KORM.Metadata.Attribute;
-
-namespace Kros.Organizations.Api.Domain
+﻿namespace Kros.Organizations.Api.Domain
 {
     /// <summary>
     /// Organization model.
     /// </summary>
-    [Alias("Organizations")]
     public class Organization
     {
         /// <summary>
         /// Id.
         /// </summary>
-        [Key(autoIncrementMethodType: AutoIncrementMethodType.Custom)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// User Id.
         /// </summary>
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Organization name

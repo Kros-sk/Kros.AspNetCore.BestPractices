@@ -6,13 +6,13 @@ namespace Kros.Organizations.Api.Application.Commands
     /// <summary>
     /// Create Organization command.
     /// </summary>
-    public class CreateOrganizationCommand : IRequest<int>
+    public class CreateOrganizationCommand : IRequest<long>
     {
         /// <summary>
         /// User Id.
         /// </summary>
         [JsonIgnore]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Organization name

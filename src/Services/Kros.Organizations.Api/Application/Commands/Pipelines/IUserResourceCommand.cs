@@ -13,11 +13,11 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
         /// <summary>
         /// Resource Id
         /// </summary>
-        int Id { get; }
+        long Id { get; }
 
         /// <summary>
         /// User Id
         /// </summary>
-        int UserId { get; }
+        long UserId { get; }
     }
 }

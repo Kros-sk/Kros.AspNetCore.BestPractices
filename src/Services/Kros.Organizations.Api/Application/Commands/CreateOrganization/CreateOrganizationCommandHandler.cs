@@ -11,7 +11,7 @@ namespace Kros.Organizations.Api.Application.Commands
     /// <summary>
     /// Create Organization Command Handler.
     /// </summary>
-    public class CreateOrganizationCommandHandler : IRequestHandler<CreateOrganizationCommand, int>
+    public class CreateOrganizationCommandHandler : IRequestHandler<CreateOrganizationCommand, long>
     {
         private readonly IOrganizationRepository _organizationRepository;
         private readonly IUserRoleService _userRoleService;
@@ -30,7 +30,7 @@ namespace Kros.Organizations.Api.Application.Commands
         }
 
         /// <inheritdoc />
-        public async Task<int> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
+        public async Task<long> Handle(CreateOrganizationCommand request, CancellationToken cancellationToken)
         {
             var organization = request.Adapt<Organization>();
 

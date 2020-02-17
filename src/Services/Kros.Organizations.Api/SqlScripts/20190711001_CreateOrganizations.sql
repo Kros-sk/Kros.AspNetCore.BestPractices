@@ -5,8 +5,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[Organizations](
-	[Id] [int] NOT NULL,
-	[UserId] [int] NOT NULL,
+	[Id] bigint IDENTITY(1,1) NOT NULL,
+	[UserId] bigint NOT NULL,
 	[OrganizationName] nvarchar(50),
 	[BusinessId] nvarchar(15),
 	[Street] nvarchar(30),

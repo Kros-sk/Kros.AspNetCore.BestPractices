@@ -13,13 +13,13 @@ namespace Kros.Organizations.Api.Application.Commands
         /// Id.
         /// </summary>
         [JsonIgnore]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// User Id.
         /// </summary>
         [JsonIgnore]
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// Organization name

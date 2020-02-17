@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Kros.ToDos.Base.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
@@ -28,6 +29,7 @@ namespace ApiGateway
                 {
                     config
                         .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+                        .AddAzureAppConfiguration(hostingContext, "ApiGateway")
                         .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
                         .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
                         .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true)

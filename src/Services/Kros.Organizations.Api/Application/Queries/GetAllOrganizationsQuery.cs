@@ -12,7 +12,7 @@ namespace Kros.Organizations.Api.Application.Queries
         /// <summary>
         /// Ctor.
         /// </summary>
-        public GetAllOrganizationsQuery(int userId)
+        public GetAllOrganizationsQuery(long userId)
         {
             UserId = userId;
         }
@@ -20,7 +20,7 @@ namespace Kros.Organizations.Api.Application.Queries
         /// <summary>
         /// User Id.
         /// </summary>
-        public int UserId { get; }
+        public long UserId { get; }
 
         /// <summary>
         /// Organization
@@ -31,12 +31,12 @@ namespace Kros.Organizations.Api.Application.Queries
             /// <summary>
             /// Organization Id.
             /// </summary>
-            public int Id { get; set; }
+            public long Id { get; set; }
 
             /// <summary>
             /// User id
             /// </summary>
-            public int UserId { get; set; }
+            public long UserId { get; set; }
 
             /// <summary>
             /// Organization name

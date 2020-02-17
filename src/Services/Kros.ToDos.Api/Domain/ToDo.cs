@@ -1,20 +1,16 @@
-﻿using Kros.KORM.Metadata;
-using Kros.KORM.Metadata.Attribute;
-using System;
+﻿using System;
 
 namespace Kros.ToDos.Api.Domain
 {
     /// <summary>
     /// ToDo model.
     /// </summary>
-    [Alias("ToDos")]
     public class ToDo
     {
         /// <summary>
         /// Id.
         /// </summary>
-        [Key(autoIncrementMethodType: AutoIncrementMethodType.Custom)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// ToDo Name.

@@ -8,16 +8,16 @@
         /// <summary>
         /// Id.
         /// </summary>
-        int Id { get; }
+        long Id { get; }
 
         /// <summary>
         /// User id.
         /// </summary>
-        int UserId { get; }
+        long UserId { get; }
 
         /// <summary>
         /// Organization id.
         /// </summary>
-        int OrganizationId { get; }
+        long OrganizationId { get; }
     }
 }

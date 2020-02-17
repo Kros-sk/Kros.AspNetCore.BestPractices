@@ -13,7 +13,7 @@ namespace Kros.Organizations.Api.Application.Commands
         /// </summary>
         /// <param name="organizationId">Organization id.</param>
         /// <param name="userId">User id.</param>
-        public DeleteOrganizationCommand(int organizationId, int userId)
+        public DeleteOrganizationCommand(long organizationId, long userId)
         {
             Id = organizationId;
             UserId = userId;
@@ -22,11 +22,11 @@ namespace Kros.Organizations.Api.Application.Commands
         /// <summary>
         /// Organization Id.
         /// </summary>
-        public int Id { get; }
+        public long Id { get; }
 
         /// <summary>
         /// User Id.
         /// </summary>
-        public int UserId { get; }
+        public long UserId { get; }
     }
 }

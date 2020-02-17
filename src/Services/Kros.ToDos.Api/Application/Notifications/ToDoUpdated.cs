@@ -13,7 +13,7 @@ namespace Kros.ToDos.Api.Application.Notifications
         /// <param name="id">ToDo id.</param>
         /// <param name="userId">User id.</param>
         /// <param name="organizationId">Organization id.</param>
-        public ToDoUpdated(int id, int userId, int organizationId)
+        public ToDoUpdated(long id, long userId, long organizationId)
         {
             Id = id;
             UserId = userId;
@@ -23,16 +23,16 @@ namespace Kros.ToDos.Api.Application.Notifications
         /// <summary>
         /// ToDo id.
         /// </summary>
-        public int Id { get; }
+        public long Id { get; }
 
         /// <summary>
         /// User id.
         /// </summary>
-        public int UserId { get; }
+        public long UserId { get; }
 
         /// <summary>
         /// Organization id.
         /// </summary>
-        public int OrganizationId { get; }
+        public long OrganizationId { get; }
     }
 }

@@ -17,7 +17,6 @@
     <None Remove="SqlScripts\20190411002_AddLastChangeColumn.sql" />
     <None Remove="SqlScripts\20190424001_AddIsDoneColumn.sql" />
     <None Remove="SqlScripts\20190710001_AddOrganizationIdColumn.sql" />
-    <None Remove="SqlScripts\20190710002_InsertDummyToDos.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,27 +38,24 @@
     <EmbeddedResource Include="SqlScripts\20190710001_AddOrganizationIdColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="SqlScripts\20190710002_InsertDummyToDos.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="8.5.1" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.1" />
-    <PackageReference Include="Kros.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Kros.KORM" Version="4.0.0-alpha.12" />
-    <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.1.0-alpha.4" />
+    <PackageReference Include="FluentValidation" Version="9.0.0-preview1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.0.0-preview1" />
+    <PackageReference Include="Kros.AspNetCore" Version="2.4.3" />
+    <PackageReference Include="Kros.KORM" Version="4.0.0-alpha.14" />
+    <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.1.0-alpha.6" />
     <PackageReference Include="Kros.MediatR.Extensions" Version="1.1.0" />
     <PackageReference Include="Kros.Swagger.Extensions" Version="1.1.0" />
-    <PackageReference Include="Kros.Utils" Version="1.10.1" />
-    <PackageReference Include="Mapster" Version="4.1.1" />
-    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="3.0.0-rc.2" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.2" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.0.1" />
-    <PackageReference Include="Scrutor" Version="3.1.0" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
+    <PackageReference Include="Kros.Utils" Version="1.11.1" />
+    <PackageReference Include="Mapster" Version="5.0.0" />
+    <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="3.0.0-rc.6" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.0-beta2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.1.1" />
+    <PackageReference Include="Scrutor" Version="3.2.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>

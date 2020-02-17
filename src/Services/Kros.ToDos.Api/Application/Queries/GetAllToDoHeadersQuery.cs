@@ -14,7 +14,7 @@ namespace Kros.ToDos.Api.Application.Queries
         /// </summary>
         /// <param name="userId">User id.</param>
         /// <param name="organizationId">Organization id.</param>
-        public GetAllToDoHeadersQuery(int userId, int organizationId)
+        public GetAllToDoHeadersQuery(long userId, long organizationId)
         {
             UserId = userId;
             OrganizationId = organizationId;
@@ -23,12 +23,12 @@ namespace Kros.ToDos.Api.Application.Queries
         /// <summary>
         /// User Id.
         /// </summary>
-        public int UserId { get; }
+        public long UserId { get; }
 
         /// <summary>
         /// Organization id.
         /// </summary>
-        public int OrganizationId { get; }
+        public long OrganizationId { get; }
 
         /// <summary>
         /// ToDo Header
@@ -39,7 +39,7 @@ namespace Kros.ToDos.Api.Application.Queries
             /// <summary>
             /// ToDo Id.
             /// </summary>
-            public int Id { get; set; }
+            public long Id { get; set; }
 
             /// <summary>
             /// ToDo Name.

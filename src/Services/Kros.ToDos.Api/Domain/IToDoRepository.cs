@@ -24,20 +24,20 @@ namespace Kros.ToDos.Api.Domain
         /// Deletes ToDo by <paramref name="id"/>.
         /// </summary>
         /// <param name="id">ToDo id.</param>
-        Task DeleteToDoAsync(int id);
+        Task DeleteToDoAsync(long id);
 
         /// <summary>
         /// Deletes completed Todos.
         /// </summary>
         /// <param name="userId">User id.</param>
         /// <param name="organizationId">Organization id.</param>
-        Task<IEnumerable<int>> DeleteCompletedToDosAsync(int userId, int organizationId);
+        Task<IEnumerable<long>> DeleteCompletedToDosAsync(long userId, long organizationId);
 
         /// <summary>
         /// Change is done state to <paramref name="isDone"/>.
         /// </summary>
         /// <param name="id">ToDo id.</param>
         /// <param name="isDone">New is done state.</param>
-        Task ChangeIsDoneState(int id, bool isDone);
+        Task ChangeIsDoneState(long id, bool isDone);
     }
 }

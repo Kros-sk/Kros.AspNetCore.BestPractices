@@ -11,7 +11,7 @@ namespace Kros.ToDos.Api.Application.Commands
     /// <summary>
     /// Create ToDo Command Handler.
     /// </summary>
-    public class CreateToDoCommandHandler : IRequestHandler<CreateToDoCommand, int>
+    public class CreateToDoCommandHandler : IRequestHandler<CreateToDoCommand, long>
     {
         private readonly IToDoRepository _repository;
         private readonly IMediator _mediator;
@@ -28,7 +28,7 @@ namespace Kros.ToDos.Api.Application.Commands
         }
 
         /// <inheritdoc />
-        public async Task<int> Handle(CreateToDoCommand request, CancellationToken cancellationToken)
+        public async Task<long> Handle(CreateToDoCommand request, CancellationToken cancellationToken)
         {
             var toDo = request.Adapt<ToDo>();
             await _repository.CreateToDoAsync(toDo);

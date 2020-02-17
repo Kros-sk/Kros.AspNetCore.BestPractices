@@ -8,6 +8,6 @@
         /// <summary>
         /// User id.
         /// </summary>
-        int UserId { get; }
+        long UserId { get; }
     }
 }

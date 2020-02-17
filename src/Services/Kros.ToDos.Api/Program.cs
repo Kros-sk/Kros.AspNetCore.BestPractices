@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Kros.AspNetCore.Extensions;
+using Kros.ToDos.Base.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 namespace Kros.ToDos.Api
@@ -23,6 +25,12 @@ namespace Kros.ToDos.Api
         /// <param name="args">Arguments.</param>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config
+                        .AddAzureAppConfiguration(hostingContext, "ToDos")
+                        .AddLocalConfiguration();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
