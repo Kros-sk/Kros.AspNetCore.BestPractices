@@ -33,7 +33,7 @@ namespace Kros.ToDos.Base.Extensions
 
                 options
                     .Connect(new Uri(settings["AppConfig:Endpoint"]), credential)
-                    .ConfigureKeyVault(kv => kv.SetCredential(new DefaultAzureCredential()))
+                    .ConfigureKeyVault(kv => kv.SetCredential(credential))
                     .Select("Base:*", hostingContext.HostingEnvironment.EnvironmentName)
                     .Select($"{serviceName}:*", hostingContext.HostingEnvironment.EnvironmentName)
                     .TrimKeyPrefix($"{serviceName}:")
