@@ -28,7 +28,7 @@ namespace Kros.Organizations.Api
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config
-                        .AddAzureAppConfiguration(hostingContext, "Organizations")
+                        .AddAzureAppConfiguration(hostingContext)
                         .AddLocalConfiguration();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

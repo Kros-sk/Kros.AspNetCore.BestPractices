@@ -28,7 +28,7 @@ namespace Kros.ToDos.Api
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config
-                        .AddAzureAppConfiguration(hostingContext, "ToDos")
+                        .AddAzureAppConfiguration(hostingContext)
                         .AddLocalConfiguration();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

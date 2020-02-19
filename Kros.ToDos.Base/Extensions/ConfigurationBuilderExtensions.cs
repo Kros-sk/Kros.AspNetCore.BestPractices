@@ -1,9 +1,11 @@
 ﻿using Azure.Core;
 using Azure.Identity;
+using Kros.Extensions;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kros.ToDos.Base.Extensions
 {
@@ -17,11 +19,9 @@ namespace Kros.ToDos.Base.Extensions
         /// </summary>
         /// <param name="config">The configuration.</param>
         /// <param name="hostingContext">The hosting context.</param>
-        /// <param name="serviceName">Name of the service.</param>
         public static IConfigurationBuilder AddAzureAppConfiguration(
             this IConfigurationBuilder config,
-            HostBuilderContext hostingContext,
-            string serviceName)
+            HostBuilderContext hostingContext)
         {
             var settings = config.Build();
 
@@ -33,11 +33,20 @@ namespace Kros.ToDos.Base.Extensions
 
                 options
                     .Connect(new Uri(settings["AppConfig:Endpoint"]), credential)
-                    .ConfigureKeyVault(kv => kv.SetCredential(credential))
-                    .Select("Base:*", hostingContext.HostingEnvironment.EnvironmentName)
-                    .Select($"{serviceName}:*", hostingContext.HostingEnvironment.EnvironmentName)
-                    .TrimKeyPrefix($"{serviceName}:")
-                    .TrimKeyPrefix("Base:");
+                    .ConfigureKeyVault(kv => kv.SetCredential(credential));
+
+                IEnumerable<string> services = settings
+                    .GetSection("AppConfig:Settings")
+                    .AsEnumerable()
+                    .Where(p => !p.Value.IsNullOrWhiteSpace())
+                    .Select(p => p.Value);
+
+                foreach (string service in services)
+                {
+                    options
+                        .Select($"{service}:*", hostingContext.HostingEnvironment.EnvironmentName)
+                        .TrimKeyPrefix($"{service}:");
+                }
             });
 
             return config;

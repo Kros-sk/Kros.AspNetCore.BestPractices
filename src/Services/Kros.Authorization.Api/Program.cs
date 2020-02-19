@@ -31,7 +31,7 @@ namespace Kros.Authorization.Api
                  .ConfigureAppConfiguration((hostingContext, config) =>
                  {
                      config
-                     .AddAzureAppConfiguration(hostingContext, "Authorization")
+                     .AddAzureAppConfiguration(hostingContext)
                      .AddLocalConfiguration();
                  })
                 .ConfigureWebHostDefaults(webBuilder =>
