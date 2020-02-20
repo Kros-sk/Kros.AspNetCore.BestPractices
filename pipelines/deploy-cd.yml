@@ -35,7 +35,7 @@ stages:
               scriptType: ps
               scriptLocation: scriptPath
               scriptPath: '$(Pipeline.Workspace)\ToDosDemoServices\drop\pipelines\Deploy-Async.ps1'
-              arguments: -microservices 'ToDos', 'Authorization', 'Organizations', 'ApiGateway'
+              arguments: -microservices 'ToDos', 'Authorization', 'Organizations', 'ApiGateway' -artifactPath '$(Pipeline.Workspace)\ToDosDemoServices\drop\'
 
           - template: postman-tests.yml
 
