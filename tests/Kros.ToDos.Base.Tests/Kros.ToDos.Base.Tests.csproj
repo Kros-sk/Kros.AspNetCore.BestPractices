@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Lib\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
+  </ItemGroup>
+
 </Project>
