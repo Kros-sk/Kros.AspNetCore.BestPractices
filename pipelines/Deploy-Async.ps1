@@ -11,7 +11,8 @@ ForEach ($service in $microservices) {
     #         az webapp deployment source config-zip --resource-group kros-demo-rsg --name kros-demo-$name-api --src "$artifactPath/Kros.$name.Api.zip"
     #         Write-Host "Deployed microservice: " $name
     # }
-    az webapp deployment source config-zip --resource-group kros-demo-rsg --name kros-demo-$service-api --src "$artifactPath/Kros.$name.Api.zip"
+    Write-Host "Deploying microservice: " $service
+    az webapp deployment source config-zip --resource-group kros-demo-rsg --name kros-demo-$service-api --src "$artifactPath/Kros.$service.Api.zip"
 }
 
 # Wait-Job -Job $jobs | Out-Null
