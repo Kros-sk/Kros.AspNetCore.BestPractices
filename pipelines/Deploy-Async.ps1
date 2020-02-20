@@ -19,7 +19,7 @@ $failed = $false
 
 foreach ($job in $jobs) {
     if ($job.State -eq 'Failed') {
-        $failed = true
+        $failed = $true
         Write-Host ($job.ChildJobs[0].JobStateInfo.Reason.Message) -ForegroundColor Red
     } else {
         Write-Host (Receive-Job $job) -ForegroundColor Green
