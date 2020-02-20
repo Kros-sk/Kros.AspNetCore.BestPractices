@@ -50,17 +50,25 @@ stages:
             parameters:
               storageAccount: 'krosdemostorage'
 
+          - download: ToDosDemoClient
+            artifact: cypress
+            displayName: 'Download client app artifacts'
+
+          - download: ToDosDemoClient
+            artifact: cypress_config
+            displayName: 'Download client app artifacts'
+
           - task: ExtractFiles@1
             displayName: 'Extract tests files'
             inputs:
               archiveFilePatterns: '$(Pipeline.Workspace)/ToDosDemoClient/cypress/cypress*.zip'
-              destinationFolder: '$(Pipeline.Workspace)/ToDosDemoClient/cypress'
+              destinationFolder: 'cypress'
 
           - task: eliostruyf.build-task.custom-build-task.file-creator@5
             displayName: 'Create cypress config file'
             inputs:
               fileoverwrite: true
-              filepath: '$(Pipeline.Workspace)/ToDosDemoClient/cypress/cypress.json'
+              filepath: 'cypress/cypress.json'
               filecontent: |
                 {
                   "integrationFolder": "cypress/cypress/integration",
