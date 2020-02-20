@@ -9,6 +9,7 @@ ForEach ($service in $microservices) {
         param($name)
             Write-Host "Deploying microservice: " $name
             az webapp deployment source config-zip --resource-group kros-demo-rsg --name kros-demo-$name-api --src "$artifactPath/Kros.$name.Api.zip"
+            Write-Host "Deployed microservice: " $name
     }
 }
 
