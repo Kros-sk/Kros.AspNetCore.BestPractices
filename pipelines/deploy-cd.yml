@@ -49,3 +49,53 @@ stages:
           - template: deploy-client.yml
             parameters:
               storageAccount: 'krosdemostorage'
+
+          - task: ExtractFiles@1
+            displayName: 'Extract tests files'
+            inputs:
+              archiveFilePatterns: 'cypress*.zip'
+              destinationFolder: '$(Pipeline.Workspace)/ToDosDemoClient/cypress'
+
+          - task: eliostruyf.build-task.custom-build-task.file-creator@5
+            displayName: 'Create cypress config file'
+            inputs:
+              fileoverwrite: true
+              filepath: cypress.json
+              endWithNewLine: true
+              filecontent: |
+              {
+                "integrationFolder": "cypress/cypress/integration",
+                "projectId": "u3uuhi",
+                "baseUrl": "https://demo.todos.kros.wtf",
+                "chromeWebSecurity": false,
+                "ProjectName": "Demo.BestPractices",
+                "OAuthUrl": "https://login.kros.wtf",
+                "OAuthClientId": "Demo.BestPractices.Postman",
+                "OAuthUsername": "integrationtests@kros.sk",
+                "OAuthPassword": "integrationtests",
+                "UserEmail": "integrationtests@kros.sk",
+                "UserName": "Integration Tests",
+                "reporter": "junit",
+                "reporterOptions": {
+                  "mochaFile": "cypress/cypress/test-output-[hash].xml",
+                  "toConsole": true,
+                  "attachments": true
+                  },
+                  "video": false,
+                  "pluginsFile": "cypress/cypress/plugins/index.js",
+                  "supportFile": "cypress/cypress/support/index.js"
+              }
+
+
+          - script: 'npx cypress run --record --key f6df6669-db0d-4228-9368-242987f124b9'
+            displayName: 'Run tests with Cypress'
+            continueOnError: true
+            timeoutInMinutes: 10
+
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results'
+            inputs:
+              searchFolder: '$(Pipeline.Workspace)/ToDosDemoClient/cypress'
+              mergeTestResults: true
+              testRunTitle: 'Cypress Test Results'
+
