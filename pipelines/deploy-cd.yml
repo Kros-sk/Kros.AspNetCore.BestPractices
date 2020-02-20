@@ -53,7 +53,7 @@ stages:
           - task: ExtractFiles@1
             displayName: 'Extract tests files'
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/ToDosDemoClient/cypress*.zip'
+              archiveFilePatterns: '$(Pipeline.Workspace)/ToDosDemoClient/cypress/cypress*.zip'
               destinationFolder: '$(Pipeline.Workspace)/ToDosDemoClient/cypress'
 
           - task: eliostruyf.build-task.custom-build-task.file-creator@5
