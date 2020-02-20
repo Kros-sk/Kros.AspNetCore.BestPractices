@@ -11,26 +11,26 @@ Mal by obsahovať:
 
 Na základne tohto dema by mal človek pochopiť architektúru našich služieb a mal by byť schopný vytvoriť nový projekt v podobnom duchu.
 
-- [Kros.AspNetCore.BestPractices](#KrosAspNetCoreBestPractices)
-  - [Quick start](#Quick-start)
-    - [Stiahnuť projekt](#Stiahnu%C5%A5-projekt)
-    - [Vytvoriť potrebné databázy](#Vytvori%C5%A5-potrebn%C3%A9-datab%C3%A1zy)
-    - [Nastaviť connection stringy k databázam](#Nastavi%C5%A5-connection-stringy-k-datab%C3%A1zam)
-      - [Služba `Kros.Todos.Api`](#Slu%C5%BEba-KrosTodosApi)
-      - [Služba `Kros.Authorization.Api`](#Slu%C5%BEba-KrosAuthorizationApi)
-      - [Služba `Kros.Organization.Api`](#Slu%C5%BEba-KrosOrganizationApi)
-    - [Nastavenie kešovania](#Nastavenie-ke%C5%A1ovania)
-    - [Nastavenie spúšťania projektov](#Nastavenie-sp%C3%BA%C5%A1%C5%A5ania-projektov)
-    - [Spustiť projekt](#Spusti%C5%A5-projekt)
-    - [Získanie OAuth 2.0 tokenu](#Z%C3%ADskanie-OAuth-20-tokenu)
-    - [Testovacie nasadenie](#Testovacie-nasadenie)
-    - [Klientská Aplikácia](#Klientsk%C3%A1-Aplik%C3%A1cia)
-  - [Overview](#Overview)
-  - [Project physical structure](#Project-physical-structure)
-  - [Microservices internal architecture](#Microservices-internal-architecture)
-    - [Prehľad CQRS](#Preh%C4%BEad-CQRS)
-    - [CQRS](#CQRS)
-  - [Použité knižnice](#Pou%C5%BEit%C3%A9-kni%C5%BEnice)
+- [Kros.AspNetCore.BestPractices](#krosaspnetcorebestpractices)
+  - [Quick start](#quick-start)
+    - [Stiahnuť projekt](#stiahnu%c5%a5-projekt)
+    - [Vytvoriť potrebné databázy](#vytvori%c5%a5-potrebn%c3%a9-datab%c3%a1zy)
+    - [Nastaviť connection stringy k databázam](#nastavi%c5%a5-connection-stringy-k-datab%c3%a1zam)
+      - [Služba `Kros.Todos.Api`](#slu%c5%beba-krostodosapi)
+      - [Služba `Kros.Authorization.Api`](#slu%c5%beba-krosauthorizationapi)
+      - [Služba `Kros.Organization.Api`](#slu%c5%beba-krosorganizationapi)
+    - [Nastavenie kešovania](#nastavenie-ke%c5%a1ovania)
+    - [Nastavenie spúšťania projektov](#nastavenie-sp%c3%ba%c5%a1%c5%a5ania-projektov)
+    - [Spustiť projekt](#spusti%c5%a5-projekt)
+    - [Získanie OAuth 2.0 tokenu](#z%c3%adskanie-oauth-20-tokenu)
+    - [Testovacie nasadenie](#testovacie-nasadenie)
+    - [Klientská Aplikácia](#klientsk%c3%a1-aplik%c3%a1cia)
+  - [Overview](#overview)
+  - [Project physical structure](#project-physical-structure)
+  - [Microservices internal architecture](#microservices-internal-architecture)
+    - [Prehľad CQRS](#preh%c4%bead-cqrs)
+    - [CQRS](#cqrs)
+  - [Použité knižnice](#pou%c5%beit%c3%a9-kni%c5%benice)
 
 ## Quick start
 
@@ -136,7 +136,7 @@ V Postmenovi je možné použiť buť `prerequest script`, alebo priamo okno na 
 
 ### Testovacie nasadenie
 
-Aplikácia je nasadená na AZURE a apigateway je dostupný na adrese [https://demo.todos.gateway.api.kros.wtf/swagger](https://demo.todos.gateway.api.kros.wtf/swagger).
+Aplikácia je nasadená na AZURE a apigateway je dostupný na adrese [https://kros-demo-apigateway-api.azurewebsites.net/swagger](https://kros-demo-apigateway-api.azurewebsites.net/swagger).
 
 ### Klientská Aplikácia
 
@@ -163,9 +163,7 @@ Vo väčšine prípadov môžme v jednoduchosti hovoriť o dvoch typoch operáci
 
 ### CQRS
 
-Poznámky
 
-- v query nemusí byť repository
 
 ## Použité knižnice
 

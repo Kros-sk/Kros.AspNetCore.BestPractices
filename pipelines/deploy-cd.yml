@@ -103,7 +103,8 @@ stages:
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
             inputs:
-              searchFolder: '$(Pipeline.Workspace)/ToDosDemoClient/cypress'
+              searchFolder: 'cypress'
               mergeTestResults: true
               testRunTitle: 'Cypress Test Results'
+              testResultsFiles: 'test-output*.xml'
 
