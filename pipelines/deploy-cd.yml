@@ -33,7 +33,7 @@ stages:
             inputs:
               azureSubscription: $(azureSubscriptionName)
               scriptType: ps
-              scriptLocation: '$(Pipeline.Workspace)/ToDosDemoServices/drop/pipelines/Deploy-Async.ps1'
+              scriptLocation: '$(Pipeline.Workspace)\ToDosDemoServices\drop\pipelines\Deploy-Async.ps1'
               arguments: -microservices 'ToDos', 'Authorization', 'Organizations', 'ApiGateway'
 
           - template: postman-tests.yml
