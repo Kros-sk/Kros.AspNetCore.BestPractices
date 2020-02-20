@@ -52,7 +52,6 @@ steps:
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'
     inputs:
-      searchFolder: 'cypress'
       mergeTestResults: true
       testRunTitle: 'Cypress Test Results'
-      testResultsFiles: 'test-output*.xml'
+      testResultsFiles: 'cypress/test-output*.xml'
