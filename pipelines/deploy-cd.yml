@@ -4,10 +4,10 @@ resources:
   pipelines:
   - pipeline: ToDosDemoServices
     source: Kros.AspNetCore.BestPractices - CI
-    trigger: false
+    #trigger: false
   - pipeline: ToDosDemoClient
     source: Kros.Angular.BestPractices - CI
-    trigger: false
+    #trigger: false
 
 variables:
   azureSubscriptionName: 'KROS DEVEL SUBSCRIPTION'
