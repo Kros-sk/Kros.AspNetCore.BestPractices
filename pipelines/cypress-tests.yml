@@ -17,7 +17,7 @@ steps:
     displayName: 'Create cypress config file'
     inputs:
       fileoverwrite: true
-      filepath: 'cypress/cypress.json'
+      filepath: 'cypress.json'
       filecontent: |
         {
           "integrationFolder": "cypress/cypress/integration",
