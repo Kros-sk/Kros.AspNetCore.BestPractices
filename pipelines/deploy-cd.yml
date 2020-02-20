@@ -53,14 +53,14 @@ stages:
           - task: ExtractFiles@1
             displayName: 'Extract tests files'
             inputs:
-              archiveFilePatterns: 'cypress*.zip'
+              archiveFilePatterns: '$(Pipeline.Workspace)/ToDosDemoClient/cypress*.zip'
               destinationFolder: '$(Pipeline.Workspace)/ToDosDemoClient/cypress'
 
           - task: eliostruyf.build-task.custom-build-task.file-creator@5
             displayName: 'Create cypress config file'
             inputs:
               fileoverwrite: true
-              filepath: cypress.json
+              filepath: '$(Pipeline.Workspace)/ToDosDemoClient/cypress/cypress.json'
               filecontent: |
                 {
                   "integrationFolder": "cypress/cypress/integration",
