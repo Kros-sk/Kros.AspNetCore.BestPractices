@@ -4,10 +4,10 @@ resources:
   pipelines:
   - pipeline: ToDosDemoServices
     source: Kros.AspNetCore.BestPractices - CI
-    # trigger: true
+    trigger: false
   - pipeline: ToDosDemoClient
     source: Kros.Angular.BestPractices - CI
-    # trigger: true
+    trigger: false
 
 variables:
   azureSubscriptionName: 'KROS DEVEL SUBSCRIPTION'
@@ -63,7 +63,7 @@ stages:
               filepath: cypress.json
               endWithNewLine: true
               filecontent: |
-              {
+              '{
                 "integrationFolder": "cypress/cypress/integration",
                 "projectId": "u3uuhi",
                 "baseUrl": "https://demo.todos.kros.wtf",
@@ -84,7 +84,7 @@ stages:
                   "video": false,
                   "pluginsFile": "cypress/cypress/plugins/index.js",
                   "supportFile": "cypress/cypress/support/index.js"
-              }
+              }'
 
 
           - script: 'npx cypress run --record --key f6df6669-db0d-4228-9368-242987f124b9'
