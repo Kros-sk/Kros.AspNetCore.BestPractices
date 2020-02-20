@@ -11,14 +11,11 @@ resources:
 
 variables:
   azureSubscriptionName: 'KROS DEVEL SUBSCRIPTION'
-  ConnectionStrings.DefaultConnection: ''
   Stage: empty
 
 stages:
 - stage: Development
   displayName: 'Deploy to development'
-  variables:
-    - template: variables-development.yml
   jobs:
   - deployment: Services
     pool: Default
@@ -31,7 +28,13 @@ stages:
             artifact: drop
             displayName: 'Download services artifacts'
 
-          - template: deploy-services.yml
+          - task: AzureCLI@2
+            displayName: Deploy microservices
+            inputs:
+              azureSubscription: $(azureSubscriptionName)
+              scriptType: ps
+              scriptLocation: Deploy-Async.ps1
+              arguments: -microservices 'ToDos', 'Authorization', 'Organizations', 'ApiGateway'
 
           - template: postman-tests.yml
 
