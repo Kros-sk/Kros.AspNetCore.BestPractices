@@ -61,30 +61,30 @@ stages:
             inputs:
               fileoverwrite: true
               filepath: cypress.json
-              endWithNewLine: true
               filecontent: |
-              '{
-                "integrationFolder": "cypress/cypress/integration",
-                "projectId": "u3uuhi",
-                "baseUrl": "https://demo.todos.kros.wtf",
-                "chromeWebSecurity": false,
-                "ProjectName": "Demo.BestPractices",
-                "OAuthUrl": "https://login.kros.wtf",
-                "OAuthClientId": "Demo.BestPractices.Postman",
-                "OAuthUsername": "integrationtests@kros.sk",
-                "OAuthPassword": "integrationtests",
-                "UserEmail": "integrationtests@kros.sk",
-                "UserName": "Integration Tests",
-                "reporter": "junit",
-                "reporterOptions": {
-                  "mochaFile": "cypress/cypress/test-output-[hash].xml",
-                  "toConsole": true,
-                  "attachments": true
-                  },
-                  "video": false,
-                  "pluginsFile": "cypress/cypress/plugins/index.js",
-                  "supportFile": "cypress/cypress/support/index.js"
-              }'
+                {
+                  "integrationFolder": "cypress/cypress/integration",
+                  "projectId": "u3uuhi",
+                  "baseUrl": "https://demo.todos.kros.wtf",
+                  "chromeWebSecurity": false,
+                  "ProjectName": "Demo.BestPractices",
+                  "OAuthUrl": "https://login.kros.wtf",
+                  "OAuthClientId": "Demo.BestPractices.Postman",
+                  "OAuthUsername": "integrationtests@kros.sk",
+                  "OAuthPassword": "integrationtests",
+                  "UserEmail": "integrationtests@kros.sk",
+                  "UserName": "Integration Tests",
+                  "reporter": "junit",
+                  "reporterOptions": {
+                    "mochaFile": "cypress/cypress/test-output-[hash].xml",
+                    "toConsole": true,
+                    "attachments": true
+                    },
+                    "video": false,
+                    "pluginsFile": "cypress/cypress/plugins/index.js",
+                    "supportFile": "cypress/cypress/support/index.js"
+                }
+              endWithNewLine: true
 
 
           - script: 'npx cypress run --record --key f6df6669-db0d-4228-9368-242987f124b9'
