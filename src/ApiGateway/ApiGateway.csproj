@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
+    <ProjectReference Include="..\Lib\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>

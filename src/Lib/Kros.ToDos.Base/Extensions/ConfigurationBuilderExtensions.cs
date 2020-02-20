@@ -27,9 +27,7 @@ namespace Kros.ToDos.Base.Extensions
 
             config.AddAzureAppConfiguration(options =>
             {
-                var credential = hostingContext.HostingEnvironment.IsDevelopment()
-                    ? new DefaultAzureCredential()
-                    : (TokenCredential)new ManagedIdentityCredential();
+                var credential = new DefaultAzureCredential();
 
                 options
                     .Connect(new Uri(settings["AppConfig:Endpoint"]), credential)
