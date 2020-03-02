@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.ToDos.Api", "src\Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Statistics.Api", "src\Services\Kros.Statistics.Api\Kros.Statistics.Api.csproj", "{8A585086-3616-4358-80E9-DEB4816EE5CA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "src\ApiGateway\ApiGateway.csproj", "{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.ApiGateway.Api", "src\ApiGateway\Kros.ApiGateway.Api.csproj", "{C1D72583-3C68-44AC-8D7E-FFD33FD36CFB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Authorization.Api", "src\Services\Kros.Authorization.Api\Kros.Authorization.Api.csproj", "{0BE6394E-9FA8-4C53-BF4A-1523FC7E37CC}"
 EndProject
