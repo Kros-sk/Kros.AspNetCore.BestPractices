@@ -21,7 +21,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="9.0.0-preview1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.0.0-preview1" />
-    <PackageReference Include="Kros.AspNetCore" Version="2.4.3" />
+    <PackageReference Include="Kros.AspNetCore" Version="2.6.1" />
     <PackageReference Include="Kros.KORM" Version="4.0.0-alpha.14" />
     <PackageReference Include="Kros.KORM.Extensions.Asp" Version="1.1.0-alpha.6" />
     <PackageReference Include="Kros.MediatR.Extensions" Version="1.1.0" />

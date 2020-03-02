@@ -1,7 +1,7 @@
-﻿using Kros.ToDos.Base.Extensions;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Kros.AspNetCore.Extensions;
 
 namespace ApiGateway
 {

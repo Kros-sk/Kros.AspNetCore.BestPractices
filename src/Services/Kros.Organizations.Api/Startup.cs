@@ -1,6 +1,7 @@
 ﻿using FluentValidation.AspNetCore;
 using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
+using Kros.AspNetCore.ServiceDiscovery;
 using Kros.Organizations.Api.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
@@ -36,8 +37,6 @@ namespace Kros.Organizations.Api
 
             services.SetProxy(Configuration);
 
-            services.ConfigureOptions<UserRoleOptions>(Configuration);
-
             services.AddControllers()
                 .AddFluentValidation();
 
@@ -48,6 +47,7 @@ namespace Kros.Organizations.Api
             services.AddMediatRDependencies();
 
             services.AddHttpClient();
+            services.AddServiceDiscovery();
 
             services.Scan(scan =>
                 scan.FromCallingAssembly()

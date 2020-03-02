@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using MMLib.Ocelot.Provider.AppConfiguration;
+using Kros.AspNetCore.ServiceDiscovery;
 
 namespace ApiGateway
 {
@@ -49,10 +51,12 @@ namespace ApiGateway
 
             services.AddGatewayJwtAuthorization();
             services.AddControllers();
-            services.AddOcelot();
+            services.AddOcelot()
+                .AddAppConfiguration();
             services.AddSwaggerForOcelot(Configuration);
             services.AddAllowAnyOriginCors();
             services.AddApplicationInsightsTelemetry();
+            services.AddServiceDiscovery();
         }
 
         /// <summary>

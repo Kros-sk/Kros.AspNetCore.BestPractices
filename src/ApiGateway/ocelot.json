@@ -2,101 +2,60 @@
   "ReRoutes": [
     {
       "DownstreamPathTemplate": "/api/users",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9002
-        }
-      ],
+      "ServiceName": "authorization",
       "UpstreamPathTemplate": "/organizations/{organizationId}/users",
       "SwaggerKey": "UsersKey"
     },
     {
       "DownstreamPathTemplate": "/api/users/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9002
-        }
-      ],
+      "ServiceName": "authorization",
       "UpstreamPathTemplate": "/organizations/{organizationId}/users/{everything}",
       "SwaggerKey": "PermissionsKey"
     },
     {
       "DownstreamPathTemplate": "/api/permissions",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9002
-        }
-      ],
+      "ServiceName": "authorization",
       "UpstreamPathTemplate": "/organizations/{organizationId}/permissions",
       "SwaggerKey": "PermissionsKey"
     },
     {
       "DownstreamPathTemplate": "/api/permissions/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9002
-        }
-      ],
+      "ServiceName": "authorization",
       "UpstreamPathTemplate": "/organizations/{organizationId}/permissions/{everything}",
       "SwaggerKey": "PermissionsKey"
     },
     {
       "DownstreamPathTemplate": "/api/todos",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9001
-        }
-      ],
+      "ServiceName": "toDos",
       "UpstreamPathTemplate": "/organizations/{organizationId}/todos",
       "SwaggerKey": "TodosKey"
     },
     {
       "DownstreamPathTemplate": "/api/todos/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9001
-        }
-      ],
+      "ServiceName": "toDos",
       "UpstreamPathTemplate": "/organizations/{organizationId}/todos/{everything}",
       "SwaggerKey": "TodosKey"
     },
     {
       "DownstreamPathTemplate": "/api/organizations",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9003
-        }
-      ],
+      "ServiceName": "organizations",
       "UpstreamPathTemplate": "/organizations",
       "SwaggerKey": "OrganizationsKey"
     },
     {
       "DownstreamPathTemplate": "/api/organizations/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 9003
-        }
-      ],
+      "ServiceName": "organizations",
       "UpstreamPathTemplate": "/organizations/{everything}",
       "SwaggerKey": "OrganizationsKey"
     }
   ],
+
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Type": "AppConfiguration",
+      "PollingInterval":  100
+    }
+  },
 
   "SwaggerEndPoints": [
     {
@@ -105,7 +64,9 @@
         {
           "Name": "Users API",
           "Version": "v1",
-          "Url": "http://localhost:9002/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "authorization"
+          }
         }
       ]
     },
@@ -115,7 +76,9 @@
         {
           "Name": "Permissions API",
           "Version": "v1",
-          "Url": "http://localhost:9002/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "authorization"
+          }
         }
       ]
     },
@@ -125,7 +88,9 @@
         {
           "Name": "Todos API",
           "Version": "v1",
-          "Url": "http://localhost:9001/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "toDos"
+          }
         }
       ]
     },
@@ -135,7 +100,9 @@
         {
           "Name": "Organizations API",
           "Version": "v1",
-          "Url": "http://localhost:9003/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "organizations"
+          }
         }
       ]
     }
