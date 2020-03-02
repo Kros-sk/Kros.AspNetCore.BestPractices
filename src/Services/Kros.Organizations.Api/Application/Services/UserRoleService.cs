@@ -1,7 +1,6 @@
-﻿using Kros.Organizations.Api.Properties;
+﻿using Kros.AspNetCore.ServiceDiscovery;
 using Kros.Utils;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -17,43 +16,34 @@ namespace Kros.Organizations.Api.Application.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserRoleOptions _userRoleOptions;
+        private readonly IServiceDiscoveryProvider _serviceDiscovery;
 
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="httpClientFactory">Http client factory (without name).</param>
         /// <param name="httpContextAccessor">Http context accessor.</param>
-        /// <param name="userRoleOptions">Configuration options for user roles.</param>
+        /// <param name="serviceDiscovery"></param>
         public UserRoleService(
             IHttpClientFactory httpClientFactory,
             IHttpContextAccessor httpContextAccessor,
-            IOptions<UserRoleOptions> userRoleOptions)
+            IServiceDiscoveryProvider serviceDiscovery)
         {
             _httpClientFactory = Check.NotNull(httpClientFactory, nameof(httpClientFactory));
             _httpContextAccessor = Check.NotNull(httpContextAccessor, nameof(httpContextAccessor));
-
-            if (string.IsNullOrEmpty(userRoleOptions?.Value?.AuthServiceUrl))
-            {
-                throw new ArgumentException(Resources.StringNotNullOrEmpty, nameof(UserRoleOptions.AuthServiceUrl));
-            }
-            else
-            {
-                _userRoleOptions = userRoleOptions.Value;
-            }
+            _serviceDiscovery = Check.NotNull(serviceDiscovery, nameof(serviceDiscovery));
         }
 
         /// <inheritdoc />
         public async Task CreateOwnerRoleAsync(long userId, long organizationId)
         {
-            // temporary solution, will be replaced with Service Bus
             string accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
 
-            if (accessToken != null && !string.IsNullOrEmpty(_userRoleOptions.AuthServiceUrl))
+            if (accessToken != null)
             {
                 using (HttpClient client = _httpClientFactory.CreateClient())
                 {
-                    var userRoleControllerUrl = new Uri(_userRoleOptions.AuthServiceUrl);
+                    var userRoleControllerUrl = GetPermissionsUri();
                     var userRole = new { UserId = userId, OrganizationId = organizationId };
 
                     var httpContent = new StringContent(JsonSerializer.Serialize(userRole), Encoding.UTF8, "application/json");
@@ -62,6 +52,8 @@ namespace Kros.Organizations.Api.Application.Services
                 }
             }
         }
+
+        private Uri GetPermissionsUri() => _serviceDiscovery.GetPath("authorization", "permissions");
 
         /// <inheritdoc />
         public async Task DeleteUserRolesAsync(long organizationId)
@@ -72,7 +64,7 @@ namespace Kros.Organizations.Api.Application.Services
             {
                 using (HttpClient client = _httpClientFactory.CreateClient())
                 {
-                    var userRoleControllerUrl = new Uri(_userRoleOptions.AuthServiceUrl);
+                    var userRoleControllerUrl = GetPermissionsUri();
 
                     client.DefaultRequestHeaders.Add("Authorization", accessToken);
                     await client.DeleteAsync($"{userRoleControllerUrl}/{organizationId}");
