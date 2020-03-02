@@ -12,14 +12,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MMLib.SwaggerForOcelot" Version="1.10.5" />
+    <PackageReference Include="MMLib.Ocelot.Provider.AppConfiguration" Version="1.0.0" />
+    <PackageReference Include="MMLib.SwaggerForOcelot" Version="2.0.0-alpha.1" />
+    <PackageReference Include="Ocelot" Version="14.0.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Burgyn\MMLib.Ocelot.Provider.AppConfiguration\src\MMLib.Ocelot.Provider.AppConfiguration\MMLib.Ocelot.Provider.AppConfiguration.csproj" />
     <ProjectReference Include="..\Lib\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
-    <ProjectReference Include="C:\Users\martiniak\Downloads\Ocelot-master\src\Ocelot\Ocelot.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>

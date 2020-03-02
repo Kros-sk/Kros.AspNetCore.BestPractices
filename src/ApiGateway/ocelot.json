@@ -52,7 +52,8 @@
 
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {
-      "Type": "AppConfiguration"
+      "Type": "AppConfiguration",
+      "PollingInterval":  100
     }
   },
 
@@ -63,7 +64,9 @@
         {
           "Name": "Users API",
           "Version": "v1",
-          "Url": "http://localhost:9002/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "authorization"
+          }
         }
       ]
     },
@@ -73,7 +76,9 @@
         {
           "Name": "Permissions API",
           "Version": "v1",
-          "Url": "http://localhost:9002/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "authorization"
+          }
         }
       ]
     },
@@ -83,7 +88,9 @@
         {
           "Name": "Todos API",
           "Version": "v1",
-          "Url": "http://localhost:9001/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "toDos"
+          }
         }
       ]
     },
@@ -93,7 +100,9 @@
         {
           "Name": "Organizations API",
           "Version": "v1",
-          "Url": "http://localhost:9003/swagger/v1/swagger.json"
+          "Service": {
+            "Name": "organizations"
+          }
         }
       ]
     }
