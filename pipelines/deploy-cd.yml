@@ -18,7 +18,9 @@ stages:
   displayName: 'Deploy to development'
   jobs:
   - deployment: Services
-    pool: Default
+    pool:
+      name: Default
+      demands: Agent.ComputerName -equals build1
     environment: development
     strategy:
       runOnce:
@@ -40,7 +42,9 @@ stages:
           - template: postman-tests.yml
 
   - deployment: Client
-    pool: Default
+    pool:
+      name: Default
+      demands: Agent.ComputerName -equals build1
     environment: development
     dependsOn: Services
     strategy:
