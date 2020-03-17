@@ -26,4 +26,4 @@ steps:
     inputs:
       azureSubscription: '$(azureSubscriptionName)'
       scriptLocation: inlineScript
-      inlineScript: az cdn endpoint purge -g kros-demo-rsg -n 'kros-demo.azureedge.net' --profile-name 'esw-dev-platform-cdnprofile' --content-paths /*
+      inlineScript: az cdn endpoint purge -g esw-shared-rsg -n kros-demo --profile-name esw-dev-platform-cdnprofile --content-paths /*

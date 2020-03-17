@@ -42,6 +42,7 @@ stages:
   - deployment: Client
     pool: Default
     environment: development
+    dependsOn: Services
     strategy:
       runOnce:
         deploy:
