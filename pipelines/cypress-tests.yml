@@ -54,4 +54,4 @@ steps:
     inputs:
       mergeTestResults: true
       testRunTitle: 'Cypress Test Results'
-      testResultsFiles: 'cypress/test-output*.xml'
+      testResultsFiles: 'cypress/cypress/test-output*.xml'
