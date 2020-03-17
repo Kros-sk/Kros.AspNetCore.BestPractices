@@ -20,3 +20,10 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az storage blob upload-batch -d $web --account-name ${{parameters.storageAccount}} -s $(Pipeline.Workspace)/ToDosDemoClient/app/Kros.Angular.BestPractices
+
+  - task: AzureCLI@1
+    displayName: 'Azure CLI: Purge CDN'
+    inputs:
+      azureSubscription: '$(azureSubscriptionName)'
+      scriptLocation: inlineScript
+      inlineScript: az cdn endpoint purge -g kros-demo-rsg -n 'kros-demo.azureedge.net' --profile-name 'esw-dev-platform-cdnprofile' --content-paths /*
