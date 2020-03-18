@@ -34,7 +34,7 @@ steps:
           "UserName": "Integration Tests",
           "reporter": "junit",
           "reporterOptions": {
-            "mochaFile": "cypress/test-output-[hash].xml",
+            "mochaFile": "test-output-[hash].xml",
             "toConsole": true,
             "attachments": true
             },
