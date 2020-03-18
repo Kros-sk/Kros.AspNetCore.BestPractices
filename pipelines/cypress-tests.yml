@@ -3,15 +3,33 @@ steps:
     artifact: cypress
     displayName: 'Download client app artifacts'
 
-  - download: ToDosDemoClient
-    artifact: package_json
-    displayName: 'Download package.json artifact'
-
   - task: ExtractFiles@1
     displayName: 'Extract tests files'
     inputs:
       archiveFilePatterns: '$(Pipeline.Workspace)/ToDosDemoClient/cypress/cypress*.zip'
       destinationFolder: 'cypress'
+      
+  task: eliostruyf.build-task.custom-build-task.file-creator@5
+    displayName: 'Create package.json file'
+    inputs:
+      fileoverwrite: true
+      filepath: 'package.json'
+      filecontent: |
+        {
+          "cypress-cucumber-preprocessor": {
+            "nonGlobalStepDefinitions": false,
+            "stepDefinitions": "cypress/cypress/integration/step-definitions"
+          },
+          "dependencies": {
+            "@cypress/webpack-preprocessor": "^4.1.3",
+            "cypress": "^4.2.0",
+            "cypress-cucumber-preprocessor": "^2.0.1",
+            "ts-loader": "^6.2.1",
+            "typescript": "3.4.5",
+            "webpack": "^4.42.0"
+          },
+        }
+      endWithNewLine: true
 
   - task: eliostruyf.build-task.custom-build-task.file-creator@5
     displayName: 'Create cypress config file'
