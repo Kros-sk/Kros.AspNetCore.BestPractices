@@ -13,7 +13,7 @@ steps:
     displayName: 'Create cypress config file'
     inputs:
       fileoverwrite: true
-      filepath: 'cypress.json'
+      filepath: 'cypress/cypress.json'
       filecontent: |
         {
           "testFiles": "**/*.feature",
