@@ -27,7 +27,7 @@ steps:
             "ts-loader": "^6.2.1",
             "typescript": "3.4.5",
             "webpack": "^4.42.0"
-          },
+          }
         }
       endWithNewLine: true
 
