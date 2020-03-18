@@ -45,6 +45,8 @@ stages:
     pool:
       name: Default
       demands: Agent.ComputerName -equals build1
+    workspace:
+      clean: all
     environment: development
     dependsOn: Services
     strategy:
