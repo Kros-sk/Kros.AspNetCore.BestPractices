@@ -20,6 +20,11 @@ steps:
       filepath: 'cypress.json'
       filecontent: |
         {
+          "testFiles": "**/*.feature",
+          "env":
+          {
+              "RETRIES": 3
+          },
           "integrationFolder": "cypress/cypress/integration",
           "projectId": "u3uuhi",
           "baseUrl": "https://demo.todos.kros.wtf",
