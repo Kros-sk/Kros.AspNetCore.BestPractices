@@ -9,7 +9,7 @@ steps:
       archiveFilePatterns: '$(Pipeline.Workspace)/ToDosDemoClient/cypress/cypress*.zip'
       destinationFolder: 'cypress'
       
-  task: eliostruyf.build-task.custom-build-task.file-creator@5
+  - task: eliostruyf.build-task.custom-build-task.file-creator@5
     displayName: 'Create package.json file'
     inputs:
       fileoverwrite: true
