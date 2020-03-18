@@ -5,7 +5,8 @@ steps:
 
   - download: ToDosDemoClient
     artifact: package_json
-    displayName: 'Download client app artifacts'
+    path: $(Build.SourcesDirectory)/cypress
+    displayName: 'Download package.json artifact'
 
   - task: ExtractFiles@1
     displayName: 'Extract tests files'
