@@ -45,7 +45,8 @@ steps:
       endWithNewLine: true
       
   - task: Npm@1
-    workingDir: cypress
+    inputs:
+      workingDir: cypress
     displayName: 'npm install'
 
   - script: 'npx cypress run --record --key f6df6669-db0d-4228-9368-242987f124b9'
