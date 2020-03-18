@@ -21,7 +21,7 @@ steps:
           {
               "RETRIES": 3
           },
-          "integrationFolder": "cypress/cypress/integration",
+          "integrationFolder": "cypress/integration",
           "projectId": "u3uuhi",
           "baseUrl": "https://demo.todos.kros.wtf",
           "chromeWebSecurity": false,
@@ -34,13 +34,13 @@ steps:
           "UserName": "Integration Tests",
           "reporter": "junit",
           "reporterOptions": {
-            "mochaFile": "cypress/cypress/test-output-[hash].xml",
+            "mochaFile": "cypress/test-output-[hash].xml",
             "toConsole": true,
             "attachments": true
             },
             "video": false,
-            "pluginsFile": "cypress/cypress/plugins/index.js",
-            "supportFile": "cypress/cypress/support/index.js"
+            "pluginsFile": "cypress/plugins/index.js",
+            "supportFile": "cypress/support/index.js"
         }
       endWithNewLine: true
       
@@ -61,4 +61,4 @@ steps:
     inputs:
       mergeTestResults: true
       testRunTitle: 'Cypress Test Results'
-      testResultsFiles: 'cypress/cypress/test-output*.xml'
+      testResultsFiles: 'cypress/test-output*.xml'
