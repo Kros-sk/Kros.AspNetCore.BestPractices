@@ -4,7 +4,7 @@ steps:
     displayName: 'Download client app artifacts'
 
   - download: ToDosDemoClient
-    artifact: cypress_config
+    artifact: package_json
     displayName: 'Download client app artifacts'
 
   - task: ExtractFiles@1
@@ -47,7 +47,9 @@ steps:
             "supportFile": "cypress/cypress/support/index.js"
         }
       endWithNewLine: true
-
+      
+  - task: Npm@1
+    displayName: 'npm install'
 
   - script: 'npx cypress run --record --key f6df6669-db0d-4228-9368-242987f124b9'
     displayName: 'Run tests with Cypress'
