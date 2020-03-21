@@ -3,32 +3,30 @@ param (
     [Parameter(Mandatory = $true)][String]$artifactPath
 )
 
-#Enable-AzContextAutosave
-#$jobs = @()
+$jobs = @()
 ForEach ($service in $microservices) {
     Write-Host "Start deploying microservice: " $service -ForegroundColor Green
-    #$jobs += Start-Job -ArgumentList $service -ScriptBlock {
-    #    param($name)
-    $name = $service
-            $result = az webapp deployment source config-zip --resource-group kros-demo-rsg --name kros-demo-$name-api --src "$artifactPath/Kros.$name.Api.zip" 
-            if ($result){
-                Write-Host "Deployed microservice: " $name -ForegroundColor Green
+    $jobs += Start-Job -ArgumentList $service -ScriptBlock {
+        param($name, $path)
+            $result = az webapp deployment source config-zip --resource-group kros-demo-rsg --name kros-demo-$name-api --src "$path/Kros.$name.Api.zip" 
+            if (!$result){
+                throw "Microservice ($name) failed. More information: $result"
             }
-    #}
+    }
 }
 
-#Wait-Job -Job $jobs
+Wait-Job -Job $jobs
 
-#$failed = $false
+$failed = $false
 
-#foreach ($job in $jobs) {
-#    Receive-Job $job -Keep
-#    if ($job.ChildJobs[0].Error -ne '') {
-#        $failed = $true
-#    }
-#}
+foreach ($job in $jobs) {
+    if ($job.State -eq 'Failed') {
+        Write-Host ($job.ChildJobs[0].Error) -ForegroundColor Red
+        $failed = $true
+    }
+}
 
-#if ($failed -eq $true) {
-#    Write-Host 
-#    Write-Error "Microservices deploy failed."
-#}
+if ($failed -eq $true) {
+   Write-Host 
+   Write-Error "Microservices deploy failed."
+}
