@@ -6,7 +6,7 @@ param (
 $jobs = @()
 ForEach ($service in $microservices) {
     Write-Host "Start deploying microservice: " $service -ForegroundColor Green
-    $jobs += Start-Job -ArgumentList $service -ScriptBlock {
+    $jobs += Start-Job -ArgumentList $service, $artifactPath -ScriptBlock {
         param($name, $path)
             $result = az webapp deployment source config-zip --resource-group kros-demo-rsg --name kros-demo-$name-api --src "$path/Kros.$name.Api.zip" 
             if (!$result){
