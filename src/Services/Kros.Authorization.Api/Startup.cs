@@ -1,8 +1,10 @@
 ﻿using FluentValidation.AspNetCore;
 using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
+using Kros.Authorization.Api.Application.Services;
 using Kros.Identity.Extensions;
 using Kros.Swagger.Extensions;
+using Kros.ToDos.Base.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +49,9 @@ namespace Kros.Authorization.Api
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
             services.AddApplicationServices(Configuration);
+
+            services.AddHttpClient<IAuthorizationService, AuthorizationService>()
+                .AddResiliencyDefaultPolicyHandler();
 
             services.AddSwagger(Configuration);
             services.AddApplicationInsightsTelemetry();

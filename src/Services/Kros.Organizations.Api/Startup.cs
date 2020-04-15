@@ -3,6 +3,7 @@ using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
 using Kros.AspNetCore.ServiceDiscovery;
 using Kros.Organizations.Api.Application.Services;
+using Kros.ToDos.Base.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
@@ -53,6 +54,9 @@ namespace Kros.Organizations.Api
                 scan.FromCallingAssembly()
                 .AddClasses()
                 .AsMatchingInterface());
+
+            services.AddHttpClient<IUserRoleService, UserRoleService>()
+                .AddResiliencyDefaultPolicyHandler();
 
             services.AddSwagger(Configuration);
             services.AddApplicationInsightsTelemetry();
