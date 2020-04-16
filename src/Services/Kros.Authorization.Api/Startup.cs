@@ -50,8 +50,8 @@ namespace Kros.Authorization.Api
             services.AddMediatRDependencies();
             services.AddApplicationServices(Configuration);
 
-            services.AddHttpClient<IAuthorizationService, AuthorizationService>()
-                .AddResiliencyDefaultPolicyHandler();
+			services.AddHttpClient<AuthorizationService>()
+				.AddResiliencyDefaultPolicyHandler();
 
             services.AddSwagger(Configuration);
             services.AddApplicationInsightsTelemetry();

@@ -41,7 +41,7 @@ namespace Kros.Organizations.Api.Application.Services
 
             if (accessToken != null)
             {
-                using (HttpClient client = _httpClientFactory.CreateClient())
+                using (HttpClient client = _httpClientFactory.CreateClient(nameof(UserRoleService)))
                 {
                     var userRoleControllerUrl = GetPermissionsUri();
                     var userRole = new { UserId = userId, OrganizationId = organizationId };
@@ -62,7 +62,7 @@ namespace Kros.Organizations.Api.Application.Services
 
             if (accessToken != null)
             {
-                using (HttpClient client = _httpClientFactory.CreateClient())
+                using (HttpClient client = _httpClientFactory.CreateClient(nameof(UserRoleService)))
                 {
                     var userRoleControllerUrl = GetPermissionsUri();
 

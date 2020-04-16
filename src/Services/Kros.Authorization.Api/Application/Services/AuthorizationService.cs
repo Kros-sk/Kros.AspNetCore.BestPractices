@@ -97,7 +97,7 @@ namespace Kros.Authorization.Api.Application.Services
 
             if (accessToken != null)
             {
-                using (var client = _httpClientFactory.CreateClient())
+                using (var client = _httpClientFactory.CreateClient(nameof(AuthorizationService)))
                 {
                     var response = await client.GetUserInfoAsync(new UserInfoRequest
                     {

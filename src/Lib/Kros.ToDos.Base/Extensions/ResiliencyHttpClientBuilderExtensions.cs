@@ -13,11 +13,11 @@ namespace Kros.ToDos.Base.Extensions
     /// </summary>
     public static class ResiliencyHttpClientBuilderExtensions
     {
-        private const int DefaultRetryCount = 3;
+        private const int DefaultRetryCount = 5;
         private const int DefaultFirstExponentialWaitTimeInMilliseconds = 500;
 
-        private const int DefaultHandledEventsAllowedBeforeBreakingCount = 5;
-        private const int DefaultDurationOfBreakInSeconds = 30;
+        private const int DefaultHandledEventsAllowedBeforeBreakingCount = 3;
+        private const int DefaultDurationOfBreakInSeconds = 15;
         
         /// <summary>
         /// Adds default's <see cref="PolicyHttpMessageHandler"/> handlers for resiliency.
@@ -37,23 +37,29 @@ namespace Kros.ToDos.Base.Extensions
             }
 
             IAsyncPolicy<HttpResponseMessage> retryPolicy = GetRetryPolicy();
-            builder.AddHttpMessageHandler(() => new PolicyHttpMessageHandler(retryPolicy));
+			IAsyncPolicy<HttpResponseMessage> circuitBreakerPolicy = GetCircuitBreakerPolicy();
 
-            IAsyncPolicy<HttpResponseMessage> circuitBreakerPolicy = GetCircuitBreakerPolicy();
-            builder.AddHttpMessageHandler(() => new PolicyHttpMessageHandler(circuitBreakerPolicy));
+			builder.AddHttpMessageHandler(() => new PolicyHttpMessageHandler(retryPolicy.WrapAsync(circuitBreakerPolicy)));
 
             return builder;
         }
 
-        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        public static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
         {
             Random jitterer = new Random();
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
-                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(DefaultRetryCount,
-                    retryAttempt => TimeSpan.FromMilliseconds(DefaultFirstExponentialWaitTimeInMilliseconds * Math.Pow(2, retryAttempt))
-                                  + TimeSpan.FromMilliseconds(jitterer.Next(0, 100))
+                //OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.BadRequest)
+				.WaitAndRetryAsync(DefaultRetryCount,
+                    retryAttempt => {
+						TimeSpan timeSpan = TimeSpan.FromMilliseconds(DefaultFirstExponentialWaitTimeInMilliseconds * Math.Pow(2, retryAttempt))
+							+ TimeSpan.FromMilliseconds(jitterer.Next(0, 100));
+
+						Console.WriteLine(retryAttempt);
+						Console.WriteLine(timeSpan);
+
+						return timeSpan;
+					}
                 );
         }
 
@@ -61,7 +67,8 @@ namespace Kros.ToDos.Base.Extensions
         {
             return HttpPolicyExtensions
                 .HandleTransientHttpError()
-                .CircuitBreakerAsync(DefaultHandledEventsAllowedBeforeBreakingCount, TimeSpan.FromSeconds(DefaultDurationOfBreakInSeconds));
+				//.OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.BadRequest)
+				.CircuitBreakerAsync(DefaultHandledEventsAllowedBeforeBreakingCount, TimeSpan.FromSeconds(DefaultDurationOfBreakInSeconds));
         }
     }
 }

@@ -55,7 +55,7 @@ namespace Kros.Organizations.Api
                 .AddClasses()
                 .AsMatchingInterface());
 
-            services.AddHttpClient<IUserRoleService, UserRoleService>()
+            services.AddHttpClient<UserRoleService>()
                 .AddResiliencyDefaultPolicyHandler();
 
             services.AddSwagger(Configuration);
