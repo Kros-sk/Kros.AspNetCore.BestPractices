@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Kros.Authorization.Api.Application.Commands.UpdatePermissions
+namespace Kros.Authorization.Api.Application.Commands
 {
     /// <summary>
     /// Update user permissions command.

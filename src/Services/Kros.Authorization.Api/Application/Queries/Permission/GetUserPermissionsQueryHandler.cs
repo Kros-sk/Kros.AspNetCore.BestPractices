@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kros.Authorization.Api.Application.Queries.Permission
+namespace Kros.Authorization.Api.Application.Queries
 {
     /// <summary>
     /// Query handler for user permissions queries.

@@ -1,32 +1,32 @@
-﻿using Kros.KORM.Metadata.Attribute;
+﻿using Kros.Authorization.Api.Infrastructure;
+using Kros.KORM.Metadata.Attribute;
 using MediatR;
-using System.Collections.Generic;
 
 namespace Kros.Authorization.Api.Application.Queries
 {
     /// <summary>
-    /// Get all users.
+    /// Get user by email.
     /// </summary>
-    public class GetAllUsersQuery : IRequest<IEnumerable<GetAllUsersQuery.User>>
+    public class GetUserQuery : IRequest<GetUserQuery.User>
     {
         /// <summary>
         /// Ctor.
         /// </summary>
-        /// <param name="organizationId">Organization id.</param>
-        public GetAllUsersQuery(long organizationId)
+        /// <param name="userId">User id.</param>
+        public GetUserQuery(int userId)
         {
-            OrganizationId = organizationId;
+            UserId = userId;
         }
 
         /// <summary>
-        /// Organization id.
+        /// User email.
         /// </summary>
-        public long OrganizationId { get; }
+        public int UserId { get; }
 
         /// <summary>
         /// User Header
         /// </summary>
-        [Alias("Users")]
+        [Alias(DatabaseConfiguration.UsersTableName)]
         public class User
         {
             /// <summary>
@@ -48,11 +48,6 @@ namespace Kros.Authorization.Api.Application.Queries
             /// User's email.
             /// </summary>
             public string Email { get; set; }
-
-            /// <summary>
-            /// User permissions.
-            /// </summary>
-            public string Permissions { get; set; }
         }
     }
 }

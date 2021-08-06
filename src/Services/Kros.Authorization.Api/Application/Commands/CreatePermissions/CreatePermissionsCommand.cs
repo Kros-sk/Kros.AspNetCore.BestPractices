@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Kros.Authorization.Api.Application.Commands.CreatePermissions
+namespace Kros.Authorization.Api.Application.Commands
 {
     /// <summary>
     /// MediatR command to create user role.

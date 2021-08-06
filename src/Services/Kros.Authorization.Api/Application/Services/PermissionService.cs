@@ -1,7 +1,6 @@
 ﻿using Kros.AspNetCore.Authorization;
-using Kros.Authorization.Api.Application.Commands.UpdatePermissions;
-using Kros.Authorization.Api.Application.Model;
-using Kros.Authorization.Api.Application.Queries.Permission;
+using Kros.Authorization.Api.Application.Queries;
+using Kros.Authorization.Api.Domain;
 using Kros.ToDos.Base.Infrastructure;
 using MediatR;
 using System.Collections.Generic;
@@ -26,10 +25,6 @@ namespace Kros.Authorization.Api.Application.Services
         {
             _mediator = mediator;
         }
-
-        /// <inheritdoc />
-        public bool IsOwnerFromClaims(ClaimsPrincipal claims)
-            => CheckUserRoles(claims, PermissionsHelper.ClaimValues.OwnerRole);
 
         /// <inheritdoc />
         public bool IsAdminFromClaims(ClaimsPrincipal claims)
@@ -78,12 +73,6 @@ namespace Kros.Authorization.Api.Application.Services
             }
 
             return null;
-        }
-
-        /// <inheritdoc />
-        public async Task UpdateUserPermissionsAsync(UpdatePermissionsCommand command)
-        {
-            await _mediator.Send(command);
         }
     }
 }

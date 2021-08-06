@@ -1,4 +1,4 @@
-﻿using Kros.Authorization.Api.Application.Model;
+﻿using Kros.Authorization.Api.Domain;
 using Kros.Utils;
 using Mapster;
 using MediatR;

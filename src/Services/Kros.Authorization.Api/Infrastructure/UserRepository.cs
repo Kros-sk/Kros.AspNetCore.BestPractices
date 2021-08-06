@@ -1,4 +1,5 @@
-﻿using Kros.KORM;
+﻿using Kros.Authorization.Api.Domain;
+using Kros.KORM;
 using Kros.Utils;
 using System.Threading.Tasks;
 
@@ -21,19 +22,11 @@ namespace Kros.Authorization.Api.Application.Model
         }
 
         /// <inheritdoc />
-        public async Task CreateUserAsync(User user)
-        {
-            var users = _database.Query<User>().AsDbSet();
-            users.Add(user);
-            await users.CommitChangesAsync();
-        }
+        public Task CreateUserAsync(User user)
+            => _database.AddAsync(user);
 
         /// <inheritdoc />
-        public async Task UpdateUserAsync(User user)
-        {
-            var users = _database.Query<User>().AsDbSet();
-            users.Edit(user);
-            await users.CommitChangesAsync();
-        }
+        public Task UpdateUserAsync(User user)
+            => _database.EditAsync(user);
     }
 }

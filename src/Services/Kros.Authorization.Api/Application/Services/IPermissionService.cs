@@ -1,6 +1,5 @@
-﻿using Kros.Authorization.Api.Application.Commands.UpdatePermissions;
-using Kros.Authorization.Api.Application.Model;
-using Kros.Authorization.Api.Application.Queries.Permission;
+﻿using Kros.Authorization.Api.Application.Queries;
+using Kros.Authorization.Api.Domain;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -40,11 +39,5 @@ namespace Kros.Authorization.Api.Application.Services
         /// <returns>User permissions.</returns>
         Task<IEnumerable<GetUserPermissionsForOrganizationQuery.Permission>> GetUserPermissionsByOrganizationAsync(
             IEnumerable<Claim> userClaims);
-
-        /// <summary>
-        /// Updates user permissions.
-        /// </summary>
-        /// <param name="command">Update command.</param>
-        Task UpdateUserPermissionsAsync(UpdatePermissionsCommand command);
     }
 }

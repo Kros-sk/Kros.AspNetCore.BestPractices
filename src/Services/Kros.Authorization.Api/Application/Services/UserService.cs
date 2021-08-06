@@ -1,9 +1,9 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Kros.Authorization.Api.Application.Commands;
-using Kros.Authorization.Api.Application.Model;
 using Kros.Authorization.Api.Application.Queries;
+using Kros.Authorization.Api.Domain;
+using Kros.Utils;
 using MediatR;
-using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -17,19 +17,14 @@ namespace Kros.Authorization.Api.Application.Services
     public class UserService : IUserService
     {
         private readonly IMediator _mediator;
-        private readonly IMemoryCache _cache;
 
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="mediator">Mediator service.</param>
-        /// <param name="cache">Cache service.</param>
-        public UserService(
-            IMediator mediator,
-            IMemoryCache cache)
+        public UserService(IMediator mediator)
         {
-            _mediator = mediator;
-            _cache = cache;
+            _mediator = Check.NotNull(mediator, nameof(mediator));
         }
 
         /// <inheritdoc />
@@ -63,34 +58,10 @@ namespace Kros.Authorization.Api.Application.Services
             return null;
         }
 
-        /// <inheritdoc />
-        public bool IsAdminFromClaims(ClaimsPrincipal user)
-        {
-            string adminClaim = user.FindFirstValue(UserClaimTypes.IsAdmin);
+        private Task<GetUserByEmailQuery.User> GetUserAsync(string userEmail)
+            => _mediator.Send(new GetUserByEmailQuery(userEmail));
 
-            if (adminClaim == null)
-            {
-                return false;
-            }
-
-            return bool.Parse(adminClaim);
-        }
-
-        /// <inheritdoc />
-        public async Task UpdateUserAsync(UpdateUserCommand command)
-        {
-            await _mediator.Send(command);
-            _cache.Remove(command.Email); // Removing old user values from cache
-        }
-
-        private async Task<GetUserByEmailQuery.User> GetUserAsync(string userEmail)
-        {
-            return await _mediator.Send(new GetUserByEmailQuery(userEmail));
-        }
-
-        private async Task<int> CreateNewUserAsync(CreateUserCommand createUserCommand)
-        {
-            return await _mediator.Send(createUserCommand);
-        }
+        private Task<int> CreateNewUserAsync(CreateUserCommand createUserCommand)
+            => _mediator.Send(createUserCommand);
     }
 }
