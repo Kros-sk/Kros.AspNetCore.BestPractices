@@ -1,5 +1,5 @@
 {
-  "ReRoutes": [
+  "Routes": [
     {
       "DownstreamPathTemplate": "/api/users",
       "ServiceName": "authorization",
@@ -53,7 +53,7 @@
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {
       "Type": "AppConfiguration",
-      "PollingInterval":  100
+      "PollingInterval": 7200
     }
   },
 

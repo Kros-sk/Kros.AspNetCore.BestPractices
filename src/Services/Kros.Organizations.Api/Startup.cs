@@ -3,6 +3,7 @@ using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
 using Kros.AspNetCore.ServiceDiscovery;
 using Kros.Organizations.Api.Application.Services;
+using Kros.Swagger.Extensions;
 using Kros.ToDos.Base.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
@@ -11,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
 
 namespace Kros.Organizations.Api
 {
@@ -41,8 +44,7 @@ namespace Kros.Organizations.Api
             services.AddControllers()
                 .AddFluentValidation();
 
-            services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
-            services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
+            services.AddAuthenticationAndAuthorization(JwtAuthorizationHelper.JwtSchemeName, Configuration);
 
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
@@ -58,7 +60,8 @@ namespace Kros.Organizations.Api
             services.AddHttpClient<UserRoleService>()
                 .AddResiliencyDefaultPolicyHandler();
 
-            services.AddSwagger(Configuration);
+            services.AddSwagger(Configuration,
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Kros.Organizations.Api.xml"));
             services.AddApplicationInsightsTelemetry();
         }
 
@@ -74,6 +77,7 @@ namespace Kros.Organizations.Api
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwaggerDocumentation(Configuration);
             }
             else
             {
@@ -89,12 +93,6 @@ namespace Kros.Organizations.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
             });
         }
     }

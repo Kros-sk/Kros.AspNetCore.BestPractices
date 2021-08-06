@@ -1,5 +1,6 @@
 ﻿using Kros.AspNetCore.Authorization;
 using Kros.AspNetCore.Extensions;
+using Kros.AspNetCore.ServiceDiscovery;
 using Kros.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
@@ -8,10 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MMLib.Ocelot.Provider.AppConfiguration;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using MMLib.Ocelot.Provider.AppConfiguration;
-using Kros.AspNetCore.ServiceDiscovery;
 
 namespace ApiGateway
 {
@@ -64,11 +64,12 @@ namespace ApiGateway
         /// </summary>
         /// <param name="app">Application builder.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public async void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwaggerForOcelotUI();
             }
             else
             {
@@ -87,8 +88,7 @@ namespace ApiGateway
                 endpoints.MapControllers();
             });
 
-            app.UseSwaggerForOcelotUI(Configuration);
-            await app.UseOcelot();
+            app.UseOcelot().Wait();
         }
     }
 }

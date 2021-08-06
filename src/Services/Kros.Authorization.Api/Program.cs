@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Azure.Identity;
+﻿using Kros.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using System;
-using Kros.ToDos.Base.Extensions;
-using Kros.AspNetCore.Extensions;
+using Microsoft.Extensions.Hosting;
 
 namespace Kros.Authorization.Api
 {
     /// <summary>
     /// Startup class.
     /// </summary>
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// Application entry.
@@ -31,8 +28,8 @@ namespace Kros.Authorization.Api
                  .ConfigureAppConfiguration((hostingContext, config) =>
                  {
                      config
-                     .AddAzureAppConfiguration(hostingContext)
-                     .AddLocalConfiguration();
+                         .AddAzureAppConfiguration(hostingContext)
+                         .AddLocalConfiguration();
                  })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Kros.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Kros.AspNetCore.Extensions;
 
 namespace ApiGateway
 {
     /// <summary>
     /// Startup class.
     /// </summary>
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// Application entry.
@@ -30,10 +30,8 @@ namespace ApiGateway
                     config
                         .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                         .AddAzureAppConfiguration(hostingContext)
-                        .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
+                        .AddLocalConfiguration()
                         .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true)
-                        .AddJsonFile("ocelot.local.json", optional: true)
                         .AddEnvironmentVariables();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
