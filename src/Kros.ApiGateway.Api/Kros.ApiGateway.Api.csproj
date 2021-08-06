@@ -12,11 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kros.AspNetCore" Version="2.6.1" />
-    <PackageReference Include="MMLib.Ocelot.Provider.AppConfiguration" Version="1.0.0" />
-    <PackageReference Include="MMLib.SwaggerForOcelot" Version="2.0.0-alpha.1" />
-    <PackageReference Include="Ocelot" Version="14.0.11" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
+    <PackageReference Include="Kros.AspNetCore" Version="2.41.0" />
+    <PackageReference Include="MMLib.Ocelot.Provider.AppConfiguration" Version="1.1.0" />
+    <PackageReference Include="MMLib.SwaggerForOcelot" Version="3.2.1" />
+    <PackageReference Include="Ocelot" Version="16.0.1" />
   </ItemGroup>
 
   <ItemGroup>

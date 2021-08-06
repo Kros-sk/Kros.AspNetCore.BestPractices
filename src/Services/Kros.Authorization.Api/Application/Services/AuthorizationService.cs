@@ -76,7 +76,8 @@ namespace Kros.Authorization.Api.Application.Services
                     }
                 }
 
-                return JwtAuthorizationHelper.CreateJwtTokenFromClaims(allUserClaims, _apiJwtAuthorizationOptions.JwtSecret);
+                string secret = GetJwtSecret(JwtAuthorizationHelper.JwtSchemeName);
+                return JwtAuthorizationHelper.CreateJwtTokenFromClaims(allUserClaims, secret);
             }
 
             throw new UnauthorizedAccessException(Properties.Resources.AuthorizationServiceForbiddenRequest);
@@ -84,8 +85,10 @@ namespace Kros.Authorization.Api.Application.Services
 
         private IEnumerable<Claim> GetUserAuthorizationClaims(GetUserByEmailQuery.User user)
         {
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(UserClaimTypes.UserId, user.Id.ToString()));
+            var claims = new List<Claim>
+            {
+                new Claim(UserClaimTypes.UserId, user.Id.ToString())
+            };
 
             return claims;
         }
@@ -97,18 +100,16 @@ namespace Kros.Authorization.Api.Application.Services
 
             if (accessToken != null)
             {
-                using (var client = _httpClientFactory.CreateClient(nameof(AuthorizationService)))
+                using var client = _httpClientFactory.CreateClient(nameof(AuthorizationService));
+                var response = await client.GetUserInfoAsync(new UserInfoRequest
                 {
-                    var response = await client.GetUserInfoAsync(new UserInfoRequest
-                    {
-                        Address = _jwtAuthorizationOptions.IdentityServerUserInfoEndpoint,
-                        Token = accessToken
-                    });
+                    Address = _jwtAuthorizationOptions.IdentityServerUserInfoEndpoint,
+                    Token = accessToken
+                });
 
-                    if (!response.IsError)
-                    {
-                        return response.Claims;
-                    }
+                if (!response.IsError)
+                {
+                    return response.Claims;
                 }
             }
 
@@ -128,6 +129,16 @@ namespace Kros.Authorization.Api.Application.Services
             }
         }
 
+        private string GetJwtSecret(string schemeName)
+        {
+            string secret = _apiJwtAuthorizationOptions.Schemes.FirstOrDefault(s => s.SchemeName == schemeName)?.JwtSecret;
+            if (string.IsNullOrEmpty(secret))
+            {
+                throw new UnauthorizedAccessException();
+            }
+            return secret;
+        }
+
         /// <summary>
         /// Gets user permissions and returns them as claims.
         /// </summary>
@@ -136,7 +147,7 @@ namespace Kros.Authorization.Api.Application.Services
         private async Task<IEnumerable<Claim>> GetPermissionsClaimsAsync(IEnumerable<Claim> userClaims)
         {
             var userPermissions = await _permissionService.GetUserPermissionsByOrganizationAsync(userClaims);
-            return userPermissions?.Select(p => new Claim(p.Key, p.Value)).AsEnumerable() ?? new Claim[] { };
+            return userPermissions?.Select(p => new Claim(p.Key, p.Value)).AsEnumerable() ?? Array.Empty<Claim>();
         }
     }
 }
