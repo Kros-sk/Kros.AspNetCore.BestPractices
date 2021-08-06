@@ -51,7 +51,6 @@
   ],
 
   "GlobalConfiguration": {
-    "BaseUrl": "",
     "ServiceDiscoveryProvider": {
       "Type": "AppConfiguration",
       "PollingInterval": 7200
