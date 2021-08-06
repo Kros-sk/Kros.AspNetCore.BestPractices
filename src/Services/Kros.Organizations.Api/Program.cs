@@ -1,5 +1,4 @@
 ﻿using Kros.AspNetCore.Extensions;
-using Kros.ToDos.Base.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -8,7 +7,7 @@ namespace Kros.Organizations.Api
     /// <summary>
     /// Startup class.
     /// </summary>
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// Application entry.

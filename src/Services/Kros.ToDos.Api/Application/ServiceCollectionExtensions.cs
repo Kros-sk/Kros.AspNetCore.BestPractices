@@ -8,9 +8,11 @@ using Kros.ToDos.Api.Application.Queries.PipeLines;
 using Kros.ToDos.Api.Infrastructure;
 using Kros.ToDos.Base.Infrastructure;
 using MediatR;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
-using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -29,7 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
             => builder.AddFluentValidation(o =>
             {
                 o.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-                o.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                o.DisableDataAnnotationsValidation = true;
             });
 
         /// <summary>
@@ -62,7 +64,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">DI container.</param>
         /// <param name="configuration">Application configuration.</param>
         public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
-            => services.AddSwaggerDocumentation(configuration, c => { c.AddFluentValidationRules(); });
+            => services
+                .AddSwaggerDocumentation(configuration, c =>
+                {
+                    c.EnableAnnotations();
+
+                    string xmlDocFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Kros.ToDos.Api.xml");
+                    if (File.Exists(xmlDocFilePath))
+                    {
+                        c.IncludeXmlComments(xmlDocFilePath);
+                    }
+                })
+                .AddFluentValidationRulesToSwagger();
 
         /// <summary>
         /// Add distributed cache.

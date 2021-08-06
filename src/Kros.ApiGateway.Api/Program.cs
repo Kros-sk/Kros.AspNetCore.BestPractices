@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Kros.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Kros.AspNetCore.Extensions;
 
 namespace ApiGateway
 {
     /// <summary>
     /// Startup class.
     /// </summary>
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// Application entry.
