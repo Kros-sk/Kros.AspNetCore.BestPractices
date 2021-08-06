@@ -18,10 +18,6 @@
     <PackageReference Include="Ocelot" Version="16.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Lib\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
-  </ItemGroup>
-
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

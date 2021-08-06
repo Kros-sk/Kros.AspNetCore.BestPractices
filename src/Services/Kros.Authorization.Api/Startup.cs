@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
 
 namespace Kros.Authorization.Api
 {
@@ -40,8 +42,7 @@ namespace Kros.Authorization.Api
             services.SetProxy(Configuration);
 
             services.AddIdentityServerAuthentication(Configuration);
-            services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
-            services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
+            services.AddAuthenticationAndAuthorization(JwtAuthorizationHelper.JwtSchemeName, Configuration);
 
             services.AddControllers()
                 .AddFluentValidation();
@@ -53,7 +54,8 @@ namespace Kros.Authorization.Api
             services.AddHttpClient<AuthorizationService>()
                 .AddResiliencyDefaultPolicyHandler();
 
-            services.AddSwagger(Configuration);
+            services.AddSwagger(Configuration,
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Kros.Authorization.Api.xml"));
             services.AddApplicationInsightsTelemetry();
         }
 

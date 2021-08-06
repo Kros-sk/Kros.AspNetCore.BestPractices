@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
 
 namespace Kros.Organizations.Api
 {
@@ -41,8 +43,7 @@ namespace Kros.Organizations.Api
             services.AddControllers()
                 .AddFluentValidation();
 
-            services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
-            services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
+            services.AddAuthenticationAndAuthorization(JwtAuthorizationHelper.JwtSchemeName, Configuration);
 
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
@@ -58,7 +59,8 @@ namespace Kros.Organizations.Api
             services.AddHttpClient<UserRoleService>()
                 .AddResiliencyDefaultPolicyHandler();
 
-            services.AddSwagger(Configuration);
+            services.AddSwagger(Configuration,
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Kros.Organizations.Api.xml"));
             services.AddApplicationInsightsTelemetry();
         }
 

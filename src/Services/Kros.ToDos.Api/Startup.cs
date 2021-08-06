@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
 
 namespace Kros.ToDos.Api
 {
@@ -38,8 +40,7 @@ namespace Kros.ToDos.Api
                 .AddControllers()
                 .AddFluentValidation();
 
-            services.AddApiJwtAuthentication(JwtAuthorizationHelper.JwtSchemeName, Configuration);
-            services.AddApiJwtAuthorization(JwtAuthorizationHelper.JwtSchemeName);
+            services.AddAuthenticationAndAuthorization(JwtAuthorizationHelper.JwtSchemeName, Configuration);
 
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
@@ -49,7 +50,8 @@ namespace Kros.ToDos.Api
                 .AddClasses()
                 .AsMatchingInterface());
 
-            services.AddSwagger(Configuration);
+            services.AddSwagger(Configuration,
+                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Kros.ToDos.Api.xml"));
             services.AddDistributedCache(Configuration);
         }
 
