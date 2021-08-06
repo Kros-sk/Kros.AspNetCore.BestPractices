@@ -75,4 +75,10 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings - Copy.Development.json">
+      <DependentUpon>appsettings.Development.json</DependentUpon>
+    </Content>
+  </ItemGroup>
 </Project>

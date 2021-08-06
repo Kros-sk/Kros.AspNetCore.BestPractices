@@ -30,10 +30,8 @@ namespace ApiGateway
                     config
                         .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                         .AddAzureAppConfiguration(hostingContext)
-                        .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
+                        .AddLocalConfiguration()
                         .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"ocelot.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true)
-                        .AddJsonFile("ocelot.local.json", optional: true)
                         .AddEnvironmentVariables();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

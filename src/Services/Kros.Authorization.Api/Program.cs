@@ -28,8 +28,8 @@ namespace Kros.Authorization.Api
                  .ConfigureAppConfiguration((hostingContext, config) =>
                  {
                      config
-                     .AddAzureAppConfiguration(hostingContext)
-                     .AddLocalConfiguration();
+                         .AddAzureAppConfiguration(hostingContext)
+                         .AddLocalConfiguration();
                  })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
