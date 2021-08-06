@@ -9,6 +9,8 @@ namespace Kros.Organizations.Api.Infrastructure
     /// </summary>
     public class DatabaseConfiguration : DatabaseConfigurationBase
     {
+        internal const string OrganizationsTableName = "Organizations";
+
         /// <summary>
         /// Create database model.
         /// </summary>
@@ -16,7 +18,7 @@ namespace Kros.Organizations.Api.Infrastructure
         public override void OnModelCreating(ModelConfigurationBuilder modelBuilder)
         {
             modelBuilder.Entity<Organization>()
-                .HasTableName("Organizations")
+                .HasTableName(OrganizationsTableName)
                 .HasPrimaryKey(f => f.Id).AutoIncrement();
         }
     }

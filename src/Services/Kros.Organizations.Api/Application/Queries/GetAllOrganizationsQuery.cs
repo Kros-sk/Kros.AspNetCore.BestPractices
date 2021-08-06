@@ -1,4 +1,5 @@
 ﻿using Kros.KORM.Metadata.Attribute;
+using Kros.Organizations.Api.Infrastructure;
 using MediatR;
 using System.Collections.Generic;
 
@@ -25,7 +26,7 @@ namespace Kros.Organizations.Api.Application.Queries
         /// <summary>
         /// Organization
         /// </summary>
-        [Alias("Organizations")]
+        [Alias(DatabaseConfiguration.OrganizationsTableName)]
         public class Organization
         {
             /// <summary>

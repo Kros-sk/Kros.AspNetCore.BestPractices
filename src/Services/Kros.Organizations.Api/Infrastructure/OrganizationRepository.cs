@@ -1,5 +1,5 @@
-﻿using Kros.Organizations.Api.Domain;
-using Kros.KORM;
+﻿using Kros.KORM;
+using Kros.Organizations.Api.Domain;
 using Kros.Utils;
 using System.Threading.Tasks;
 
@@ -8,7 +8,7 @@ namespace Kros.Organizations.Api.Infrastructure
     /// <summary>
     /// Repository for persistating <see cref="Organization"/>.
     /// </summary>
-    public class OrganizationRepository: IOrganizationRepository
+    public class OrganizationRepository : IOrganizationRepository
     {
         private IDatabase _database;
 
@@ -22,27 +22,15 @@ namespace Kros.Organizations.Api.Infrastructure
         }
 
         /// <inheritdoc />
-        public async Task CreateOrganizationAsync(Organization item)
-        {
-            await _database.AddAsync(item);
-        }
+        public Task CreateOrganizationAsync(Organization item)
+            => _database.AddAsync(item);
 
         /// <inheritdoc />
-        public async Task UpdateOrganizationAsync(Organization item)
-        {
-            var dbSet = _database
-                .Query<Organization>()
-                .AsDbSet();
-
-            dbSet.Edit(item);
-
-            await dbSet.CommitChangesAsync();
-        }
+        public Task UpdateOrganizationAsync(Organization item)
+            => _database.EditAsync(item);
 
         /// <inheritdoc />
-        public async Task DeleteOrganizationAsync(long id)
-        {
-            await _database.DeleteAsync<Organization>(or => or.Id == id);
-        }
+        public Task DeleteOrganizationAsync(long id)
+            => _database.DeleteAsync<Organization>(or => or.Id == id);
     }
 }

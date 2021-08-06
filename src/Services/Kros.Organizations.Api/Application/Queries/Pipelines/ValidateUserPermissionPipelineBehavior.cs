@@ -1,6 +1,5 @@
 ﻿using Kros.AspNetCore.Exceptions;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,9 +22,9 @@ namespace Kros.Organizations.Api.Application.Queries.PipeLines
         {
             var result = await next();
 
-            if (result != null && result.UserId != request.UserId)
+            if (result?.UserId != request.UserId)
             {
-                throw new ResourceIsForbiddenException(String.Format(Properties.Resources.ForbiddenMessage,
+                throw new ResourceIsForbiddenException(string.Format(Properties.Resources.ForbiddenMessage,
                     request.UserId, typeof(TResponse), result.UserId));
             }
 
