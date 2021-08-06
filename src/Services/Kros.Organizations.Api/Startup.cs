@@ -3,6 +3,7 @@ using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
 using Kros.AspNetCore.ServiceDiscovery;
 using Kros.Organizations.Api.Application.Services;
+using Kros.Swagger.Extensions;
 using Kros.ToDos.Base.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
@@ -76,12 +77,7 @@ namespace Kros.Organizations.Api
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app
-                    .UseSwagger()
-                    .UseSwaggerUI(c =>
-                    {
-                        c.SwaggerEndpoint("v1/swagger.json", "Organizations API V1");
-                    });
+                app.UseSwaggerDocumentation(Configuration);
             }
             else
             {
@@ -97,12 +93,6 @@ namespace Kros.Organizations.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
             });
         }
     }

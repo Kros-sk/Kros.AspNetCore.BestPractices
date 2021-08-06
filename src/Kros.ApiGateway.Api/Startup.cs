@@ -69,6 +69,7 @@ namespace ApiGateway
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwaggerForOcelotUI();
             }
             else
             {
@@ -87,7 +88,6 @@ namespace ApiGateway
                 endpoints.MapControllers();
             });
 
-            app.UseSwaggerForOcelotUI();
             app.UseOcelot().Wait();
         }
     }

@@ -71,16 +71,10 @@ namespace Kros.Authorization.Api
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app
-                    .UseSwagger()
-                    .UseSwaggerUI(c =>
-                    {
-                        c.SwaggerEndpoint("v1/swagger.json", "Authorization API V1");
-                    });
+                app.UseSwaggerDocumentation(Configuration);
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
@@ -95,8 +89,6 @@ namespace Kros.Authorization.Api
             {
                 endpoints.MapControllers();
             });
-
-            app.UseSwaggerDocumentation(Configuration);
         }
     }
 }
