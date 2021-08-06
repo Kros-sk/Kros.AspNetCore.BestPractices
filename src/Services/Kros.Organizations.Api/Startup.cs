@@ -74,6 +74,12 @@ namespace Kros.Organizations.Api
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app
+                    .UseSwagger()
+                    .UseSwaggerUI(c =>
+                    {
+                        c.SwaggerEndpoint("v1/swagger.json", "Organizations API V1");
+                    });
             }
             else
             {

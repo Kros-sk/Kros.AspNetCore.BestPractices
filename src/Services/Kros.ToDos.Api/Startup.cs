@@ -65,6 +65,12 @@ namespace Kros.ToDos.Api
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app
+                    .UseSwagger()
+                    .UseSwaggerUI(c =>
+                    {
+                        c.SwaggerEndpoint("v1/swagger.json", "ToDos API V1");
+                    });
             }
             else
             {
