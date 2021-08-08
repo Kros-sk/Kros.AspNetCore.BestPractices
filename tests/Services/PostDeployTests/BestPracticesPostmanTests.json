@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f532d7b7-33a2-4c6e-89aa-e3cfce61521d",
+		"_postman_id": "4bcb0d93-c1fd-492f-9a0b-2e8230974f1c",
 		"name": "Kros.AspNetCore.BestPractices",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4970b992-6ae2-4037-8154-8f86e03b9d6b",
 								"exec": [
 									"var jsonData = pm.response.json();",
 									"pm.environment.set(\"Temp.AccessToken\",jsonData.access_token)",
@@ -29,7 +28,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "39c8aaa5-35d2-4f23-87f5-ca83d9d462b0",
 								"exec": [
 									""
 								],
@@ -84,8 +82,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Hello",
@@ -111,8 +108,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Organizations Api",
@@ -123,7 +119,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c9fd0b41-c394-456e-b51c-4343f3673d68",
 								"exec": [
 									"var jsonData = pm.response.json();",
 									"pm.environment.set(\"Temp.OrganizationId\", jsonData.id)",
@@ -182,7 +177,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5304ea8f-842c-46b7-ad58-8c3ee96e1fa2",
 								"exec": [
 									"var organization = pm.response.json();",
 									"pm.environment.set(\"Temp.UserId\", organization.userId);",
@@ -235,7 +229,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "69062199-d5c1-4b78-ad29-3072ac1cd127",
 								"exec": [
 									"pm.test(\"Organization info should be updated with code 200.\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -292,7 +285,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ec3e12c2-e8de-4600-afb8-5aee4208db75",
 								"exec": [
 									"var organization = pm.response.json();",
 									"",
@@ -343,7 +335,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "38f9643b-00bd-4bc5-8512-c035868c82cd",
 						"type": "text/javascript",
 						"exec": [
 							"const organizationSchema = {",
@@ -368,15 +359,13 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "21db2ddc-93fa-46e2-b59c-4185330fa92c",
 						"type": "text/javascript",
 						"exec": [
 							""
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Users Api",
@@ -387,7 +376,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "642b7445-7956-473c-a820-7943266588a7",
 								"exec": [
 									"pm.test(\"Is admin should be True\", function () {",
 									"    pm.expect(pm.response.text()).to.eql(\"true\");",
@@ -451,7 +439,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "642b7445-7956-473c-a820-7943266588a7",
 								"exec": [
 									"pm.test(\"Is writer should be True\", function () {",
 									"    pm.expect(pm.response.text()).to.eql(\"true\");",
@@ -515,7 +502,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "642b7445-7956-473c-a820-7943266588a7",
 								"exec": [
 									"pm.test(\"Is reader should be True\", function () {",
 									"    pm.expect(pm.response.text()).to.eql(\"true\");",
@@ -579,7 +565,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "665460d4-5762-4a2a-9670-d4d570302383",
 								"exec": [
 									"var users = pm.response.json();",
 									"",
@@ -670,7 +655,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "81906080-143e-4b07-a4f0-a73c8038d50f",
 								"exec": [
 									"var user = pm.response.json();",
 									"",
@@ -749,7 +733,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "1e352d81-fe19-43a1-b204-972047d1c12a",
 								"exec": [
 									""
 								],
@@ -759,7 +742,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b80cff83-422f-4fa2-b057-0f90d1da6a62",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -846,7 +828,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "81906080-143e-4b07-a4f0-a73c8038d50f",
 								"exec": [
 									"var user = pm.response.json();",
 									"",
@@ -939,7 +920,6 @@
 							"",
 							"pm.environment.set(\"Temp.UserSchema\", userSchema);"
 						],
-						"id": "0894b3cb-40c3-40b2-ba06-d208bb782c8d",
 						"type": "text/javascript"
 					}
 				},
@@ -949,12 +929,10 @@
 						"exec": [
 							""
 						],
-						"id": "b32b4138-6f82-4cdb-bb55-f64d6fa67c46",
 						"type": "text/javascript"
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Todos Api",
@@ -965,7 +943,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "599b8f06-923b-4aa0-a9e0-04215a7cd834",
 								"exec": [
 									"var response = pm.response.json();",
 									"pm.environment.set(\"Temp.ToDoId\", response.id);",
@@ -1057,7 +1034,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "12d8c426-d1ab-4f9f-8e59-0f9a10fcce5d",
 								"exec": [
 									"var todos = pm.response.json();",
 									"",
@@ -1147,7 +1123,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9c822159-74ab-4f81-9539-5feea8b08fd1",
 								"exec": [
 									"pm.test(\"Updating ToDo state should return status code 200.\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1309,7 +1284,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2bab0910-e2c1-479d-b9b8-06fd8d4ba5a9",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1443,7 +1417,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c14a8f96-b76e-4eff-becf-ced5b35a5dc1",
 								"exec": [
 									"pm.test(\"Updating todo values should return status code 200.\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -1601,7 +1574,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2bab0910-e2c1-479d-b9b8-06fd8d4ba5a9",
 								"exec": [
 									"var response = pm.response.json();",
 									"",
@@ -1735,10 +1707,9 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4d618c9c-34db-4ac4-bf09-52f7abdc2b73",
 								"exec": [
-									"pm.test(\"Deleting ToDo should return status code 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Deleting ToDo should return status code 204\", function () {",
+									"    pm.response.to.have.status(204);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1857,7 +1828,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4d618c9c-34db-4ac4-bf09-52f7abdc2b73",
 								"exec": [
 									"pm.test(\"Deleting non-existing ToDo should return status code 404\", function () {",
 									"    pm.response.to.have.status(404);",
@@ -1979,10 +1949,9 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ecad2ead-44f0-4eab-a554-22727e7ae09b",
 								"exec": [
-									"pm.test(\"Deleting completed ToDos should return status code 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Deleting completed ToDos should return status code 204\", function () {",
+									"    pm.response.to.have.status(204);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -2071,7 +2040,6 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "77ca1903-1707-4179-abbc-a6582b335623",
 						"type": "text/javascript",
 						"exec": [
 							"const toDoHeaderSchema = {",
@@ -2106,15 +2074,13 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "206a52e1-2b19-401e-ab52-0641db4bce38",
 						"type": "text/javascript",
 						"exec": [
 							""
 						]
 					}
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Authorization Api",
@@ -2125,7 +2091,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "665460d4-5762-4a2a-9670-d4d570302383",
 								"exec": [
 									"var token = pm.response.text();",
 									"",
@@ -2190,7 +2155,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "60f2af5c-9dca-4049-bfd3-8cef71c6c232",
 								"exec": [
 									"pm.test(\"Authorization with wrong token should return status code 401.\", function () {\r",
 									"    pm.response.to.have.status(401);\r",
@@ -2233,7 +2197,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "60f2af5c-9dca-4049-bfd3-8cef71c6c232",
 								"exec": [
 									"pm.test(\"Authorization without token should return status code 401.\", function () {\r",
 									"    pm.response.to.have.status(401);\r",
@@ -2263,8 +2226,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Cleanup",
@@ -2275,7 +2237,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c105cc91-6823-4d50-84eb-850a25358ee0",
 								"exec": [
 									"pm.test (\"Deleting seeded organization should return status code 204.\", function () {\r",
 									"    pm.response.to.have.status(204);\r",
@@ -2307,7 +2268,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "00b48309-3b97-4543-a4a2-59fd4f1b347a",
 								"exec": [
 									"function cleanup() {\r",
 									"    const clean = _.keys(pm.environment.toObject())\r",
@@ -2326,7 +2286,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4a10bc50-9867-4b9f-b9fc-c8e670864d23",
 								"exec": [
 									"pm.test(\"Cleanup should return status code 404\", function () {",
 									"    pm.response.to.have.status(404);",
@@ -2354,8 +2313,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
 	],
 	"auth": {
@@ -2382,7 +2340,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "9e463ed3-7194-4aa5-a7a8-352cf3026097",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -2392,13 +2349,11 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "9a7c9bab-8a82-486b-be9c-b4646fe8856c",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
