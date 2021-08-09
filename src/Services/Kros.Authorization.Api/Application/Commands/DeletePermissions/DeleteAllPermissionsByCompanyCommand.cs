@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Kros.Authorization.Api.Application.Commands.DeletePermissions
+namespace Kros.Authorization.Api.Application.Commands
 {
     /// <summary>
     /// MediatR command to delete user role by organization.

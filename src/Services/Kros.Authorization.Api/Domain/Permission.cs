@@ -1,11 +1,10 @@
 ﻿using Kros.KORM.Metadata.Attribute;
 
-namespace Kros.Authorization.Api.Application.Model
+namespace Kros.Authorization.Api.Domain
 {
     /// <summary>
     /// User permission model.
     /// </summary>
-    [Alias("Permissions")]
     public class Permission
     {
         /// <summary>
@@ -23,7 +22,6 @@ namespace Kros.Authorization.Api.Application.Model
         /// <summary>
         /// Permission key.
         /// </summary>
-        [Alias("PermissionKey")]
         [Key("PK_Permissions", 3)]
         public string Key { get; set; }
 

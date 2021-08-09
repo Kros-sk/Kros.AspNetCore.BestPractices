@@ -26,41 +26,25 @@ namespace Kros.ToDos.Api.Infrastructure
         }
 
         /// <inheritdoc />
-        public async Task CreateToDoAsync(ToDo toDo)
+        public Task CreateToDoAsync(ToDo toDo)
         {
-            var todos = _database.Query<ToDo>().AsDbSet();
-
-            toDo.Created = DateTimeOffset.Now;
-            toDo.LastChange = DateTimeOffset.Now;
+            toDo.Created = DateTimeProvider.Now;
+            toDo.LastChange = DateTimeProvider.Now;
             toDo.IsDone = false;
 
-            todos.Add(toDo);
-
-            await todos.CommitChangesAsync();
+            return _database.AddAsync(toDo);
         }
 
         /// <inheritdoc />
-        public async Task UpdateToDoAsync(ToDo toDo)
+        public Task UpdateToDoAsync(ToDo toDo)
         {
-            var todos = _database
-                .Query<ToDo>()
-                .Select(_editColumns.Value)
-                .AsDbSet();
-
-            toDo.LastChange = DateTimeOffset.Now;
-            todos.Edit(toDo);
-
-            await todos.CommitChangesAsync();
+            toDo.LastChange = DateTimeProvider.Now;
+            return _database.EditAsync(toDo, default, _editColumns.Value);
         }
 
         /// <inheritdoc />
-        public async Task DeleteToDoAsync(long id)
-        {
-            var todos = _database.Query<ToDo>().AsDbSet();
-            todos.Delete(new ToDo() { Id = id });
-
-            await todos.CommitChangesAsync();
-        }
+        public Task DeleteToDoAsync(long id)
+            => _database.DeleteAsync<ToDo>(id);
 
         /// <inheritdoc />
         public async Task<IEnumerable<long>> DeleteCompletedToDosAsync(long userId, long organizationId)
@@ -91,13 +75,8 @@ namespace Kros.ToDos.Api.Infrastructure
         }
 
         /// <inheritdoc />
-        public async Task ChangeIsDoneState(long id, bool isDone)
-        {
-            var todos = _database.Query<ToDoIsDoneEdit>().AsDbSet();
-            todos.Edit(new ToDoIsDoneEdit() { Id = id, IsDone = isDone });
-
-            await todos.CommitChangesAsync();
-        }
+        public Task ChangeIsDoneState(long id, bool isDone)
+            => _database.EditAsync(new ToDoIsDoneEdit() { Id = id, IsDone = isDone }, default, nameof(ToDoIsDoneEdit.Id), nameof(ToDoIsDoneEdit.IsDone));
 
         // Dočasne pokiaľ KORM nevie injektovať Created a LastChange
         private static readonly Lazy<string[]> _editColumns
@@ -107,8 +86,7 @@ namespace Kros.ToDos.Api.Infrastructure
                 .Select(p => p.Name)
                 .ToArray());
 
-
-        [Alias("ToDos")]
+        [Alias(DatabaseConfiguration.ToDosTableName)]
         private class ToDoIsDoneEdit
         {
             [Key]

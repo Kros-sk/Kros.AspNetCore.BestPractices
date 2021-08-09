@@ -1,5 +1,6 @@
 ﻿using Kros.KORM.Metadata.Attribute;
 using Kros.Organizations.Api.Application.Queries.PipeLines;
+using Kros.Organizations.Api.Infrastructure;
 using MediatR;
 
 namespace Kros.Organizations.Api.Application.Queries
@@ -33,7 +34,7 @@ namespace Kros.Organizations.Api.Application.Queries
         /// <summary>
         /// Organization
         /// </summary>
-        [Alias("Organizations")]
+        [Alias(DatabaseConfiguration.OrganizationsTableName)]
         public class Organization : IUserResourceQueryResult
         {
             /// <summary>

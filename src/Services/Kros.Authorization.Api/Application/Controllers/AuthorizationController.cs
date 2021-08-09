@@ -1,4 +1,6 @@
-﻿using Kros.AspNetCore.Authorization;
+﻿using Kros.AspNetCore;
+using Kros.AspNetCore.Authorization;
+using Kros.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +11,9 @@ namespace Kros.Authorization.Api.Controllers
     /// <summary>
     /// Users controller.
     /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
     [Authorize(AuthenticationSchemes = JwtAuthorizationHelper.OAuthSchemeName)]
-    public class AuthorizationController : ControllerBase
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public class AuthorizationController : ApiBaseController
     {
         private readonly Application.Services.IAuthorizationService _authorizationService;
 
@@ -21,13 +22,13 @@ namespace Kros.Authorization.Api.Controllers
         /// </summary>
         /// <param name="authorizationService">Authorization service.</param>
         public AuthorizationController(Application.Services.IAuthorizationService authorizationService)
-            => _authorizationService = authorizationService;
+            => _authorizationService = Check.NotNull(authorizationService, nameof(authorizationService));
 
         /// <summary>
         /// Get Jwt token with user claims.
         /// </summary>
         /// <response code="200">Ok.</response>
-        /// <returns></returns>
+        /// <returns>JWT token.</returns>
         [HttpGet("jwt-token/organizations/{organizationId?}/{*other}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<string> GetJwtToken(long organizationId, string other)
@@ -37,7 +38,7 @@ namespace Kros.Authorization.Api.Controllers
         /// Get Jwt token with user claims.
         /// </summary>
         /// <response code="200">Ok.</response>
-        /// <returns></returns>
+        /// <returns>JWT token.</returns>
         [HttpGet("jwt-token/{*other}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<string> GetJwtTokenOther(string other)

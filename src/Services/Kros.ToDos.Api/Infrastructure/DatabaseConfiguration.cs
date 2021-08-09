@@ -9,6 +9,8 @@ namespace Kros.ToDos.Api.Infrastructure
     /// </summary>
     public class DatabaseConfiguration : DatabaseConfigurationBase
     {
+        internal const string ToDosTableName = "ToDos";
+
         /// <summary>
         /// Create database model.
         /// </summary>
@@ -16,7 +18,7 @@ namespace Kros.ToDos.Api.Infrastructure
         public override void OnModelCreating(ModelConfigurationBuilder modelBuilder)
         {
             modelBuilder.Entity<ToDo>()
-                .HasTableName("ToDos")
+                .HasTableName(ToDosTableName)
                 .HasPrimaryKey(f => f.Id).AutoIncrement();
         }
     }

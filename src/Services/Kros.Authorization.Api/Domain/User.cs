@@ -1,18 +1,13 @@
-﻿using Kros.KORM.Metadata;
-using Kros.KORM.Metadata.Attribute;
-
-namespace Kros.Authorization.Api.Application.Model
+﻿namespace Kros.Authorization.Api.Domain
 {
     /// <summary>
     /// User model.
     /// </summary>
-    [Alias("Users")]
     public class User
     {
         /// <summary>
         /// Id.
         /// </summary>
-        [Key(autoIncrementMethodType: AutoIncrementMethodType.Custom)]
         public int Id { get; set; }
 
         /// <summary>

@@ -1,9 +1,10 @@
-﻿using Kros.KORM.Metadata.Attribute;
+﻿using Kros.Authorization.Api.Infrastructure;
+using Kros.KORM.Metadata.Attribute;
 using Kros.Utils;
 using MediatR;
 using System.Collections.Generic;
 
-namespace Kros.Authorization.Api.Application.Queries.Permission
+namespace Kros.Authorization.Api.Application.Queries
 {
     /// <summary>
     /// Get user permissions for organization.
@@ -34,7 +35,7 @@ namespace Kros.Authorization.Api.Application.Queries.Permission
         /// <summary>
         /// User permission model.
         /// </summary>
-        [Alias("Permissions")]
+        [Alias(DatabaseConfiguration.PermissionsTableName)]
         public class Permission
         {
             /// <summary>

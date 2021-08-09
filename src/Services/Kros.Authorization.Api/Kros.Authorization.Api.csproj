@@ -9,22 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Infrastructure\SqlScripts\20190418001_AddIsAdminColumn.sql" />
-    <None Remove="Infrastructure\SqlScripts\20190703001_AddPermissionsTable.sql" />
-    <None Remove="Infrastructure\SqlScripts\20190729001_RemoveAdminColumn.sql" />
+    <None Remove="SqlScripts\20190418001_AddIsAdminColumn.sql" />
+    <None Remove="SqlScripts\20190703001_AddPermissionsTable.sql" />
+    <None Remove="SqlScripts\20190729001_RemoveAdminColumn.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Infrastructure\SqlScripts\20190729001_RemoveAdminColumn.sql">
+    <EmbeddedResource Include="SqlScripts\20190729001_RemoveAdminColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Infrastructure\SqlScripts\20190703001_AddPermissionsTable.sql">
+    <EmbeddedResource Include="SqlScripts\20190703001_AddPermissionsTable.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Infrastructure\SqlScripts\20190418001_AddIsAdminColumn.sql">
+    <EmbeddedResource Include="SqlScripts\20190418001_AddIsAdminColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Infrastructure\SqlScripts\20190401001_AddUserTable.sql">
+    <EmbeddedResource Include="SqlScripts\20190401001_AddUserTable.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

@@ -1,11 +1,11 @@
-﻿using Kros.Authorization.Api.Application.Model;
+﻿using Kros.Authorization.Api.Domain;
 using Kros.Utils;
 using Mapster;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kros.Authorization.Api.Application.Commands.CreatePermissions
+namespace Kros.Authorization.Api.Application.Commands
 {
     /// <summary>
     /// MediatR command handler for command to create user role.

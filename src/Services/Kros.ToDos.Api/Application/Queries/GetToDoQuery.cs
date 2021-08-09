@@ -1,5 +1,6 @@
 ﻿using Kros.KORM.Metadata.Attribute;
 using Kros.ToDos.Api.Application.Queries.PipeLines;
+using Kros.ToDos.Api.Infrastructure;
 using MediatR;
 using System;
 
@@ -41,7 +42,7 @@ namespace Kros.ToDos.Api.Application.Queries
         /// <summary>
         /// ToDo Header
         /// </summary>
-        [Alias("ToDos")]
+        [Alias(DatabaseConfiguration.ToDosTableName)]
         public class ToDo : IUserResourceQueryResult
         {
             /// <summary>

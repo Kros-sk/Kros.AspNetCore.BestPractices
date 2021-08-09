@@ -1,6 +1,8 @@
 ﻿using Kros.AspNetCore.Authorization;
+using Kros.Authorization.Api.Infrastructure;
 using Kros.KORM.Extensions.Asp;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
@@ -18,10 +20,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configuration">Configuration.</param>
         public static void AddKormDatabase(this IServiceCollection services, IConfiguration configuration)
             => services.AddKorm(configuration)
+                .UseDatabaseConfiguration(new DatabaseConfiguration())
                 .InitDatabaseForIdGenerators()
                 .AddKormMigrations(o =>
                 {
-                    o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Authorization.Api.Infrastructure.SqlScripts");
+                    o.AddAssemblyScriptsProvider(Assembly.GetEntryAssembly(), "Kros.Authorization.Api.SqlScripts");
                 })
                 .Migrate();
 
@@ -42,6 +45,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddHttpClient();
             services.ConfigureOptions<JwtAuthorizationOptions>(configuration);
             services.ConfigureOptions<ApiJwtAuthorizationOptions>(configuration);
+
+            services.AddTransient(s => s.GetService<IHttpContextAccessor>()?.HttpContext?.User);
 
             return services.Scan(scan =>
                 scan.FromCallingAssembly()

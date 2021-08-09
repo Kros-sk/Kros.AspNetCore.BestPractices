@@ -1,11 +1,12 @@
-﻿using Kros.AspNetCore.Authorization;
+﻿using Kros.AspNetCore;
+using Kros.AspNetCore.Authorization;
 using Kros.ToDos.Api.Application.Commands;
 using Kros.ToDos.Api.Application.Queries;
 using Kros.ToDos.Base.Extensions;
 using Kros.ToDos.Base.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,16 +15,23 @@ namespace Kros.ToDos.Api.Application.Controllers
     /// <summary>
     /// ToDos controller
     /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
     [Authorize(AuthenticationSchemes = JwtAuthorizationHelper.JwtSchemeName)]
-    public class ToDosController : ControllerBase
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class ToDosController : ApiBaseController
     {
         /// <summary>
         /// Get user ToDos.
         /// </summary>
+        /// <response code="200">Ok.</response>
+        /// <response code="403">
+        /// Forbidden when user doesn't have permission for reading ToDos.
+        /// </response>
+        /// <returns>ToDos.</returns>
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>))]
         [Authorize(PoliciesHelper.ReaderAuthPolicyName)]
         public async Task<IEnumerable<GetAllToDoHeadersQuery.ToDoHeader>> Get()
             => await this.SendRequest(new GetAllToDoHeadersQuery(User.GetUserId(), User.GetOrganizationId()));
@@ -32,12 +40,11 @@ namespace Kros.ToDos.Api.Application.Controllers
         /// Get ToDo by id.
         /// </summary>
         /// <response code="200">Ok.</response>
-        /// <response code="403">Forbidden when user don't have permission for ToDo with <paramref name="id"/>.</response>
+        /// <response code="403">Forbidden when user doesn't have permission for ToDo with <paramref name="id"/>.</response>
         /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
         [HttpGet("{id}", Name = nameof(GetToDo))]
-        [ProducesResponseType(200, Type = typeof(GetToDoQuery.ToDo))]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetToDoQuery.ToDo))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(PoliciesHelper.ReaderAuthPolicyName)]
         public async Task<GetToDoQuery.ToDo> GetToDo(int id)
             => await this.SendRequest(new GetToDoQuery(id, User.GetUserId(), User.GetOrganizationId()));
@@ -47,9 +54,10 @@ namespace Kros.ToDos.Api.Application.Controllers
         /// </summary>
         /// <param name="command">Data for creating todo.</param>
         /// <response code="201">Created. ToDo id in body.</response>
+        /// <response code="403">Forbidden when user doesn't have permission for creating ToDos.</response>
         /// <returns>ToDo id.</returns>
         [HttpPost]
-        [ProducesResponseType(201)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> CreateToDo(CreateToDoCommand command)
         {
@@ -62,14 +70,13 @@ namespace Kros.ToDos.Api.Application.Controllers
         /// <summary>
         /// Update ToDo.
         /// </summary>
-        /// <param name="command">Data for creating todo.</param>
+        /// <param name="command">Data for updating todo.</param>
         /// <param name="id">ToDo id.</param>
-        /// <response code="403">Forbidden when user don't have permission for ToDo with <paramref name="id"/>.</response>
+        /// <response code="403">Forbidden when user doesn't have permission for editing ToDo with <paramref name="id"/>.</response>
         /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
         [HttpPut("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> UpdateToDo(int id, UpdateToDoCommand command)
         {
@@ -86,33 +93,33 @@ namespace Kros.ToDos.Api.Application.Controllers
         /// Delete ToDo.
         /// </summary>
         /// <param name="id">ToDo id.</param>
-        /// <response code="403">Forbidden when user doesn't have permission for ToDo with <paramref name="id"/>.</response>
+        /// <response code="204">Deleted.</response>
+        /// <response code="403">Forbidden when user doesn't have permission for delete ToDo with <paramref name="id"/>.</response>
         /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> DeleteToDo(int id)
         {
             await this.SendRequest(new DeleteToDoCommand(id, User.GetUserId(), User.GetOrganizationId()));
 
-            return Ok();
+            return NoContent();
         }
 
         /// <summary>
         /// Deletes completed ToDos.
         /// </summary>
-        /// <response code="403">Forbidden when user doesn't have permission.</response>
+        /// <response code="204">Deleted.</response>
+        /// <response code="403">Forbidden when user doesn't have permission for delete ToDos.</response>
         [HttpDelete("deleteCompleted")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(403)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> DeleteCompletedToDos()
         {
             await this.SendRequest(new DeleteCompletedToDosCommand(User.GetUserId(), User.GetOrganizationId()));
 
-            return Ok();
+            return NoContent();
         }
 
         /// <summary>
@@ -120,12 +127,12 @@ namespace Kros.ToDos.Api.Application.Controllers
         /// </summary>
         /// <param name="id">ToDo id.</param>
         /// <param name="command">New IsDone state.</param>
-        /// <response code="403">Forbidden when user don't have permission for ToDo with <paramref name="id"/>.</response>
+        /// <response code="200">Ok.</response>
+        /// <response code="403">Forbidden when user doesn't have permission for edit ToDo with <paramref name="id"/>.</response>
         /// <response code="404">If ToDo with id <paramref name="id"/> doesn't exist.</response>
         [HttpPut("changeIsDoneState/{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(403)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> ChangeIsDoneState(int id, ChangeIsDoneStateCommand command)
         {

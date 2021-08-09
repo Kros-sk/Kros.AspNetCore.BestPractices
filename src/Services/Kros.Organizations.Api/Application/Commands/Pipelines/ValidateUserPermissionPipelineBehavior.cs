@@ -3,7 +3,6 @@ using Kros.KORM;
 using Kros.KORM.Metadata.Attribute;
 using Kros.Utils;
 using MediatR;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,7 +43,7 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
 
             if (organization.UserId != request.UserId)
             {
-                throw new ResourceIsForbiddenException(String.Format(Properties.Resources.ForbiddenMessage,
+                throw new ResourceIsForbiddenException(string.Format(Properties.Resources.ForbiddenMessage,
                     request.UserId, typeof(Organization), request.Id));
             }
 

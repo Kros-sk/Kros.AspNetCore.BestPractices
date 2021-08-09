@@ -1,4 +1,5 @@
 ﻿using Kros.KORM.Metadata.Attribute;
+using Kros.ToDos.Api.Infrastructure;
 using MediatR;
 using System.Collections.Generic;
 
@@ -33,7 +34,7 @@ namespace Kros.ToDos.Api.Application.Queries
         /// <summary>
         /// ToDo Header
         /// </summary>
-        [Alias("ToDos")]
+        [Alias(DatabaseConfiguration.ToDosTableName)]
         public class ToDoHeader
         {
             /// <summary>

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Kros.Authorization.Api.Application.Model
+namespace Kros.Authorization.Api.Domain
 {
     /// <summary>
     /// Interface which describe repository for persistating <see cref="Permission"/>.
