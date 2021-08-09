@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="builder">MVC builder.</param>
         /// <returns>MVC builder.</returns>
-        public static IMvcCoreBuilder AddFluentValidation(this IMvcCoreBuilder builder)
+        public static IMvcBuilder AddFluentValidation(this IMvcBuilder builder)
             => builder.AddFluentValidation(o =>
             {
                 o.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());

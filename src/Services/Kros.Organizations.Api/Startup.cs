@@ -1,5 +1,4 @@
-﻿using FluentValidation.AspNetCore;
-using Kros.AspNetCore;
+﻿using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
 using Kros.AspNetCore.ServiceDiscovery;
 using Kros.Organizations.Api.Application.Services;
