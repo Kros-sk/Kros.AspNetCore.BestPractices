@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kros.Tags.Api.Application.Commands.UpdateTag
+namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
     /// Update tag command handler.

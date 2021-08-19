@@ -1,7 +1,6 @@
 ﻿using Kros.KORM.Extensions.Asp;
 using Kros.MediatR.Extensions;
-using Kros.Tags.Api.Application.Commands.Pipelines;
-//using Kros.Tags.Api.Application.Queries.PipeLines;
+using Kros.Tags.Api.Application.Commands;
 using Kros.Tags.Api.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -34,8 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">DI container.</param>
         public static IServiceCollection AddMediatRDependencies(this IServiceCollection services)
             => services.AddMediatR(Assembly.GetExecutingAssembly())
-                //.AddPipelineBehaviorsForRequest<IUserResourceQuery>()
-                .AddPipelineBehaviorsForRequest<IIdCommand>()
+                .AddPipelineBehaviorsForRequest<ITagManagementCommand>()
                 .AddMediatRNullCheckPostProcessor();
     }
 }

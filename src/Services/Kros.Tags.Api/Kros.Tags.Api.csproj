@@ -11,13 +11,9 @@
   <ItemGroup>
     <None Remove="SqlScripts\20210812001_CreateTags.sql" />
     <None Remove="SqlScripts\20210816001_AddDescriptionAndOrgIdColumn.sql" />
-    <None Remove="SqlScripts\20210816002_AddDescriptionAndOrganizationIdColumn.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="SqlScripts\20210816002_AddDescriptionAndOrganizationIdColumn.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="SqlScripts\20210816001_AddDescriptionAndOrgIdColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

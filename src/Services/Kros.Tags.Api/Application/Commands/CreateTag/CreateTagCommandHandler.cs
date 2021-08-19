@@ -6,10 +6,10 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kros.Tags.Api.Application.Commands.CreateTag
+namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
-    /// Create tag command handler.
+    /// <see cref="CreateTagCommand"/> handler.
     /// </summary>
     public class CreateTagCommandHandler : IRequestHandler<CreateTagCommand, long>
     {

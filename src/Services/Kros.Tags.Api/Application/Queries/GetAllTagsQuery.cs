@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Kros.Tags.Api.Application.Queries
 {
     /// <summary>
-    /// Get all tags.
+    /// Query for getting all tags.
     /// </summary>
     public class GetAllTagsQuery : IRequest<IEnumerable<GetAllTagsQuery.Tag>>
     {

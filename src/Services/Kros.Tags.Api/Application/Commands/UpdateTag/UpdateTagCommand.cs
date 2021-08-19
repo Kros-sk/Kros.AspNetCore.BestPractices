@@ -1,13 +1,12 @@
-﻿using Kros.Tags.Api.Application.Commands.Pipelines;
-using MediatR;
+﻿using MediatR;
 using Newtonsoft.Json;
 
-namespace Kros.Tags.Api.Application.Commands.UpdateTag
+namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
     /// Update tag command.
     /// </summary>
-    public class UpdateTagCommand : IRequest, IIdCommand
+    public class UpdateTagCommand : IRequest, ITagManagementCommand
     {
         /// <summary>
         /// Id.
@@ -28,6 +27,7 @@ namespace Kros.Tags.Api.Application.Commands.UpdateTag
         /// <summary>
         /// Organization Id
         /// </summary>
+        [JsonIgnore]
         public long OrganizationId { get; set; }
     }
 }

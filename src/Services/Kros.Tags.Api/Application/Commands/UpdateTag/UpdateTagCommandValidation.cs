@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Kros.Tags.Api.Application.Commands.UpdateTag
+namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
     /// Validator for <see cref="UpdateTagCommand"/>.

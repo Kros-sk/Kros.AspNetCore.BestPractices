@@ -1,13 +1,13 @@
-﻿using Kros.Tags.Api.Application.Commands.Pipelines;
+﻿using Kros.Tags.Api.Application.Commands;
 using MediatR;
 using Newtonsoft.Json;
 
-namespace Kros.Tags.Api.Application.Commands.DeleteTag
+namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
     /// Delete tag command.
     /// </summary>
-    public class DeleteTagCommand : IRequest<Unit>, IIdCommand
+    public class DeleteTagCommand : IRequest<Unit>, ITagManagementCommand
     {
         /// <summary>
         /// Ctor.

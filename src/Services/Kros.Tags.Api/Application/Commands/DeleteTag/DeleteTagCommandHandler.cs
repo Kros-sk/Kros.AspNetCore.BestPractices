@@ -5,12 +5,12 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kros.Tags.Api.Application.Commands.DeleteTag
+namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
     /// Delete tag command handler.
     /// </summary>
-    public class DeleteTagCommandHandler 
+    public class DeleteTagCommandHandler
         : IRequestHandler<DeleteTagCommand, Unit>,
         IRequestHandler<DeleteAllTagsCommand, Unit>
     {
@@ -28,7 +28,7 @@ namespace Kros.Tags.Api.Application.Commands.DeleteTag
         /// <inheritdoc />
         public async Task<Unit> Handle(DeleteTagCommand request, CancellationToken cancellationToken)
         {
-            await _tagRepository.DeleteTagAsync(request.Id);
+            await _tagRepository.DeleteTagAsync(request.Id, request.OrganizationId);
             return Unit.Value;
         }
 

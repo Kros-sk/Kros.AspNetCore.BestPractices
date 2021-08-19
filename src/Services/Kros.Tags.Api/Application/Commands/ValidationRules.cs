@@ -14,10 +14,11 @@ namespace Kros.Tags.Api.Application.Commands
         /// <typeparam name="T">Command type.</typeparam>
         /// <param name="rule">Rule.</param>
         /// <returns>Validation rule.</returns>
-        public static IRuleBuilder<T, string> TagName<T>(this IRuleBuilder<T, string> rule) =>
-            rule.NotEmpty()
-                .NotNull()
-                .MaximumLength(25);
+        public static IRuleBuilder<T, string> TagName<T>(this IRuleBuilder<T, string> rule)
+            => rule
+            .NotEmpty()
+            .NotNull()
+            .MaximumLength(25);
 
         /// <summary>
         /// Validation for description.
@@ -25,7 +26,7 @@ namespace Kros.Tags.Api.Application.Commands
         /// <typeparam name="T">Command type.</typeparam>
         /// <param name="rule">Rule.</param>
         /// <returns>Validation rule.</returns>
-        public static IRuleBuilder<T, string> TagDescription<T>(this IRuleBuilder<T, string> rule) =>
-            rule.MaximumLength(40);
+        public static IRuleBuilder<T, string> TagDescription<T>(this IRuleBuilder<T, string> rule)
+            => rule.MaximumLength(40);
     }
 }

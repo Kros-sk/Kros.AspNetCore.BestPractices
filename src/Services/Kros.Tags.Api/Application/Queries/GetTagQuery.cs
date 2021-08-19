@@ -1,5 +1,4 @@
 ﻿using Kros.KORM.Metadata.Attribute;
-//using Kros.Tags.Api.Application.Queries.PipeLines;
 using Kros.Tags.Api.Infrastructure;
 using MediatR;
 

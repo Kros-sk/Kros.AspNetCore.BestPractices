@@ -1,16 +1,21 @@
 ﻿using Kros.AspNetCore.Exceptions;
 using Kros.KORM;
 using Kros.KORM.Metadata.Attribute;
+using Kros.Tags.Api.Infrastructure;
 using Kros.Utils;
 using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Kros.Tags.Api.Application.Commands.Pipelines
+namespace Kros.Tags.Api.Application.Commands
 {
+    /// <summary>
+    /// Pipeline behavior for finding out if tag exists for organization.
+    /// </summary>
+    /// <typeparam name="TRequest">Type of request.</typeparam>
     public class ValidateTagPermissionBehavior<TRequest> : IPipelineBehavior<TRequest, Unit>
-        where TRequest : IIdCommand
+        where TRequest : ITagManagementCommand
     {
         private readonly IDatabase _database;
 
@@ -24,12 +29,10 @@ namespace Kros.Tags.Api.Application.Commands.Pipelines
         }
 
         /// <inheritdoc />
-        public async Task<Unit> Handle(TRequest request, 
-            CancellationToken cancellationToken, 
-            RequestHandlerDelegate<Unit> next)
+        public async Task<Unit> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
         {
             var tag = _database.Query<Tag>()
-                .FirstOrDefault(t => t.Id == request.Id);
+                .FirstOrDefault(t => t.Id == request.Id && t.OrganizationId == request.OrganizationId);
 
             if (tag == null)
             {
@@ -39,13 +42,18 @@ namespace Kros.Tags.Api.Application.Commands.Pipelines
             return await next();
         }
 
-        [Alias("Tags")]
+        [Alias(DatabaseConfiguration.TagsTableName)]
         private class Tag
         {
             /// <summary>
             /// Tag Id
             /// </summary>
             public int Id { get; set; }
+
+            /// <summary>
+            /// Tag Id
+            /// </summary>
+            public int OrganizationId { get; set; }
         }
     }
 }

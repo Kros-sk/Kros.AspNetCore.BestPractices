@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Newtonsoft.Json;
 
-namespace Kros.Tags.Api.Application.Commands.DeleteTag
+namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
     /// Delete all tags command.

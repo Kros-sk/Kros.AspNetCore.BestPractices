@@ -30,8 +30,8 @@ namespace Kros.Tags.Api.Infrastructure
             => _database.DeleteAsync<Tag>(t => t.OrganizationId == organizationId);
 
         /// <inheritdoc />
-        public Task DeleteTagAsync(long id)
-        => _database.DeleteAsync<Tag>(t => t.Id == id);
+        public Task DeleteTagAsync(long id, long organizationId)
+        => _database.DeleteAsync<Tag>(t => t.Id == id && t.OrganizationId == organizationId);
 
         /// <inheritdoc />
         public Task UpdateTagAsync(Tag tag)

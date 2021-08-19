@@ -1,8 +1,6 @@
 ﻿using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
-using Kros.Tags.Api.Application.Commands.CreateTag;
-using Kros.Tags.Api.Application.Commands.DeleteTag;
-using Kros.Tags.Api.Application.Commands.UpdateTag;
+using Kros.Tags.Api.Application.Commands;
 using Kros.Tags.Api.Application.Queries;
 using Kros.ToDos.Base.Extensions;
 using Microsoft.AspNetCore.Authorization;

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Newtonsoft.Json;
 
-namespace Kros.Tags.Api.Application.Commands.CreateTag
+namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
     /// Create tag command.
