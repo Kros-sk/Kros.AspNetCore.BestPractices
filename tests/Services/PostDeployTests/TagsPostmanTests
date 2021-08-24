@@ -1,0 +1,2293 @@
+{
+	"info": {
+		"_postman_id": "0d58bcd9-27db-452b-bf11-1edf63d3cb9c",
+		"name": "Tags",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"item": [
+				{
+					"name": "Seed",
+					"item": [
+						{
+							"name": "New organization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Seeding organization should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Seeding organization should return organization ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Create.OrganizationId', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"organizationName\": \"{{$randomCompanyName}}\",\n\t\"businessId\": \"1234567890\",\n\t\"street\": \"{{$randomStreetName}}\",\n\t\"streetNumber\": \"{{$randomInt}}\",\n\t\"city\": \"{{$randomCity}}\",\n\t\"zipCode\": \"010 01\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authorization",
+					"item": [
+						{
+							"name": "New Tag without token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag without token should return status code 401.\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"description\": \"{{$randomWord}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Create.OrganizationId}}",
+										"Tags"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Bad request",
+					"item": [
+						{
+							"name": "With no data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag with no data should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Creating Tag with no data should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Create.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Create.OrganizationId}}",
+										"Tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With no name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag with no name should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Creating Tag with no name should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Create.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Create.OrganizationId}}",
+										"Tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With empty name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag with no name should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Creating Tag with no name should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Create.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"\",\n  \"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Create.OrganizationId}}",
+										"Tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With name too long",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag with name too long should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Creating Tag with name too long should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Create.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Lorem ipsum dolor sit amet, consectetur adipiscing vel\",\n  \"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Create.OrganizationId}}",
+										"Tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With description too long",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag with description too long should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Creating Tag with description too long should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Create.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pellentesque quam vel gravida mollis. Donec dignissim varius leo et mattis.\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Create.OrganizationId}}",
+										"Tags"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "New Tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"\r",
+									"    pm.test(\"Creating Tag should return valid JSON with ID.\", function () {\r",
+									"        pm.response.to.be.json;\r",
+									"\r",
+									"        const jsonData = pm.response.json();\r",
+									"        pm.expect(jsonData).to.have.property('id');\r",
+									"\r",
+									"        const id = jsonData.id;\r",
+									"        pm.expect(id).to.be.above(0);\r",
+									"\r",
+									"        pm.environment.set('Temp.Create.TagId', id);\r",
+									"        pm.globals.set('Temp.Create.Request', pm.request.body.raw);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"{{$randomWord}}\"\n}"
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Create.OrganizationId}}",
+								"Tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verifying created Tag should return status code 200.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    pm.test (\"Verifying created Tag should return a Tag with correct data.\", function () {\r",
+									"        pm.response.to.be.json;\r",
+									"\r",
+									"        const req = JSON.parse(pm.globals.get('Temp.Create.Request'));\r",
+									"        const res = pm.response.json();\r",
+									"\r",
+									"        pm.expect(res.id).to.eql(pm.environment.get(\"Temp.Create.TagId\"));\r",
+									"        pm.expect(res.organizationId).to.eql(pm.environment.get(\"Temp.Create.OrganizationId\"));\r",
+									"\r",
+									"        delete res.id;\r",
+									"        delete res.organizationId;\r",
+									"\r",
+									"        pm.expect(res).to.eql(req);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/tags/{{Temp.Create.TagId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Create.OrganizationId}}",
+								"tags",
+								"{{Temp.Create.TagId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Created organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Deleting created ToDo should return status code 204.\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Create.OrganizationId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const badRequestSchema = {",
+							"    \"required\": [\"status\", \"errors\", \"title\"]",
+							"};",
+							"",
+							"pm.environment.set(\"Temp.Create.BadRequestSchema\", badRequestSchema);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Get",
+			"item": [
+				{
+					"name": "Seed",
+					"item": [
+						{
+							"name": "New organization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Seeding organization should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Seeding organization should return organization ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Get.OrganizationId', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"organizationName\": \"{{$randomCompanyName}}\",\n\t\"businessId\": \"1234567890\",\n\t\"street\": \"{{$randomStreetName}}\",\n\t\"streetNumber\": \"{{$randomInt}}\",\n\t\"city\": \"{{$randomCity}}\",\n\t\"zipCode\": \"010 01\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Tag 1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating ToDo should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Creating ToDo should return ToDo ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Get.TagId', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"{{$randomWord}}\",\n\t\"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}/tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Get.OrganizationId}}",
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Tag 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating ToDo should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Creating ToDo should return ToDo ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Get.TagId2', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"{{$randomWord}}\",\n\t\"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}/tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Get.OrganizationId}}",
+										"tags"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authorization",
+					"item": [
+						{
+							"name": "Seeded Tag with foreign token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Retrieving ToDo with foreign token should return status code 401.\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Temp.ForeignAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}/tags/{{Temp.Get.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Get.OrganizationId}}",
+										"tags",
+										"{{Temp.Get.TagId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Seeded ToDo without token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Retrieving ToDo without token should return status code 401.\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}/tags/{{Temp.Get.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Get.OrganizationId}}",
+										"tags",
+										"{{Temp.Get.TagId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Retrieving list of Tags should return status code 200.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    const tags = pm.response.json();\r",
+									"\r",
+									"    pm.test(\"Retrieving list of Tags should return an array but not an object.\", function () {\r",
+									"        pm.expect(tags).to.be.an('array').but.not.an('object');\r",
+									"\r",
+									"        pm.test(\"Retrieving list of Tags should have correct number of items.\", function () {\r",
+									"            pm.expect(tags.length).to.eql(2);\r",
+									"        });\r",
+									"\r",
+									"        pm.test(\"Retrieving list of Tags should return correct data format in each item.\", function () {\r",
+									"            tags.forEach(function(tag) {\r",
+									"                pm.expect(tv4.validate(tag, pm.environment.get(\"Temp.Get.Schema\"))).to.be.true;\r",
+									"            });\r",
+									"        });\r",
+									"\r",
+									"        pm.test(\"Retrieving list of Tags should return seeded items.\", function () {\r",
+									"            var found1 = false;\r",
+									"            var found2 = false;\r",
+									"            \r",
+									"            tags.forEach(function(tag) {\r",
+									"                if (tag.id == pm.environment.get(\"Temp.Get.TagId\")) {\r",
+									"                    found1 = true;\r",
+									"                } else if (tag.id == pm.environment.get(\"Temp.Get.TagId2\")) {\r",
+									"                    found2 = true;\r",
+									"                }\r",
+									"            });\r",
+									"            \r",
+									"            pm.expect(found1 && found2).to.be.true;\r",
+									"        });\r",
+									"    });    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}/tags",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Get.OrganizationId}}",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Non existing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Retrieving non existing ToDo should return status code 404.\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}/tags/-1",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Get.OrganizationId}}",
+								"tags",
+								"-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Retrieving a single Tag should return status code 200.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    const toDo = pm.response.json();\r",
+									"\r",
+									"    pm.test(\"Retrieving a single Tag should return an object.\", function () {\r",
+									"        pm.expect(toDo).to.be.an('object');\r",
+									"\r",
+									"        pm.test(\"Retrieving a single Tag should return correct data format.\", function () {\r",
+									"            pm.expect(tv4.validate(toDo, pm.environment.get(\"Temp.Get.Schema\"))).to.be.true;\r",
+									"        });\r",
+									"    });    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}/tags/{{Temp.Get.TagId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Get.OrganizationId}}",
+								"tags",
+								"{{Temp.Get.TagId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Seeded organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Deleting seeded organization should return status code 204.\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Get.OrganizationId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const schema = {",
+							"    \"required\": [\"id\", \"name\", \"organizationId\", \"description\"],",
+							"    \"properties\": {",
+							"        \"id\": {\"type\": \"integer\"},",
+							"        \"name\": {\"type\": \"string\"},",
+							"        \"organizationId\":{\"type\":\"integer\"},",
+							"        \"description\": {\"type\": \"string\"},",
+							"    }",
+							"};",
+							"",
+							"pm.environment.set(\"Temp.Get.Schema\", schema);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Update",
+			"item": [
+				{
+					"name": "Seed",
+					"item": [
+						{
+							"name": "New organization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Seeding organization should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Seeding organization should return organization ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Update.OrganizationId', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"organizationName\": \"{{$randomCompanyName}}\",\n\t\"businessId\": \"1234567890\",\n\t\"street\": \"{{$randomStreetName}}\",\n\t\"streetNumber\": \"{{$randomInt}}\",\n\t\"city\": \"{{$randomCity}}\",\n\t\"zipCode\": \"010 01\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Tag",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Creating Tag should return ToDo ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Update.TagId', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"{{$randomWord}}\",\n\t\"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"tags"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authorization",
+					"item": [
+						{
+							"name": "Update Tag without token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Updating Tag without token should return status code 401.\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"{{$randomWord}}\",\n\t\"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"tags",
+										"{{Temp.Update.TagId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Bad request",
+					"item": [
+						{
+							"name": "With no data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Updating Tag with no data should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Updating Tag with no data should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Update.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"tags",
+										"{{Temp.Update.TagId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With no name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Updating Tag with no name should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Updating Tag with no name should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Update.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"tags",
+										"{{Temp.Update.TagId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With empty name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Updating Tag with no name should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Updating Tag with no name should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Update.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"\",\n  \"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"tags",
+										"{{Temp.Update.TagId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With name too long",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Updating Tag with name too long should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Updating Tag with name too long should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Update.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Lorem ipsum dolor sit amet, consectetur adipiscing vel\",\n  \"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"tags",
+										"{{Temp.Update.TagId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "With description too long",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Updating Tag with description too long should return status code 400.\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"\r",
+											"    pm.test(\"Updating Tag with description too long should return correct error format.\", function () {\r",
+											"        var response = pm.response.json();\r",
+											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Update.BadRequestSchema\"))).to.be.true;\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce pellentesque quam vel gravida mollis. Donec dignissim varius leo et mattis.\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"tags",
+										"{{Temp.Update.TagId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update Tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Updating Tag should return status code 200.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"    pm.globals.set('Temp.Update.Request', pm.request.body.raw);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"{{$randomWord}}\"\n}"
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Update.OrganizationId}}",
+								"tags",
+								"{{Temp.Update.TagId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verifying updated Tag should return status code 200.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    pm.test (\"Verifying updated Tag should return a Tag with correct data.\", function () {\r",
+									"        pm.response.to.be.json;\r",
+									"\r",
+									"        const req = JSON.parse(pm.globals.get('Temp.Update.Request'));\r",
+									"        const res = pm.response.json();\r",
+									"\r",
+									"        pm.expect(res.id).to.eql(pm.environment.get(\"Temp.Update.TagId\"));\r",
+									"        pm.expect(res.organizationId).to.eql(pm.environment.get(\"Temp.Update.OrganizationId\"));\r",
+									"\r",
+									"        delete res.id;\r",
+									"        delete res.organizationId;\r",
+									"\r",
+									"        pm.expect(res).to.eql(req);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Update.OrganizationId}}",
+								"tags",
+								"{{Temp.Update.TagId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update non-existing Tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Updating non-existing Tag should return status code 404.\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"{{$randomWord}}\"\n}"
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/0",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Update.OrganizationId}}",
+								"tags",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Created organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Deleting seeded organization should return status code 204.\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Update.OrganizationId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const badRequestSchema = {",
+							"    \"required\": [\"status\", \"errors\", \"title\"]",
+							"};",
+							"",
+							"pm.environment.set(\"Temp.Update.BadRequestSchema\", badRequestSchema);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Delete",
+			"item": [
+				{
+					"name": "Seed",
+					"item": [
+						{
+							"name": "New organization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Seeding organization should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Seeding organization should return organization ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Delete.OrganizationId', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"organizationName\": \"{{$randomCompanyName}}\",\n\t\"businessId\": \"1234567890\",\n\t\"street\": \"{{$randomStreetName}}\",\n\t\"streetNumber\": \"{{$randomInt}}\",\n\t\"city\": \"{{$randomCity}}\",\n\t\"zipCode\": \"010 01\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Tag 1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Creating Tag should return Tag ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Delete.TagId', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"{{$randomWord}}\",\n\t\"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Delete.OrganizationId}}",
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Tag 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"\r",
+											"    pm.test(\"Creating Tag should return Tag ID.\", function () {\r",
+											"        pm.response.to.be.json;\r",
+											"\r",
+											"        const jsonData = pm.response.json();\r",
+											"        pm.expect(jsonData).to.have.property('id');\r",
+											"\r",
+											"        pm.environment.set('Temp.Delete.TagId2', jsonData.id);\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"{{$randomWord}}\",\n\t\"description\": \"{{$randomWord}}\"\n}"
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Delete.OrganizationId}}",
+										"tags"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Authorization",
+					"item": [
+						{
+							"name": "Tag with foreign token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Deleting Tag with foreign token should return status code 401.\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{Temp.ForeignAccessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags/{{Temp.Delete.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Delete.OrganizationId}}",
+										"tags",
+										"{{Temp.Delete.TagId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tag without token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Deleting Tag without token should return status code 401.\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags/{{Temp.Delete.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Delete.OrganizationId}}",
+										"tags",
+										"{{Temp.Delete.TagId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ById",
+					"item": [
+						{
+							"name": "Delete Tag",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Deleting Tag by ID should return status code 204.\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags/{{Temp.Delete.TagId2}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Delete.OrganizationId}}",
+										"tags",
+										"{{Temp.Delete.TagId2}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Tag",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Verifying deleted Tag should return status code 404.\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags/{{Temp.Delete.TagId2}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Delete.OrganizationId}}",
+										"tags",
+										"{{Temp.Delete.TagId2}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "All",
+					"item": [
+						{
+							"name": "Delete all tags",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Deleting all Tags should return status code 204.\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Delete.OrganizationId}}",
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Tags",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Verifying deleted Tag should return status code 404.\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags/{{Temp.Delete.TagId2}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Delete.OrganizationId}}",
+										"tags",
+										"{{Temp.Delete.TagId2}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Non existing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Deleting non existing Tag should return status code 404.\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}/tags/0",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Delete.OrganizationId}}",
+								"tags",
+								"0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Seeded organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Deleting seeded organization should return status code 204.\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Delete.OrganizationId}}",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Delete.OrganizationId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cleanup",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function cleanup() {\r",
+							"    const clean = _.keys(pm.environment.toObject())\r",
+							"    _.each(clean, (arrItem) => {\r",
+							"        if (arrItem.startsWith(\"Temp.\")) {\r",
+							"            pm.environment.unset(arrItem)\r",
+							"        }\r",
+							"    })\r",
+							"}\r",
+							"\r",
+							"cleanup();"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Cleanup should return status code 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "CLEANUP",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ApiBaseGatewayUri}}/cleanup",
+					"host": [
+						"{{ApiBaseGatewayUri}}"
+					],
+					"path": [
+						"cleanup"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{Temp.AccessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if (!pm.environment.get(\"Temp.AccessToken\") ||",
+					"    pm.environment.get(\"Temp.AccessToken.Timeout\") < Date.now())",
+					"{",
+					"    pm.sendRequest(",
+					"        {",
+					"            url: pm.environment.get(\"OAuthUrl\"),",
+					"            method: 'POST',",
+					"            header: {",
+					"                'Content-Type': 'application/x-www-form-urlencoded',",
+					"            },",
+					"            body: {",
+					"                mode: 'urlencoded',",
+					"                urlencoded: [",
+					"                    {key: \"client_id\", value: \"Demo.BestPractices.Postman\", disabled: false},",
+					"                    {key: \"grant_type\", value: \"password\", disabled: false},",
+					"                    {key: \"username\", value: pm.environment.get(\"OAuthUsername\"), disabled: false},",
+					"                    {key: \"password\", value: pm.environment.get(\"OAuthPassword\"), disabled: false}",
+					"                ]",
+					"            }",
+					"        },",
+					"        function (err, res) {",
+					"            pm.environment.set(\"Temp.AccessToken\", res.json().access_token);",
+					"            var now = new Date();",
+					"            var timeout = now.setMinutes(now.getMinutes() + 20);",
+					"            pm.environment.set(\"Temp.AccessToken.Timeout\", timeout);",
+					"        }",
+					"    );",
+					"}",
+					"",
+					"if (!pm.environment.get(\"Temp.ForeignAccessToken\") ||",
+					"    pm.environment.get(\"Temp.ForeignAccessToken.Timeout\") < Date.now())",
+					"{",
+					"    pm.sendRequest(",
+					"        {",
+					"            url: pm.environment.get(\"OAuthUrl\"),",
+					"            method: 'POST',",
+					"            header: {",
+					"                'Content-Type': 'application/x-www-form-urlencoded',",
+					"            },",
+					"            body: {",
+					"                mode: 'urlencoded',",
+					"                urlencoded: [",
+					"                    {key: \"client_id\", value: \"Demo.BestPractices.Postman\", disabled: false},",
+					"                    {key: \"grant_type\", value: \"password\", disabled: false},",
+					"                    {key: \"username\", value: pm.environment.get(\"OAuthForeignUsername\"), disabled: false},",
+					"                    {key: \"password\", value: pm.environment.get(\"OAuthForeignPassword\"), disabled: false}",
+					"                ]",
+					"            }",
+					"        },",
+					"        function (err, res) {",
+					"            pm.environment.set(\"Temp.ForeignAccessToken\", res.json().access_token);",
+					"            var now = new Date();",
+					"            var timeout = now.setMinutes(now.getMinutes() + 20);",
+					"            pm.environment.set(\"Temp.ForeignAccessToken.Timeout\", timeout);",
+					"        }",
+					"    );",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

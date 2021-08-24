@@ -1,55 +1,67 @@
 {
-  "Routes": [
-    {
-      "DownstreamPathTemplate": "/api/users",
-      "ServiceName": "authorization",
-      "UpstreamPathTemplate": "/organizations/{organizationId}/users",
-      "SwaggerKey": "UsersKey"
-    },
-    {
-      "DownstreamPathTemplate": "/api/users/{everything}",
-      "ServiceName": "authorization",
-      "UpstreamPathTemplate": "/organizations/{organizationId}/users/{everything}",
-      "SwaggerKey": "PermissionsKey"
-    },
-    {
-      "DownstreamPathTemplate": "/api/permissions",
-      "ServiceName": "authorization",
-      "UpstreamPathTemplate": "/organizations/{organizationId}/permissions",
-      "SwaggerKey": "PermissionsKey"
-    },
-    {
-      "DownstreamPathTemplate": "/api/permissions/{everything}",
-      "ServiceName": "authorization",
-      "UpstreamPathTemplate": "/organizations/{organizationId}/permissions/{everything}",
-      "SwaggerKey": "PermissionsKey"
-    },
-    {
-      "DownstreamPathTemplate": "/api/todos",
-      "ServiceName": "toDos",
-      "UpstreamPathTemplate": "/organizations/{organizationId}/todos",
-      "SwaggerKey": "TodosKey"
-    },
-    {
-      "DownstreamPathTemplate": "/api/todos/{everything}",
-      "ServiceName": "toDos",
-      "UpstreamPathTemplate": "/organizations/{organizationId}/todos/{everything}",
-      "SwaggerKey": "TodosKey"
-    },
-    {
-      "DownstreamPathTemplate": "/api/organizations",
-      "ServiceName": "organizations",
-      "UpstreamPathTemplate": "/organizations",
-      "SwaggerKey": "OrganizationsKey"
-    },
-    {
-      "DownstreamPathTemplate": "/api/organizations/{everything}",
-      "ServiceName": "organizations",
-      "UpstreamPathTemplate": "/organizations/{everything}",
-      "SwaggerKey": "OrganizationsKey"
-    }
-  ],
-
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/api/users",
+            "ServiceName": "authorization",
+            "UpstreamPathTemplate": "/organizations/{organizationId}/users",
+            "SwaggerKey": "UsersKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/users/{everything}",
+            "ServiceName": "authorization",
+            "UpstreamPathTemplate": "/organizations/{organizationId}/users/{everything}",
+            "SwaggerKey": "PermissionsKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/permissions",
+            "ServiceName": "authorization",
+            "UpstreamPathTemplate": "/organizations/{organizationId}/permissions",
+            "SwaggerKey": "PermissionsKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/permissions/{everything}",
+            "ServiceName": "authorization",
+            "UpstreamPathTemplate": "/organizations/{organizationId}/permissions/{everything}",
+            "SwaggerKey": "PermissionsKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/todos",
+            "ServiceName": "toDos",
+            "UpstreamPathTemplate": "/organizations/{organizationId}/todos",
+            "SwaggerKey": "TodosKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/todos/{everything}",
+            "ServiceName": "toDos",
+            "UpstreamPathTemplate": "/organizations/{organizationId}/todos/{everything}",
+            "SwaggerKey": "TodosKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/tags",
+            "ServiceName": "tags",
+            "UpstreamPathTemplate": "/organizations/{organizationId}/tags",
+            "SwaggerKey": "TagsKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/tags/{everything}",
+            "ServiceName": "tags",
+            "UpstreamPathTemplate": "/organizations/{organizationId}/tags/{everything}",
+            "SwaggerKey": "TagsKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/organizations",
+            "ServiceName": "organizations",
+            "UpstreamPathTemplate": "/organizations",
+            "SwaggerKey": "OrganizationsKey"
+        },
+        {
+            "DownstreamPathTemplate": "/api/organizations/{everything}",
+            "ServiceName": "organizations",
+            "UpstreamPathTemplate": "/organizations/{everything}",
+            "SwaggerKey": "OrganizationsKey"
+        }
+    ],
+  
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {
       "Type": "AppConfiguration",
@@ -102,6 +114,18 @@
           "Version": "v1",
           "Service": {
             "Name": "organizations"
+          }
+        }
+      ]
+    },
+    {
+      "Key": "TagsKey",
+      "Config": [
+        {
+          "Name": "Tags API",
+          "Version": "v1",
+          "Service": {
+            "Name": "tags"
           }
         }
       ]
