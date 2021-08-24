@@ -16,9 +16,9 @@ namespace Kros.Tags.Api.Application.Commands
         /// <returns>Validation rule.</returns>
         public static IRuleBuilder<T, string> TagName<T>(this IRuleBuilder<T, string> rule)
             => rule
-            .NotEmpty()
-            .NotNull()
-            .MaximumLength(25);
+                .NotEmpty()
+                .NotNull()
+                .MaximumLength(25);
 
         /// <summary>
         /// Validation for description.
