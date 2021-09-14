@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using Kros.KORM;
+using Kros.Utils;
+using MediatR;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Kros.KORM;
-using Kros.Utils;
-using System.Linq;
 
 namespace Kros.Tags.Api.Application.Queries
 {
@@ -13,7 +13,8 @@ namespace Kros.Tags.Api.Application.Queries
     /// </summary>
     public class GetTagsHandler
         : IRequestHandler<GetAllTagsQuery, IEnumerable<GetAllTagsQuery.Tag>>,
-        IRequestHandler<GetTagQuery, GetTagQuery.Tag>
+        IRequestHandler<GetTagQuery, GetTagQuery.Tag>,
+        IRequestHandler<GetAllColorsQuery, IEnumerable<GetAllColorsQuery.Color>>
     {
         private readonly IDatabase _database;
 
@@ -40,5 +41,10 @@ namespace Kros.Tags.Api.Application.Queries
             CancellationToken cancellationToken)
             => Task.FromResult(_database.Query<GetTagQuery.Tag>()
                 .FirstOrDefault(o => o.Id == request.TagId));
+
+        public Task<IEnumerable<GetAllColorsQuery.Color>> Handle(GetAllColorsQuery request, CancellationToken cancellationToken)
+            => Task.FromResult(_database.Query<GetAllColorsQuery.Color>()
+                .Where($"OrganizationId = {request.OrganizationId}")
+                .AsEnumerable());
     }
 }

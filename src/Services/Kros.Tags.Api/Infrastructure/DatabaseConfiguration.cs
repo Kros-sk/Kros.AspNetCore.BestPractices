@@ -4,6 +4,9 @@ using Kros.Tags.Api.Domain;
 
 namespace Kros.Tags.Api.Infrastructure
 {
+    /// <summary>
+    /// Configure database for KORM.
+    /// </summary>
     public class DatabaseConfiguration : DatabaseConfigurationBase
     {
         internal const string TagsTableName = "Tags";

@@ -34,6 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddMediatRDependencies(this IServiceCollection services)
             => services.AddMediatR(Assembly.GetExecutingAssembly())
                 .AddPipelineBehaviorsForRequest<ITagManagementCommand>()
+                .AddPipelineBehaviorsForRequest<IUserResourceCommand>()
                 .AddMediatRNullCheckPostProcessor();
     }
 }
