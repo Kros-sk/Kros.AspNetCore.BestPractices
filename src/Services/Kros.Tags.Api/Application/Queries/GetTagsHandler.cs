@@ -42,6 +42,7 @@ namespace Kros.Tags.Api.Application.Queries
             => Task.FromResult(_database.Query<GetTagQuery.Tag>()
                 .FirstOrDefault(o => o.Id == request.TagId));
 
+        ///<inheritdoc/>
         public Task<IEnumerable<GetAllColorsQuery.Color>> Handle(GetAllColorsQuery request, CancellationToken cancellationToken)
             => Task.FromResult(_database.Query<GetAllColorsQuery.Color>()
                 .Where($"OrganizationId = {request.OrganizationId}")

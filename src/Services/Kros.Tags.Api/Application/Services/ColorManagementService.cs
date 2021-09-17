@@ -1,5 +1,7 @@
 ﻿using Kros.Utils;
+using RandomColorGenerator;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Kros.Tags.Api.Application.Services
@@ -40,6 +42,36 @@ namespace Kros.Tags.Api.Application.Services
         public async Task DeleteAllColors(long organizationId)
         {
             await _tableStorageManagementService.DeleteAllValuesForPartitionKey(organizationId);
+        }
+
+        ///<inheritdoc/>
+        public int CheckAndGenerateColor(long organizationId, int colorARGBValue, int oldColorARGBValue)
+        {
+            var colors = GetUsedColors(organizationId);
+
+            if (colorARGBValue == 0)
+            {
+                colorARGBValue = RandomColor.GetColor(ColorScheme.Random, Luminosity.Bright).ToArgb();
+            }
+            else
+            {
+                if (colors.Any(c => c.ColorValue == colorARGBValue.ToString()) &&
+                        (oldColorARGBValue != colorARGBValue))
+                {
+                    return 0;
+                }
+            }
+            var colorExistsInStorage = colors.Any(c => c.ColorValue == colorARGBValue.ToString() &&
+                (oldColorARGBValue != colorARGBValue));
+
+            while (colorExistsInStorage)
+            {
+                var colorValue = RandomColor.GetColor(ColorScheme.Random, Luminosity.Bright).ToArgb();
+                colorARGBValue = colorValue;
+                colorExistsInStorage = colors.Any(c => c.ColorValue == colorARGBValue.ToString());
+            }
+
+            return colorARGBValue;
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Kros.Tags.Api.Application.Commands
+﻿namespace Kros.Tags.Api.Application.Commands
 {
     /// <summary>
     /// Interface, which describe command for changing user resource.
@@ -16,7 +11,7 @@ namespace Kros.Tags.Api.Application.Commands
         long Id { get; }
 
         /// <summary>
-        /// User Id.
+        /// Organization Id.
         /// </summary>
         long OrganizationId { get; }
 

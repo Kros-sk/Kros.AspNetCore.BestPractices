@@ -38,5 +38,15 @@ namespace Kros.Tags.Api.Application.Services
         /// <param name="organizationId">Organization Id.</param>
         /// <returns></returns>
         Task DeleteAllColors(long organizationId);
+
+        /// <summary>
+        /// Check existence of color in organization if color is set. If not generate color for tag in organization. 
+        /// Not set is 0.
+        /// </summary>
+        /// <param name="organizationId">Organization Id.</param>
+        /// <param name="colorARGBValue">ARGB value of color.</param>
+        /// <param name="oldColorARGBValue">Old ARGB value. Used when tag is updated.</param>
+        /// <returns>Generated color. Return 0 if user want to set color that exists in organization.</returns>
+        int CheckAndGenerateColor(long organizationId, int colorARGBValue, int oldColorARGBValue);
     }
 }

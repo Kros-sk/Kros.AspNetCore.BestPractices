@@ -28,6 +28,7 @@ namespace Kros.Tags.Api.Application.Commands
             _database = Check.NotNull(database, nameof(database));
         }
 
+        ///<inheritdoc/>
         public async Task<Unit> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
         {
             var tag = _database.Query<Tag>()
