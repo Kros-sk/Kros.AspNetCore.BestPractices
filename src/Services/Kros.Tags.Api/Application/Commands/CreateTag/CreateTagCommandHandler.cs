@@ -3,9 +3,7 @@ using Kros.Tags.Api.Domain;
 using Kros.Utils;
 using Mapster;
 using MediatR;
-using RandomColorGenerator;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +32,7 @@ namespace Kros.Tags.Api.Application.Commands
         public async Task<long> Handle(CreateTagCommand request, CancellationToken cancellationToken)
         {
             var generatedColor = _colorManagementService.CheckAndGenerateColor(request.OrganizationId, request.ColorARGBValue, 0);
-            if(generatedColor == 0)
+            if (generatedColor == 0)
             {
                 throw new InvalidOperationException("Color already exist in storage.");
             }
