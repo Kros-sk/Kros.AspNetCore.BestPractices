@@ -8,7 +8,6 @@ namespace Kros.Tags.Api.Application.Services
     /// </summary>
     public interface IColorManagementService
     {
-
         /// <summary>
         /// Set used color.
         /// </summary>

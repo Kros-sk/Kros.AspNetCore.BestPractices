@@ -1,8 +1,4 @@
 ﻿using Microsoft.Azure.Cosmos.Table;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Kros.Tags.Api.Application.Services
 {
@@ -24,10 +20,7 @@ namespace Kros.Tags.Api.Application.Services
         /// <summary>
         /// Ctor.
         /// </summary>
-        public ColorEntity()
-        {
-
-        }
+        public ColorEntity() { }
 
         /// <summary>
         /// Ctor.

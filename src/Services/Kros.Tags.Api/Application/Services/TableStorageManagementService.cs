@@ -40,7 +40,6 @@ namespace Kros.Tags.Api.Application.Services
         /// <inheritdoc />
         public async Task DeleteValue(long partitionKey, int rowKey)
         {
-
             TableOperation retrieveOperation = TableOperation.Retrieve<ColorEntity>(partitionKey.ToString(), rowKey.ToString());
             var result = await _table.Value.ExecuteAsync(retrieveOperation);
             var color = result.Result as ColorEntity;
@@ -78,11 +77,11 @@ namespace Kros.Tags.Api.Application.Services
         {
             var query = new TableQuery<ColorEntity>();
             query.FilterString = TableQuery.GenerateFilterCondition(
-                nameof(ColorEntity.OrganizationId), 
-                QueryComparisons.Equal, 
+                nameof(ColorEntity.OrganizationId),
+                QueryComparisons.Equal,
                 partitionKey.ToString());
             var results = _table.Value.ExecuteQuery(query);
-            foreach(var color in results)
+            foreach (var color in results)
             {
                 TableOperation operation = TableOperation.Delete(color);
                 await _table.Value.ExecuteAsync(operation);
