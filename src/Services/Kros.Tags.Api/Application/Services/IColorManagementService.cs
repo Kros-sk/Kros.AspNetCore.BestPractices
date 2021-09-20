@@ -21,7 +21,7 @@ namespace Kros.Tags.Api.Application.Services
         /// Get all used colors for organization.
         /// </summary>
         /// <param name="organizationId">Organization Id.</param>
-        /// <returns></returns>
+        /// <returns>Used colors.</returns>
         IEnumerable<ColorEntity> GetUsedColors(long organizationId);
 
         /// <summary>

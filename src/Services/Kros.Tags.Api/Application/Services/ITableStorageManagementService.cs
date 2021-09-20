@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Kros.Tags.Api.Application.Services
@@ -22,7 +20,7 @@ namespace Kros.Tags.Api.Application.Services
         /// Get all values for specified partition.
         /// </summary>
         /// <param name="partitionKey">Partition key.</param>
-        /// <returns></returns>
+        /// <returns>All values from table.</returns>
         IEnumerable<ColorEntity> GetAllValuesForPartition(long partitionKey);
 
         /// <summary>
