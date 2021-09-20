@@ -40,29 +40,6 @@ namespace Kros.Tags.Api.Application.Commands
         /// <inheritdoc />
         public async Task<Unit> Handle(UpdateTagCommand request, CancellationToken cancellationToken)
         {
-            /*var colors = _colorManagementService.GetUsedColors(request.OrganizationId);
-            if (request.ColorARGBValue == 0)
-            {
-                request.ColorARGBValue = RandomColor.GetColor(ColorScheme.Random, Luminosity.Bright).ToArgb();
-            }
-            else
-            {
-                if (colors.Any(c => c.ColorValue == request.ColorARGBValue.ToString()) &&
-                        (request.OldColorARGBValue != request.ColorARGBValue))
-                {
-                    throw new InvalidOperationException("Color already exist in storage.");
-                }
-            }
-            var colorExistsInStorage = colors.Any(c => c.ColorValue == request.ColorARGBValue.ToString() &&
-                (request.OldColorARGBValue != request.ColorARGBValue));
-
-            while (colorExistsInStorage)
-            {
-                var colorValue = RandomColor.GetColor(ColorScheme.Random, Luminosity.Bright).ToArgb();
-                request.ColorARGBValue = colorValue;
-                colorExistsInStorage = colors.Any(c => c.ColorValue == request.ColorARGBValue.ToString());
-            }*/
-
             var generatedColor = _colorManagementService.CheckAndGenerateColor(
                 request.OrganizationId, 
                 request.ColorARGBValue, 
