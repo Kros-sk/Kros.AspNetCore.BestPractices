@@ -28,5 +28,11 @@ namespace Kros.Tags.Api.Application.Commands
         /// </summary>
         [JsonIgnore]
         public long OrganizationId { get; }
+
+        /// <summary>
+        /// User Id.
+        /// </summary>
+        [JsonIgnore]
+        public long UserId { get; set; }
     }
 }

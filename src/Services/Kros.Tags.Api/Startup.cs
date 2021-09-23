@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using Kros.AspNetCore;
 using Kros.AspNetCore.Authorization;
 using Kros.Swagger.Extensions;
+using Kros.Tags.Api.Application.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.BuilderMiddlewares;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,7 @@ namespace Kros.Tags.Api
             services.AddKormDatabase(Configuration);
             services.AddMediatRDependencies();
 
+            services.ConfigureOptions<AzureTableStorageSettings>(Configuration);
             services.Scan(scan =>
                 scan.FromCallingAssembly()
                 .AddClasses()

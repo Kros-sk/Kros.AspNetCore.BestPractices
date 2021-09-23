@@ -55,6 +55,16 @@ namespace Kros.Tags.Api.Application.Queries
             /// Description for tag.
             /// </summary>
             public string Description { get; set; }
+
+            /// <summary>
+            /// User Id.
+            /// </summary>
+            public long UserId { get; set; }
+
+            /// <summary>
+            /// ARGB value for color.
+            /// </summary>
+            public int ColorARGBValue { get; set; }
         }
     }
 }
