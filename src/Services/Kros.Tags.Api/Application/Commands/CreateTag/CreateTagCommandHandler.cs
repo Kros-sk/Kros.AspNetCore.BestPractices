@@ -1,3 +1,5 @@
+using Kros.AspNetCore.Exceptions;
+using Kros.Tags.Api.Application.Services;
 using Kros.Tags.Api.Domain;
 using Kros.Utils;
 using Mapster;
@@ -13,19 +15,34 @@ namespace Kros.Tags.Api.Application.Commands
     public class CreateTagCommandHandler : IRequestHandler<CreateTagCommand, long>
     {
         private readonly ITagRepository _tagRepository;
+        private readonly IColorManagementService _colorManagementService;
 
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="tagRepository">Tag repository.</param>
-        public CreateTagCommandHandler(ITagRepository tagRepository)
+        /// <param name="colorManagementService">Color management service.</param>
+        public CreateTagCommandHandler(ITagRepository tagRepository, IColorManagementService colorManagementService)
         {
             _tagRepository = Check.NotNull(tagRepository, nameof(tagRepository));
+            _colorManagementService = Check.NotNull(colorManagementService, nameof(colorManagementService));
         }
 
         /// <inheritdoc />
         public async Task<long> Handle(CreateTagCommand request, CancellationToken cancellationToken)
         {
+            int generatedColor = _colorManagementService.CheckAndGenerateColor(request.OrganizationId, request.ColorARGBValue, 0);
+            if (generatedColor == 0)
+            {
+                throw new RequestConflictException("Color already exist in storage.");
+            }
+            else
+            {
+                request.ColorARGBValue = generatedColor;
+            }
+
+            await _colorManagementService.SetUsedColor(request.OrganizationId, request.ColorARGBValue);
+
             var tag = request.Adapt<Tag>();
             await _tagRepository.CreateTagAsync(tag);
 

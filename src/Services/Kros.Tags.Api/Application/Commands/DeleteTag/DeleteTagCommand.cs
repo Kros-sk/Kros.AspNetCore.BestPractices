@@ -1,5 +1,4 @@
-﻿using Kros.Tags.Api.Application.Commands;
-using MediatR;
+﻿using MediatR;
 using Newtonsoft.Json;
 
 namespace Kros.Tags.Api.Application.Commands
@@ -7,17 +6,19 @@ namespace Kros.Tags.Api.Application.Commands
     /// <summary>
     /// Delete tag command.
     /// </summary>
-    public class DeleteTagCommand : IRequest<Unit>, ITagManagementCommand
+    public class DeleteTagCommand : IRequest<Unit>, ITagManagementCommand, IUserResourceCommand
     {
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="tagId">Tag id.</param>
         /// <param name="organizationId">Organization Id.</param>
-        public DeleteTagCommand(long tagId, long organizationId)
+        /// <param name="userId">User Id.</param>
+        public DeleteTagCommand(long tagId, long organizationId, long userId)
         {
             Id = tagId;
             OrganizationId = organizationId;
+            UserId = userId;
         }
 
         /// <summary>
@@ -30,5 +31,11 @@ namespace Kros.Tags.Api.Application.Commands
         /// </summary>
         [JsonIgnore]
         public long OrganizationId { get; }
+
+        /// <summary>
+        /// User Id.
+        /// </summary>
+        [JsonIgnore]
+        public long UserId { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "0d58bcd9-27db-452b-bf11-1edf63d3cb9c",
+		"_postman_id": "c1df6a84-4732-4252-8a33-75dccf696edf",
 		"name": "Tags",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -116,6 +116,64 @@
 				{
 					"name": "Bad request",
 					"item": [
+						{
+							"name": "Seed",
+							"item": [
+								{
+									"name": "New tag with specified color",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"\r",
+													"    pm.test(\"Creating Tag should return valid JSON with ID.\", function () {\r",
+													"        pm.response.to.be.json;\r",
+													"\r",
+													"        const jsonData = pm.response.json();\r",
+													"        pm.expect(jsonData).to.have.property('id');\r",
+													"\r",
+													"        const id = jsonData.id;\r",
+													"        pm.expect(id).to.be.above(0);\r",
+													"\r",
+													"        pm.environment.set('Temp.Create.SpecifiedColor.TagId', id);\r",
+													"    });\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"description\": \"{{$randomWord}}\",\r\n  \"colorARGBValue\": -123456\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+											"host": [
+												"{{ApiBaseGatewayUri}}"
+											],
+											"path": [
+												"organizations",
+												"{{Temp.Create.OrganizationId}}",
+												"Tags"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
 						{
 							"name": "With no data",
 							"event": [
@@ -360,6 +418,80 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "With already used color",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Creating Tag with already used color should return status code 409.\", function () {\r",
+											"    pm.response.to.have.status(409);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"description\": \"{{$randomWord}}\",\r\n  \"colorARGBValue\": -123456\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Create.OrganizationId}}",
+										"Tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete created Tag with specified color",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Deleting created tag should return status code 204.\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/tags/{{Temp.Create.SpecifiedColor.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Create.OrganizationId}}",
+										"tags",
+										"{{Temp.Create.SpecifiedColor.TagId}}"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -404,7 +536,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"{{$randomWord}}\"\n}"
+							"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"{{$randomWord}}\",\n  \"colorARGBValue\": -11111\n}"
 						},
 						"url": {
 							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Create.OrganizationId}}/Tags",
@@ -441,6 +573,7 @@
 									"\r",
 									"        delete res.id;\r",
 									"        delete res.organizationId;\r",
+									"        delete res.userId;\r",
 									"\r",
 									"        pm.expect(res).to.eql(req);\r",
 									"    });\r",
@@ -485,7 +618,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test (\"Deleting created ToDo should return status code 204.\", function () {\r",
+									"pm.test (\"Deleting created organization should return status code 204.\", function () {\r",
 									"    pm.response.to.have.status(204);\r",
 									"});"
 								],
@@ -603,10 +736,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Creating ToDo should return status code 201.\", function () {\r",
+											"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
 											"    pm.response.to.have.status(201);\r",
 											"\r",
-											"    pm.test(\"Creating ToDo should return ToDo ID.\", function () {\r",
+											"    pm.test(\"Creating Tag should return ToDo ID.\", function () {\r",
 											"        pm.response.to.be.json;\r",
 											"\r",
 											"        const jsonData = pm.response.json();\r",
@@ -656,10 +789,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Creating ToDo should return status code 201.\", function () {\r",
+											"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
 											"    pm.response.to.have.status(201);\r",
 											"\r",
-											"    pm.test(\"Creating ToDo should return ToDo ID.\", function () {\r",
+											"    pm.test(\"Creating Tag should return ToDo ID.\", function () {\r",
 											"        pm.response.to.be.json;\r",
 											"\r",
 											"        const jsonData = pm.response.json();\r",
@@ -869,13 +1002,63 @@
 					"response": []
 				},
 				{
+					"name": "All colors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Retrieving list of used colors should return status code 200.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    const tags = pm.response.json();\r",
+									"\r",
+									"    pm.test(\"Retrieving list of used colors should return an array but not an object.\", function () {\r",
+									"        pm.expect(tags).to.be.an('array').but.not.an('object');\r",
+									"\r",
+									"        pm.test(\"Retrieving list of used colors should have correct number of items.\", function () {\r",
+									"            pm.expect(tags.length).to.eql(2);\r",
+									"        });\r",
+									"\r",
+									"        pm.test(\"Retrieving list of used colors should return correct data format in each item.\", function () {\r",
+									"            tags.forEach(function(tag) {\r",
+									"                pm.expect(tv4.validate(tag, pm.environment.get(\"Temp.Get.ColorSchema\"))).to.be.true;\r",
+									"            });\r",
+									"        });\r",
+									"    });    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Get.OrganizationId}}/tags/colors",
+							"host": [
+								"{{ApiBaseGatewayUri}}"
+							],
+							"path": [
+								"organizations",
+								"{{Temp.Get.OrganizationId}}",
+								"tags",
+								"colors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Non existing",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Retrieving non existing ToDo should return status code 404.\", function () {\r",
+									"pm.test(\"Retrieving non existing Tag should return status code 404.\", function () {\r",
 									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
@@ -987,16 +1170,26 @@
 						"type": "text/javascript",
 						"exec": [
 							"const schema = {",
-							"    \"required\": [\"id\", \"name\", \"organizationId\", \"description\"],",
+							"    \"required\": [\"id\", \"name\", \"organizationId\", \"description\", \"colorARGBValue\"],",
 							"    \"properties\": {",
 							"        \"id\": {\"type\": \"integer\"},",
 							"        \"name\": {\"type\": \"string\"},",
 							"        \"organizationId\":{\"type\":\"integer\"},",
 							"        \"description\": {\"type\": \"string\"},",
+							"        \"colorARGBValue\": {\"type\": \"integer\"}",
 							"    }",
 							"};",
 							"",
-							"pm.environment.set(\"Temp.Get.Schema\", schema);"
+							"const colorSchema = {",
+							"    \"required\": [\"organizationId\", \"colorARGBValue\"],",
+							"    \"properties\": {",
+							"        \"organizationId\":{\"type\":\"integer\"},",
+							"        \"colorARGBValue\": {\"type\": \"integer\"}",
+							"    }",
+							"}",
+							"",
+							"pm.environment.set(\"Temp.Get.Schema\", schema);",
+							"pm.environment.set(\"Temp.Get.ColorSchema\", colorSchema);"
 						]
 					}
 				},
@@ -1078,7 +1271,7 @@
 											"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
 											"    pm.response.to.have.status(201);\r",
 											"\r",
-											"    pm.test(\"Creating Tag should return ToDo ID.\", function () {\r",
+											"    pm.test(\"Creating Tag should return Tag ID.\", function () {\r",
 											"        pm.response.to.be.json;\r",
 											"\r",
 											"        const jsonData = pm.response.json();\r",
@@ -1179,6 +1372,64 @@
 				{
 					"name": "Bad request",
 					"item": [
+						{
+							"name": "Seed",
+							"item": [
+								{
+									"name": "New tag with specified color",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Creating Tag should return status code 201.\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"\r",
+													"    pm.test(\"Creating Tag should return valid JSON with ID.\", function () {\r",
+													"        pm.response.to.be.json;\r",
+													"\r",
+													"        const jsonData = pm.response.json();\r",
+													"        pm.expect(jsonData).to.have.property('id');\r",
+													"\r",
+													"        const id = jsonData.id;\r",
+													"        pm.expect(id).to.be.above(0);\r",
+													"\r",
+													"        pm.environment.set('Temp.Update.SpecifiedColor.TagId', id);\r",
+													"    });\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"description\": \"{{$randomWord}}\",\r\n  \"colorARGBValue\": -123456\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/Tags",
+											"host": [
+												"{{ApiBaseGatewayUri}}"
+											],
+											"path": [
+												"organizations",
+												"{{Temp.Update.OrganizationId}}",
+												"Tags"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
 						{
 							"name": "With no data",
 							"event": [
@@ -1286,10 +1537,10 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Updating Tag with no name should return status code 400.\", function () {\r",
+											"pm.test(\"Updating Tag with empty name should return status code 400.\", function () {\r",
 											"    pm.response.to.have.status(400);\r",
 											"\r",
-											"    pm.test(\"Updating Tag with no name should return correct error format.\", function () {\r",
+											"    pm.test(\"Updating Tag with empty name should return correct error format.\", function () {\r",
 											"        var response = pm.response.json();\r",
 											"        pm.expect(tv4.validate(response, pm.environment.get(\"Temp.Update.BadRequestSchema\"))).to.be.true;\r",
 											"    });\r",
@@ -1428,6 +1679,81 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "With used color",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Updating Tag with already used color should return status code 409.\", function () {\r",
+											"    pm.response.to.have.status(409);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"description\": \"{{$randomWord}}\",\r\n  \"colorARGBValue\": -123456\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/Tags/{{Temp.Update.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"Tags",
+										"{{Temp.Update.TagId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete created Tag with specified color",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Deleting created tag should return status code 204.\", function () {\r",
+											"    pm.response.to.have.status(204);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.SpecifiedColor.TagId}}",
+									"host": [
+										"{{ApiBaseGatewayUri}}"
+									],
+									"path": [
+										"organizations",
+										"{{Temp.Update.OrganizationId}}",
+										"tags",
+										"{{Temp.Update.SpecifiedColor.TagId}}"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1461,7 +1787,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"{{$randomWord}}\"\n}"
+							"raw": "{\n  \"name\": \"{{$randomWord}}\",\n  \"description\": \"{{$randomWord}}\",\n  \"colorARGBValue\": -2269786\n}"
 						},
 						"url": {
 							"raw": "{{ApiBaseGatewayUri}}/organizations/{{Temp.Update.OrganizationId}}/tags/{{Temp.Update.TagId}}",
@@ -1499,6 +1825,7 @@
 									"\r",
 									"        delete res.id;\r",
 									"        delete res.organizationId;\r",
+									"        delete res.userId;\r",
 									"\r",
 									"        pm.expect(res).to.eql(req);\r",
 									"    });\r",

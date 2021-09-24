@@ -6,7 +6,7 @@ namespace Kros.Tags.Api.Application.Commands
     /// <summary>
     /// Update tag command.
     /// </summary>
-    public class UpdateTagCommand : IRequest, ITagManagementCommand
+    public class UpdateTagCommand : IRequest, ITagManagementCommand, IUserResourceCommand
     {
         /// <summary>
         /// Id.
@@ -29,5 +29,16 @@ namespace Kros.Tags.Api.Application.Commands
         /// </summary>
         [JsonIgnore]
         public long OrganizationId { get; set; }
+
+        /// <summary>
+        /// User Id.
+        /// </summary>
+        [JsonIgnore]
+        public long UserId { get; set; }
+
+        /// <summary>
+        /// ARGB value for color.
+        /// </summary>
+        public int ColorARGBValue { get; set; }
     }
 }

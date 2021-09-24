@@ -37,7 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.ToDos.Base", "src\Lib\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.ApiGateway.Api", "src\Kros.ApiGateway.Api\Kros.ApiGateway.Api.csproj", "{D3E65C82-002B-4B5B-A88C-6C5C4D742EB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.Tags.Api", "src\Services\Kros.Tags.Api\Kros.Tags.Api.csproj", "{72015E0B-9BE3-42FF-94C4-8D039597774F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.Tags.Api", "src\Services\Kros.Tags.Api\Kros.Tags.Api.csproj", "{72015E0B-9BE3-42FF-94C4-8D039597774F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.Tags.Tests", "tests\Kros.Tags.Tests\Kros.Tags.Tests.csproj", "{D9AD58BF-B841-4AB5-B308-4EA06C804369}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{72015E0B-9BE3-42FF-94C4-8D039597774F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72015E0B-9BE3-42FF-94C4-8D039597774F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72015E0B-9BE3-42FF-94C4-8D039597774F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9AD58BF-B841-4AB5-B308-4EA06C804369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9AD58BF-B841-4AB5-B308-4EA06C804369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9AD58BF-B841-4AB5-B308-4EA06C804369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9AD58BF-B841-4AB5-B308-4EA06C804369}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +99,7 @@ Global
 		{57E8ECA3-3D01-47AF-A9BF-EA0BFC9772EA} = {1FB87585-551C-4480-B696-CFE24EA1C703}
 		{D3E65C82-002B-4B5B-A88C-6C5C4D742EB8} = {DF9CF3D3-3396-46E5-9C3C-624ACD743852}
 		{72015E0B-9BE3-42FF-94C4-8D039597774F} = {8CB018F4-EB2D-409A-8C2C-A1520690E766}
+		{D9AD58BF-B841-4AB5-B308-4EA06C804369} = {0CA758E8-9154-4F55-8009-8DB24CB0EAAF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {62686C83-FD22-48A7-B4B2-F4981D81D79E}

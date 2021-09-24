@@ -6,15 +6,15 @@ using System.Collections.Generic;
 namespace Kros.Tags.Api.Application.Queries
 {
     /// <summary>
-    /// Query for getting all tags.
+    /// Query for getting all colors
     /// </summary>
-    public class GetAllTagsQuery : IRequest<IEnumerable<GetAllTagsQuery.Tag>>
+    public class GetAllColorsQuery : IRequest<IEnumerable<GetAllColorsQuery.Color>>
     {
         /// <summary>
         /// Ctor.
         /// </summary>
         /// <param name="organizationId">Organization Id.</param>
-        public GetAllTagsQuery(long organizationId)
+        public GetAllColorsQuery(long organizationId)
         {
             OrganizationId = organizationId;
         }
@@ -25,40 +25,20 @@ namespace Kros.Tags.Api.Application.Queries
         public long OrganizationId { get; }
 
         /// <summary>
-        /// Tag.
+        /// Color.
         /// </summary>
         [Alias(DatabaseConfiguration.TagsTableName)]
-        public class Tag
+        public class Color
         {
             /// <summary>
-            /// Tag Id.
+            /// ARGB value for color.
             /// </summary>
-            public long Id { get; set; }
-
-            /// <summary>
-            /// Tag name.
-            /// </summary>
-            public string Name { get; set; }
+            public int ColorARGBValue { get; set; }
 
             /// <summary>
             /// Organization Id.
             /// </summary>
             public int OrganizationId { get; set; }
-
-            /// <summary>
-            /// Description for tag.
-            /// </summary>
-            public string Description { get; set; }
-
-            /// <summary>
-            /// User Id.
-            /// </summary>
-            public long UserId { get; set; }
-
-            /// <summary>
-            /// ARGB value for color.
-            /// </summary>
-            public int ColorARGBValue { get; set; }
         }
     }
 }

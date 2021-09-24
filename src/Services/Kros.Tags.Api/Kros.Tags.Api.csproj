@@ -11,9 +11,17 @@
   <ItemGroup>
     <None Remove="SqlScripts\20210812001_CreateTags.sql" />
     <None Remove="SqlScripts\20210816001_AddDescriptionAndOrgIdColumn.sql" />
+    <None Remove="SqlScripts\20210820001_AddUserIdColumn.sql" />
+    <None Remove="SqlScripts\20210823001_AddColorColumn.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="SqlScripts\20210823001_AddColorColumn.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SqlScripts\20210820001_AddUserIdColumn.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="SqlScripts\20210816001_AddDescriptionAndOrgIdColumn.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -31,13 +39,30 @@
     <PackageReference Include="Kros.Swagger.Extensions" Version="1.5.0" />
     <PackageReference Include="Mapster" Version="7.2.0" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.2.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="5.0.1" />
+    <PackageReference Include="randomColorSharped.NetStandard" Version="1.0.2" />
     <PackageReference Include="Scrutor" Version="3.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.1.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Kros.ToDos.Base\Kros.ToDos.Base.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
