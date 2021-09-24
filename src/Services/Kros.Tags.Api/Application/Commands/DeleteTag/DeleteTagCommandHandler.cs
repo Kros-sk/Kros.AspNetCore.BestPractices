@@ -1,5 +1,4 @@
 ﻿using Kros.KORM;
-using Kros.Tags.Api.Application.Queries;
 using Kros.Tags.Api.Application.Services;
 using Kros.Tags.Api.Domain;
 using Kros.Utils;
@@ -44,8 +43,8 @@ namespace Kros.Tags.Api.Application.Commands
                 .FirstOrDefault(o => o.Id == request.Id));
             if (deletedTag != null)
             {
-                await _tagRepository.DeleteTagAsync(request.Id, request.OrganizationId);
                 await _colorManagementService.DeleteColor(deletedTag.Result.ColorARGBValue, request.OrganizationId);
+                await _tagRepository.DeleteTagAsync(request.Id, request.OrganizationId);
             }
             return Unit.Value;
         }
