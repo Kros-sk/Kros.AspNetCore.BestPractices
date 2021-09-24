@@ -126,7 +126,6 @@ namespace Kros.Tags.Api.Application.Controllers
         [Authorize(PoliciesHelper.WriterAuthPolicyName)]
         public async Task<ActionResult> UpdateTag(int id, UpdateTagCommand command)
         {
-            var updatedTag = await this.SendRequest(new GetTagQuery(id, User.GetOrganizationId())) as GetTagQuery.Tag;
             command.Id = id;
             command.OrganizationId = User.GetOrganizationId();
             command.UserId = User.GetUserId();
