@@ -37,10 +37,10 @@ namespace Kros.Organizations.Api
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
-
             services.SetProxy(Configuration);
 
-            services.AddControllers()
+            services
+                .AddControllers()
                 .AddFluentValidation();
 
             services.AddAuthenticationAndAuthorization(JwtAuthorizationHelper.JwtSchemeName, Configuration);
