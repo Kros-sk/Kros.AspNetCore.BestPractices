@@ -1,5 +1,4 @@
 ﻿using Kros.AspNetCore.Extensions;
-using Kros.ToDos.Base.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -28,7 +27,7 @@ namespace Kros.ToDos.Api
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config
-                        .AddAzureAppConfiguration(hostingContext)
+                        .AddAzureAppConfig(hostingContext)
                         .AddLocalConfiguration();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

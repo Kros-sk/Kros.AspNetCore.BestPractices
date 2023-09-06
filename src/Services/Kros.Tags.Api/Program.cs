@@ -22,13 +22,12 @@ namespace Kros.Tags.Api
         /// Create web host builder.
         /// </summary>
         /// <param name="args">Arguments</param>
-        /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config
-                        .AddAzureAppConfiguration(hostingContext)
+                        .AddAzureAppConfig(hostingContext)
                         .AddLocalConfiguration();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

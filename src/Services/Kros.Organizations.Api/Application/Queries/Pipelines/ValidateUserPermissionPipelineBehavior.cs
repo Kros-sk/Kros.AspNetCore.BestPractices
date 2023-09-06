@@ -11,14 +11,14 @@ namespace Kros.Organizations.Api.Application.Queries.PipeLines
     /// <typeparam name="TRequest">Type of request.</typeparam>
     /// <typeparam name="TResponse">Type of response.</typeparam>
     public class ValidateUserPermissionPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IUserResourceQuery
+        where TRequest : IUserResourceQuery, IRequest<TResponse>
         where TResponse : IUserResourceQueryResult
     {
         /// <inheritdoc />
         public async Task<TResponse> Handle(
             TRequest request,
-            CancellationToken cancellationToken,
-            RequestHandlerDelegate<TResponse> next)
+            RequestHandlerDelegate<TResponse> next,
+            CancellationToken cancellationToken)
         {
             var result = await next();
 

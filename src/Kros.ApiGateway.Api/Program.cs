@@ -29,7 +29,7 @@ namespace ApiGateway
                 {
                     config
                         .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                        .AddAzureAppConfiguration(hostingContext)
+                        .AddAzureAppConfig(hostingContext)
                         .AddLocalConfiguration()
                         .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
                         .AddEnvironmentVariables();

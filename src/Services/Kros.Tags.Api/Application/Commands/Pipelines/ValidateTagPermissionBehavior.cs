@@ -15,7 +15,7 @@ namespace Kros.Tags.Api.Application.Commands
     /// </summary>
     /// <typeparam name="TRequest">Type of request.</typeparam>
     public class ValidateTagPermissionBehavior<TRequest> : IPipelineBehavior<TRequest, Unit>
-        where TRequest : ITagManagementCommand
+        where TRequest : ITagManagementCommand, IRequest<Unit>
     {
         private readonly IDatabase _database;
 
@@ -29,7 +29,7 @@ namespace Kros.Tags.Api.Application.Commands
         }
 
         /// <inheritdoc />
-        public async Task<Unit> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<Unit> next)
+        public async Task<Unit> Handle(TRequest request, RequestHandlerDelegate<Unit> next, CancellationToken cancellationToken)
         {
             var tag = _database.Query<Tag>()
                 .FirstOrDefault(t => t.Id == request.Id && t.OrganizationId == request.OrganizationId);

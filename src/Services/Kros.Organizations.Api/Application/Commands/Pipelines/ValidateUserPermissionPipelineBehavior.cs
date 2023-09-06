@@ -14,7 +14,7 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
     /// </summary>
     /// <typeparam name="TRequest">Type of request.</typeparam>
     public class ValidateUserPermissionPipelineBehavior<TRequest> : IPipelineBehavior<TRequest, Unit>
-        where TRequest : IUserResourceCommand
+        where TRequest : IUserResourceCommand, IRequest<Unit>
     {
         private readonly IDatabase _database;
 
@@ -30,8 +30,8 @@ namespace Kros.Organizations.Api.Application.Commands.Pipelines
         /// <inheritdoc />
         public async Task<Unit> Handle(
             TRequest request,
-            CancellationToken cancellationToken,
-            RequestHandlerDelegate<Unit> next)
+            RequestHandlerDelegate<Unit> next,
+            CancellationToken cancellationToken)
         {
             var organization = _database.Query<Organization>()
                 .FirstOrDefault(uo => uo.Id == request.Id);
