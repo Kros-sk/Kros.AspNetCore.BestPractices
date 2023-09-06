@@ -36,6 +36,7 @@ namespace Kros.Tags.Api
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
+            services.SetProxy(Configuration);
 
             services
                 .AddControllers()
